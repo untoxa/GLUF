@@ -1,0 +1,30 @@
+#include "Banks/SetAutoBank.h"
+
+#include <gbdk/platform.h>
+#include <gbdk/incbin.h>
+
+INCBIN(level01, "../res/data/levels/level01.bin")
+INCBIN(level02, "../res/data/levels/level02.bin")
+INCBIN(level03, "../res/data/levels/level03.bin")
+INCBIN(level04, "../res/data/levels/level04.bin")
+INCBIN(level05, "../res/data/levels/level05.bin")
+INCBIN(level06, "../res/data/levels/level06.bin")
+INCBIN(level07, "../res/data/levels/level07.bin")
+INCBIN(level08, "../res/data/levels/level08.bin")
+INCBIN(level09, "../res/data/levels/level09.bin")
+INCBIN(level10, "../res/data/levels/level10.bin")
+INCBIN(level11, "../res/data/levels/level11.bin")
+INCBIN(level12, "../res/data/levels/level12.bin")
+INCBIN(level13, "../res/data/levels/level13.bin")
+INCBIN(level14, "../res/data/levels/level14.bin")
+INCBIN(level15, "../res/data/levels/level15.bin")
+INCBIN(level16, "../res/data/levels/level16.bin")
+INCBIN(level17, "../res/data/levels/level17.bin")
+INCBIN(level18, "../res/data/levels/level18.bin")
+INCBIN(level19, "../res/data/levels/level19.bin")
+INCBIN(level20, "../res/data/levels/level20.bin")
+INCBIN(level21, "../res/data/levels/level21.bin")
+INCBIN(level22, "../res/data/levels/level22.bin")
+INCBIN(level23, "../res/data/levels/level23.bin")
+INCBIN(level24, "../res/data/levels/level24.bin")
+INCBIN(level25, "../res/data/levels/level25.bin")

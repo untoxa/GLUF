@@ -1,0 +1,1 @@
+@python ./tools/romusage/romusage.py ./bin/sms/GLUF.sms
