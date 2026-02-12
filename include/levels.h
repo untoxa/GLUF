@@ -8,6 +8,27 @@
 #define LEVEL_METATILE_HEIGHT 2
 #define LEVEL_METATILE_WIDTH  2
 
+#define MOVE_SPEED 1
+#define FALL_SPEED 2
+#define LIFT_SPEED 2
+
+#define TILE_EMPTY           0
+#define TILE_START_POINT     4
+#define TILE_END_POINT       40
+
+#define TILE_DOOR            9
+
+#define TILE_LIFT_NONE       TILE_EMPTY
+#define TILE_LIFT_UP         5
+#define TILE_LIFT_DOWN       10
+
+#define TILE_DISAPPEARING    12
+#define TILE_DISAPPEARED     3
+
+#define TILE_BATT_CHARGER    11
+#define TILE_BATT_DISCHARGED 14
+#define TILE_BATT_CHARGED    15
+
 extern UINT8 level_buffer[LEVEL_HEIGHT][LEVEL_WIDTH];
 
 INCBIN_EXTERN(level01)

@@ -21,13 +21,14 @@ BANKREF_EXTERN(common_tiles)
 #define BANKED_MAP(MAP, TILES) {BANK(MAP), (const UINT8 *)&MAP, BANK(TILES), &TILES}
 #define LEVELS_END {0, NULL}
 
-#define TILE_BUFFER_WIDTH 32
+#define TILE_BUFFER_WIDTH  32
+#define TILE_BUFFER_HEIGHT (LEVEL_HEIGHT * LEVEL_METATILE_HEIGHT)
 #define TILE_BUFFER_OFFSET ((TILE_BUFFER_WIDTH - ((LEVEL_WIDTH * LEVEL_METATILE_WIDTH))) >> 1)
 
 // dynamic level map
 UINT8 level_buffer[LEVEL_HEIGHT][LEVEL_WIDTH];
 // dynamic map buffer
-UINT8 tile_buffer[(LEVEL_HEIGHT * LEVEL_METATILE_HEIGHT) * TILE_BUFFER_WIDTH];
+UINT8 tile_buffer[TILE_BUFFER_HEIGHT * TILE_BUFFER_WIDTH];
 
 // level list structure
 typedef struct MapInfoBanked_t {
@@ -71,7 +72,7 @@ const MapInfoBanked_t levels[] = {
 struct MapInfo current_level_desc = {
 	.data             = tile_buffer,
 	.width            = TILE_BUFFER_WIDTH,
-	.height           = (LEVEL_HEIGHT * LEVEL_METATILE_HEIGHT),
+	.height           = TILE_BUFFER_HEIGHT,
 	.attributes       = NULL,
 	.tiles_bank       = BANK(common_tiles),
 	.tiles            = &common_tiles,
@@ -90,7 +91,7 @@ UINT8 battery_count;
 void intialize_level_data(UINT8 level);
 
 extern Sprite * GLUF;
-extern UINT8 player_x, player_y;
+extern UINT8 start_x, start_y;
 
 UINT8 load_level(UINT8 level) {
 	// destroy all sprites
@@ -99,7 +100,7 @@ UINT8 load_level(UINT8 level) {
 	// initialize current level
 	intialize_level_data(level);
 	// spawn the player sprite
-	scroll_target = GLUF = SpriteManagerAdd(SpriteGLUF, (player_x << 4) + (TILE_BUFFER_OFFSET << 3), player_y << 4);
+	scroll_target = GLUF = SpriteManagerAdd(SpriteGLUF, (start_x << 4) + (TILE_BUFFER_OFFSET << 3), start_y << 4);
 	// initialize background with collisions (skip the very first tile (19), which is only for the player)
 	InitScroll(BANK(StateGame), &current_level_desc, NULL, NULL);
 	return TRUE;
@@ -114,13 +115,13 @@ static void set_metatile(UINT8 * ptr, UINT16 id) {
 
 void intialize_level_data(UINT8 level) {
 	// current level data bank
-	static UINT8 __save;
+	static UINT8 id;
 
 	current_level_desc.extra_tiles_bank = levels[level].tiles_bank;
 	current_level_desc.extra_tiles = levels[level].tiles;
 
 	battery_count = 0;
-	player_x = player_y = 0;
+	start_x = start_y = 0;
 
 	memset(tile_buffer, 0, sizeof(tile_buffer));
 	memcpy_banked(level_buffer, levels[level].map, sizeof(level_buffer), levels[level].map_bank);
@@ -128,19 +129,37 @@ void intialize_level_data(UINT8 level) {
 	UINT8 * data = (UINT8 *)level_buffer;
 	for (UINT8 y = 0; y != LEVEL_HEIGHT; ++y) {
 		for (UINT8 x = 0; x != LEVEL_WIDTH; ++x) {
-			switch (*data) {
-				case 4:
-					*data = 0;
-					player_x = x, player_y = y;
+			id = *data;
+			switch (id) {
+				case TILE_START_POINT:
+					start_x = x, start_y = y;
+					id = TILE_DOOR;
+					break;
+				case TILE_BATT_DISCHARGED:
+					++battery_count;
 					break;
 				default:
-					if (*data >= 16) *data = 0;
+					if (id > 15) *data = id = 0;
 					break;
 			}
-			set_metatile(tile_buffer + ((y << 1) * TILE_BUFFER_WIDTH) + (x << 1) + TILE_BUFFER_OFFSET, *data);
+			set_metatile(tile_buffer + ((y << 1) * TILE_BUFFER_WIDTH) + (x << 1) + TILE_BUFFER_OFFSET, id);
 			++data;
 		}
 	}
+}
+
+void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED {
+	level_buffer[y][x] = id;
+	y = (y << 1);
+	x = (x << 1) + TILE_BUFFER_OFFSET;
+	set_metatile(tile_buffer + (y * TILE_BUFFER_WIDTH) + x, id);
+	id = (id << 2) + 1;
+	x += scroll_offset_x + 1;
+	y += scroll_offset_y;
+	UpdateMapTile(TARGET_BKG, x,     y,     0, id++, NULL);
+	UpdateMapTile(TARGET_BKG, x + 1, y,     0, id++, NULL);
+	UpdateMapTile(TARGET_BKG, x,     y + 1, 0, id++, NULL);
+	UpdateMapTile(TARGET_BKG, x + 1, y + 1, 0, id,   NULL);
 }
 
 void GameLogic(void * custom_data) BANKED {
@@ -174,6 +193,7 @@ void * game_state_context;
 
 void START(void) {
 	fade_mode = FADE_MANUAL;
+	scroll_bottom_movement_limit = 100;
 	// allocate coroutine context
 	game_state_context = coro_runner_alloc(GameLogic, BANK(StateGame), NULL);
 }

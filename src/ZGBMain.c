@@ -1,5 +1,6 @@
 #include <gbdk/platform.h>
 
+#include "Scroll.h"
 #include "Sprite.h"
 #include "ZGBMain.h"
 
@@ -24,7 +25,7 @@ const metasprite_t * GetSpriteAnimation(Sprite* sprite, UINT16 anim_idx) {
 		case SpriteDizzy:
 			// load tile data for the Dizzy hardware sprites
 			set_sprite_native_data(spriteIdxs[SpriteDizzy], dizzy_TILE_COUNT, dizzy_metatiles[anim_idx]);
-			// return address of the metasprite (it is the same for the each animation frame, because we animate tiledata) 
+			// return address of the metasprite (it is the same for the each animation frame, because we animate tiledata)
 			res = dizzy_metasprite0;
 			break;
 		default:
@@ -35,3 +36,18 @@ const metasprite_t * GetSpriteAnimation(Sprite* sprite, UINT16 anim_idx) {
 	return res;
 }
 */
+
+// default clamping scroll limits function, if not overridden by the ZGBMain.c
+void ClampScrollLimits(void) {
+	if (clamp_enabled) {
+		if (scroll_w < (TILE_TO_PX(DEVICE_SCREEN_WIDTH) + 1)) scroll_x = 8u;
+		else if (scroll_x < 0) scroll_x = 0u;
+
+		if (scroll_x > (scroll_w - SCREEN_WIDTH)) scroll_x = (scroll_w - SCREEN_WIDTH);
+
+		if (scroll_h < (SCREEN_HEIGHT - scroll_h_border)) scroll_y = 0u;
+		else if (scroll_y < 0) scroll_y = 0u;
+
+		if (scroll_y > (scroll_h - SCREEN_HEIGHT + scroll_h_border)) scroll_y = (scroll_h - SCREEN_HEIGHT + scroll_h_border);
+	}
+}
