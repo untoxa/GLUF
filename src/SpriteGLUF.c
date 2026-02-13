@@ -37,10 +37,10 @@ static const UINT8 anim_fall[]       = VECTOR(  9, 10 );
 void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED;
 
 UINT8 check_collision(UINT8 id) {
-	if (id < 10) return 0; return id;
+	if ((id < TILE_FIRST_SOLID) || (id > TILE_LAST_VISIBLE)) return TILE_EMPTY; else return id;
 }
 UINT8 check_lift(UINT8 id) {
-	if ((id == TILE_LIFT_UP) || (id == TILE_LIFT_DOWN)) return id; else return TILE_LIFT_NONE;
+	if ((id == TILE_LIFT_UP) || (id == TILE_LIFT_DOWN) || (id == TILE_LIFT_STOP)) return id; else return TILE_LIFT_NONE;
 }
 
 void GLUFLogic(void * custom_data) BANKED {
@@ -105,9 +105,14 @@ void GLUFLogic(void * custom_data) BANKED {
 				YIELD;
 			}
 			player_y--;
-			if (!check_lift(level_buffer[player_y][player_x])) {
-				lifting = TILE_LIFT_NONE;
-				SetSpriteAnim(THIS, anim_idle, ANIMATION_SPEED_IDLE);
+			switch (check_lift(level_buffer[player_y][player_x])) {
+				case TILE_LIFT_NONE:
+				case TILE_LIFT_STOP:
+					lifting = TILE_LIFT_NONE;
+					SetSpriteAnim(THIS, anim_idle, ANIMATION_SPEED_IDLE);
+					break;
+				default:
+					break;
 			}
 		} else if (lifting == TILE_LIFT_DOWN) {
 			SetSpriteAnim(THIS, anim_fall, ANIMATION_SPEED_FALL);

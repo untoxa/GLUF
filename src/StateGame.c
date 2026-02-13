@@ -101,6 +101,13 @@ UINT8 load_level(UINT8 level) {
 	intialize_level_data(level);
 	// spawn the player sprite
 	scroll_target = GLUF = SpriteManagerAdd(SpriteGLUF, (start_x << 4) + (TILE_BUFFER_OFFSET << 3), start_y << 4);
+	// spawn the title
+	if (current_level == 0) {
+		for (UINT8 i = 0; i != 4; ++i) {
+			Sprite * letter = SpriteManagerAdd(SpriteSign, ((i + 4) << 4) + (TILE_BUFFER_OFFSET << 3), 13 << 4);
+			if (letter) letter->custom_data[0] = i;
+		}
+	}
 	// initialize background with collisions (skip the very first tile (19), which is only for the player)
 	InitScroll(BANK(StateGame), &current_level_desc, NULL, NULL);
 	return TRUE;
@@ -138,8 +145,11 @@ void intialize_level_data(UINT8 level) {
 				case TILE_BATT_DISCHARGED:
 					++battery_count;
 					break;
+				case TILE_LIFT_STOP:
+					id = TILE_LIFT_UP;
+					break;
 				default:
-					if (id > 15) *data = id = 0;
+					if (id > TILE_LAST_VISIBLE) id = 4;
 					break;
 			}
 			set_metatile(tile_buffer + ((y << 1) * TILE_BUFFER_WIDTH) + (x << 1) + TILE_BUFFER_OFFSET, id);
@@ -172,16 +182,18 @@ void GameLogic(void * custom_data) BANKED {
 	YIELD;
 	FadeOut();
 	while (TRUE) {
+		if (KEY_TICKED(J_A)) {
+			if (levels[++current_level].map_bank) restart = TRUE; else --current_level;
+		} else if (KEY_TICKED(J_B)) {
+			if (current_level) {
+				--current_level;
+				restart = TRUE;
+			}
+		}
 		if (restart) {
 			restart = FALSE;
 			FadeIn();
 			if (!load_level(current_level)) return;
-			YIELD;
-			FadeOut();
-		}
-		if (KEY_TICKED(J_A)) {
-			FadeIn();
-			if (!load_level(++current_level)) return;
 			YIELD;
 			FadeOut();
 		}

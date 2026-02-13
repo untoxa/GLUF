@@ -8,6 +8,7 @@ STATE_DEF_END
 #define SPRITES \
 _SPRITE(SpriteGLUF,  gluf,  FLIP_NONE)\
 _SPRITE(SpriteGhost, ghost, FLIP_NONE)\
+_SPRITE(SpriteSign,  sign,  FLIP_NONE)\
 SPRITE_DEF_END
 
 #include "ZGBMain_Init.h"

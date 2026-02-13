@@ -21,6 +21,7 @@
 #define TILE_LIFT_NONE       TILE_EMPTY
 #define TILE_LIFT_UP         5
 #define TILE_LIFT_DOWN       10
+#define TILE_LIFT_STOP       40
 
 #define TILE_DISAPPEARING    12
 #define TILE_DISAPPEARED     3
@@ -28,6 +29,9 @@
 #define TILE_BATT_CHARGER    11
 #define TILE_BATT_DISCHARGED 14
 #define TILE_BATT_CHARGED    15
+
+#define TILE_FIRST_SOLID     TILE_LIFT_DOWN
+#define TILE_LAST_VISIBLE    TILE_BATT_CHARGED
 
 extern UINT8 level_buffer[LEVEL_HEIGHT][LEVEL_WIDTH];
 
