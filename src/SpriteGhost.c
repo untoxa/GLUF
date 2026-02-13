@@ -1,5 +1,6 @@
 #include "Banks/SetAutoBank.h"
 
+#include "Coroutines.h"
 #include "ZGBMain.h"
 
 void START(void) {

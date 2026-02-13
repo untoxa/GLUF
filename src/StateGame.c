@@ -21,10 +21,6 @@ BANKREF_EXTERN(common_tiles)
 #define BANKED_MAP(MAP, TILES) {BANK(MAP), (const UINT8 *)&MAP, BANK(TILES), &TILES}
 #define LEVELS_END {0, NULL}
 
-#define TILE_BUFFER_WIDTH  32
-#define TILE_BUFFER_HEIGHT (LEVEL_HEIGHT * LEVEL_METATILE_HEIGHT)
-#define TILE_BUFFER_OFFSET ((TILE_BUFFER_WIDTH - ((LEVEL_WIDTH * LEVEL_METATILE_WIDTH))) >> 1)
-
 // dynamic level map
 UINT8 level_buffer[LEVEL_HEIGHT][LEVEL_WIDTH];
 // dynamic map buffer
@@ -104,8 +100,8 @@ UINT8 load_level(UINT8 level) {
 	// spawn the title
 	if (current_level == 0) {
 		for (UINT8 i = 0; i != 4; ++i) {
-			Sprite * letter = SpriteManagerAdd(SpriteSign, ((i + 4) << 4) + (TILE_BUFFER_OFFSET << 3), 13 << 4);
-			if (letter) letter->custom_data[0] = i;
+			Sprite * letter;
+			if (letter = SpriteManagerAdd(SpriteSign, ((i + 4) << 4) + (TILE_BUFFER_OFFSET << 3), 13 << 4)) letter->custom_data[0] = i;
 		}
 	}
 	// initialize background with collisions (skip the very first tile (19), which is only for the player)

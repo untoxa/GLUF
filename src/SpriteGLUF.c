@@ -148,7 +148,9 @@ void GLUFLogic(void * custom_data) BANKED {
 				--charge;
 				UpdateMetatile(player_x, player_y + 1, TILE_BATT_CHARGED);
 				if (--battery_count == 0) {
-					UpdateMetatile(start_x, start_y, TILE_DOOR);
+					// activate door
+					level_buffer[start_y][start_x] = TILE_DOOR;
+					SpriteManagerAdd(SpriteDoor, (start_x << 4) + (TILE_BUFFER_OFFSET << 3), start_y << 4);
 				}
 //				ExecuteSFX(BANK(fx_discharge), fx_discharge, SFX_MUTE_MASK(fx_discharge), SFX_PRIORITY_NORMAL);
 			}
