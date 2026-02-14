@@ -37,13 +37,19 @@ const metasprite_t * GetSpriteAnimation(Sprite* sprite, UINT16 anim_idx) {
 }
 */
 
-// default clamping scroll limits function, if not overridden by the ZGBMain.c
+// we need to override standard scroll clamping function
+#ifndef SCROLL_MIN_X
+	#if defined(MASTERSYSTEM)
+		#define SCROLL_MIN_X 8
+	#else
+		#define SCROLL_MIN_X 32
+	#endif
+#endif
 void ClampScrollLimits(void) {
 	if (clamp_enabled) {
-		if (scroll_w < (TILE_TO_PX(DEVICE_SCREEN_WIDTH) + 1)) scroll_x = 8u;
-		else if (scroll_x < 0) scroll_x = 0u;
+		if (scroll_x < SCROLL_MIN_X) scroll_x = SCROLL_MIN_X;
 
-		if (scroll_x > (scroll_w - SCREEN_WIDTH)) scroll_x = (scroll_w - SCREEN_WIDTH);
+		if (scroll_x > (scroll_w - SCREEN_WIDTH - SCROLL_MIN_X)) scroll_x = (scroll_w - SCREEN_WIDTH - SCROLL_MIN_X);
 
 		if (scroll_h < (SCREEN_HEIGHT - scroll_h_border)) scroll_y = 0u;
 		else if (scroll_y < 0) scroll_y = 0u;

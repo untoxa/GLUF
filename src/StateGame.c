@@ -207,7 +207,7 @@ void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED {
 	x = (x << 1) + TILE_BUFFER_OFFSET;
 	set_metatile(tile_buffer + (y * TILE_BUFFER_WIDTH) + x, id);
 	id = (id << 2) + 1;
-	x += scroll_offset_x + 1;
+	x += scroll_offset_x + SCREEN_BKG_OFFSET_X;
 	y += scroll_offset_y;
 	UpdateMapTile(TARGET_BKG, x,     y,     0, id++, NULL);
 	UpdateMapTile(TARGET_BKG, x + 1, y,     0, id++, NULL);
