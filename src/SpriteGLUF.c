@@ -50,6 +50,7 @@ void GLUFLogic(void * custom_data) BANKED {
 	lifting = TILE_LIFT_NONE;
 	charge = charge_cooldown = 0;
 	player_x = start_x, player_y = start_y;
+	Sprite * sprite_door = NULL;
 	SetSpriteAnim(THIS, anim_enter, ANIMATION_SPEED_ENTER);
 	for (UINT8 i = 0; i != 42; ++i) {
 		YIELD;
@@ -150,9 +151,9 @@ void GLUFLogic(void * custom_data) BANKED {
 				if (--battery_count == 0) {
 					// activate door
 					level_buffer[start_y][start_x] = TILE_DOOR;
-					SpriteManagerAdd(SpriteDoor, (start_x << 4) + (TILE_BUFFER_OFFSET << 3), start_y << 4);
+					sprite_door = SpriteManagerAdd(SpriteDoor, (start_x << 4) + (TILE_BUFFER_OFFSET << 3), start_y << 4);
 				}
-//				ExecuteSFX(BANK(fx_discharge), fx_discharge, SFX_MUTE_MASK(fx_discharge), SFX_PRIORITY_NORMAL);
+				ExecuteSFX(BANK(fx_discharge), fx_discharge, SFX_MUTE_MASK(fx_discharge), SFX_PRIORITY_NORMAL);
 			}
 		} else if (tile_below == TILE_BATT_CHARGER) {
 			if (charge_cooldown) {
@@ -160,11 +161,12 @@ void GLUFLogic(void * custom_data) BANKED {
 			} else if (charge <= CHARGE_MAXIMUM) {
 				++charge;
 				charge_cooldown = CHARGE_COOLDOWN;
-//				ExecuteSFX(BANK(fx_charge), fx_charge, SFX_MUTE_MASK(fx_charge), SFX_PRIORITY_NORMAL);
+				ExecuteSFX(BANK(fx_charge), fx_charge, SFX_MUTE_MASK(fx_charge), SFX_PRIORITY_NORMAL);
 			}
 		}
 		// exit
 		if (level_buffer[player_y][player_x] == TILE_DOOR) {
+			if (sprite_door) SpriteManagerRemoveSprite(sprite_door);
 			SetSpriteAnim(THIS, anim_exit, ANIMATION_SPEED_ENTER);
 			for (UINT8 i = 0; i != 42; ++i) {
 				YIELD;
