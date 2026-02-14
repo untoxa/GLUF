@@ -2,9 +2,9 @@ name: Build project
 
 on:
 # uncomment lines below to (re)build on each push
-#  push:
-#    branches:
-#      - master
+  push:
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
