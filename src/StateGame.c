@@ -84,10 +84,11 @@ UINT16 game_score;
 
 UINT8 battery_count;
 
-void intialize_level_data(UINT8 level);
-
 extern Sprite * GLUF;
 extern UINT8 start_x, start_y;
+
+void intialize_level_data(UINT8 level);
+void spawn_enemies(void);
 
 UINT8 load_level(UINT8 level) {
 	// destroy all sprites
@@ -97,16 +98,42 @@ UINT8 load_level(UINT8 level) {
 	intialize_level_data(level);
 	// spawn the player sprite
 	scroll_target = GLUF = SpriteManagerAdd(SpriteGLUF, (start_x << 4) + (TILE_BUFFER_OFFSET << 3), start_y << 4);
-	// spawn the title
-	if (current_level == 0) {
-		for (UINT8 i = 0; i != 4; ++i) {
-			Sprite * letter;
-			if (letter = SpriteManagerAdd(SpriteSign, ((i + 4) << 4) + (TILE_BUFFER_OFFSET << 3), 13 << 4)) letter->custom_data[0] = i;
-		}
-	}
+	// spawn enemies
+	spawn_enemies();
 	// initialize background with collisions (skip the very first tile (19), which is only for the player)
 	InitScroll(BANK(StateGame), &current_level_desc, NULL, NULL);
 	return TRUE;
+}
+
+void spawn_enemies(void) {
+	Sprite * enemy;
+	// spawn the title
+	if (current_level == 0) {
+		for (UINT8 i = 0; i != 4; ++i) {
+			if (enemy = SpriteManagerAdd(SpriteSign, ((i + 4) << 4) + (TILE_BUFFER_OFFSET << 3), 13 << 4)) enemy->custom_data[0] = i;
+		}
+	} else {
+		UINT8 * data = (UINT8 *)level_buffer;
+		for (UINT8 y = 0; y != LEVEL_HEIGHT; ++y) {
+			for (UINT8 x = 0; x != LEVEL_WIDTH; ++x) {
+				switch (*data) {
+					case ENEMY_UFO_DOWN:
+					case ENEMY_UFO_UP:
+						enemy = SpriteManagerAdd(SpriteUFO, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
+						break;
+					default:
+						enemy = NULL;
+						break;
+				}
+				if (enemy) {
+					enemy->custom_data[0] = *data;
+					enemy->custom_data[1] = x;
+					enemy->custom_data[2] = y;
+				}
+				data++;
+			}
+		}
+	}
 }
 
 static void set_metatile(UINT8 * ptr, UINT16 id) {
@@ -143,6 +170,10 @@ void intialize_level_data(UINT8 level) {
 					break;
 				case TILE_LIFT_STOP:
 					id = TILE_LIFT_UP;
+					break;
+				case ENEMY_UFO_DOWN:
+				case ENEMY_UFO_UP:
+					id = TILE_EMPTY;
 					break;
 				default:
 					if (id > TILE_LAST_VISIBLE) id = 4;
