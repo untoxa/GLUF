@@ -1,3 +1,4 @@
+# rules for the metatiles
 PNG2METATILES = python ../tools/png2metatiles/png2metatiles.py
 
 METATILES = $(foreach dir,../res/metatiles/$(EXT),$(notdir $(wildcard $(dir)/*.png)))
@@ -8,3 +9,15 @@ SEC_TARGETS := $(METATILES:%.png=$(OBJDIR_RES)/%.c) $(SEC_TARGETS)
 .SECONDEXPANSION:
 $(OBJDIR_RES)/%.c: ../res/metatiles/$(EXT)/%.png $$(wildcard ../res/metatiles/$(EXT)/%.png.meta)
 	@$(PNG2METATILES) -o $@ $(if $(wildcard $<.meta),`cat <$<.meta`) $<
+
+# rules for the binaries
+BIN2C = python ../tools/bin2c/bin2c.py
+
+DATAS = $(foreach dir,../res/data,$(notdir $(wildcard $(dir)/*.bin)))
+
+OBJS := $(DATAS:%.bin=$(OBJDIR_RES)/%.o) $(OBJS)
+SEC_TARGETS := $(DATAS:%.bin=$(OBJDIR_RES)/%.c) $(SEC_TARGETS)
+
+.SECONDEXPANSION:
+$(OBJDIR_RES)/%.c: ../res/data/%.bin $$(wildcard ../res/data/%.bin.meta)
+	@$(BIN2C) -o $@ $(if $(wildcard $<.meta),`cat <$<.meta`) $<
