@@ -9,8 +9,10 @@
 #include "levels.h"
 
 #define ANIMATION_SPEED_MOVE 20
-static const UINT8 anim_ufo_move_vert[]  = VECTOR( 0, 1 );
-static const UINT8 anim_ufo_move_horiz[] = VECTOR( 0, 2, 3, 4 );
+static const UINT8 anim_UFO_move_vert[]  = VECTOR( 0, 1 );
+static const UINT8 anim_UFO_move_horiz[] = VECTOR( 0, 2, 3, 4 );
+
+static const UINT8 * const anim_UFO[N_DIRECTIONS] = { anim_UFO_move_vert, anim_UFO_move_vert, anim_UFO_move_vert, anim_UFO_move_horiz, anim_UFO_move_horiz };
 
 extern Sprite * GLUF;
 extern UINT8 restart;
@@ -19,7 +21,7 @@ static const INT8 x_delta[N_DIRECTIONS] = {  0,  0,  0, -1,  1 };
 static const INT8 y_delta[N_DIRECTIONS] = {  0, -1,  1,  0,  0 };
 
 void UFOLogic(void * custom_data) BANKED {
-	enemy_dir_e direction;
+	enemy_dir_e old_direction = N_DIRECTIONS, direction;
 	switch (((UINT8 *)custom_data)[0]) {
 		case ENEMY_UFO_RIGHT:
 			direction = DIR_RIGHT;
@@ -36,11 +38,12 @@ void UFOLogic(void * custom_data) BANKED {
 		default:
 			direction = DIR_NONE;
 			break;
-
 	};
 	UINT8 x = ((UINT8 *)custom_data)[1];
 	UINT8 y = ((UINT8 *)custom_data)[2];
+	SetSpriteAnim(THIS, anim_UFO[direction], ANIMATION_SPEED_MOVE);
 	while (TRUE) {
+		old_direction = direction;
 		switch (level_buffer[y][x]) {
 			case MOVE_LEFT:
 				direction = DIR_LEFT;
@@ -68,15 +71,8 @@ void UFOLogic(void * custom_data) BANKED {
 				break;
 		}
 		if (direction) {
-			switch (direction) {
-				case DIR_UP:
-				case DIR_DOWN:
-					SetSpriteAnim(THIS, anim_ufo_move_vert, ANIMATION_SPEED_MOVE);
-					break;
-				default:
-					SetSpriteAnim(THIS, anim_ufo_move_horiz, ANIMATION_SPEED_MOVE);
-					break;
-
+			if (direction != old_direction) {
+				SetSpriteAnim(THIS, anim_UFO[direction], ANIMATION_SPEED_MOVE);
 			}
 			for (UINT8 i = 0; i != 16; ++i) {
 				THIS->x += x_delta[direction];

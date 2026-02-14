@@ -123,6 +123,9 @@ void spawn_enemies(void) {
 					case ENEMY_UFO_UP:
 						enemy = SpriteManagerAdd(SpriteUFO, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
 						break;
+					case ENEMY_SLUG:
+						enemy = SpriteManagerAdd(SpriteSlug, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
+						break;
 					default:
 						enemy = NULL;
 						break;
@@ -175,6 +178,7 @@ void intialize_level_data(UINT8 level) {
 					break;
 				case ENEMY_UFO_RIGHT:
 				case ENEMY_UFO_LEFT:
+				case ENEMY_SLUG:
 				case ENEMY_UFO_DOWN:
 				case ENEMY_UFO_UP:
 				case MOVE_LEFT:

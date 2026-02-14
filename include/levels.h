@@ -34,6 +34,7 @@
 
 #define ENEMY_UFO_RIGHT      0x21
 #define ENEMY_UFO_LEFT       0x22
+#define ENEMY_SLUG           0x25
 #define ENEMY_UFO_UP         0x26
 #define ENEMY_UFO_DOWN       0x27
 
