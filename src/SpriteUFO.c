@@ -35,6 +35,7 @@ void UFOLogic(void * custom_data) BANKED {
 	while (TRUE) {
 		if (CheckCollision(THIS, GLUF)) {
 			restart = TRUE;
+			YIELD;
 		} else {
 			switch (level_buffer[y][x]) {
 				case MOVE_UP:
