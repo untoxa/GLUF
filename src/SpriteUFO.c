@@ -1,13 +1,16 @@
 #include "Banks/SetAutoBank.h"
 
+#include <rand.h>
+
 #include "Sprite.h"
 #include "Coroutines.h"
 #include "ZGBMain.h"
 
 #include "levels.h"
 
-#define ANIMATION_SPEED_MOVE 12
-static const UINT8 anim_ufo_move[] = VECTOR( 0, 1 );
+#define ANIMATION_SPEED_MOVE 20
+static const UINT8 anim_ufo_move_vert[]  = VECTOR( 0, 1 );
+static const UINT8 anim_ufo_move_horiz[] = VECTOR( 0, 2, 3, 4 );
 
 extern Sprite * GLUF;
 extern UINT8 restart;
@@ -18,6 +21,12 @@ static const INT8 y_delta[N_DIRECTIONS] = {  0, -1,  1,  0,  0 };
 void UFOLogic(void * custom_data) BANKED {
 	enemy_dir_e direction;
 	switch (((UINT8 *)custom_data)[0]) {
+		case ENEMY_UFO_RIGHT:
+			direction = DIR_RIGHT;
+			break;
+		case ENEMY_UFO_LEFT:
+			direction = DIR_LEFT;
+			break;
 		case ENEMY_UFO_DOWN:
 			direction = DIR_DOWN;
 			break;
@@ -31,31 +40,55 @@ void UFOLogic(void * custom_data) BANKED {
 	};
 	UINT8 x = ((UINT8 *)custom_data)[1];
 	UINT8 y = ((UINT8 *)custom_data)[2];
-	SetSpriteAnim(THIS, anim_ufo_move, ANIMATION_SPEED_MOVE);
 	while (TRUE) {
-		if (CheckCollision(THIS, GLUF)) {
-			restart = TRUE;
-			YIELD;
-		} else {
-			switch (level_buffer[y][x]) {
-				case MOVE_UP:
-					direction = DIR_UP;
+		switch (level_buffer[y][x]) {
+			case MOVE_LEFT:
+				direction = DIR_LEFT;
+				break;
+			case MOVE_RIGHT:
+				direction = DIR_RIGHT;
+				break;
+			case MOVE_UP:
+				direction = DIR_UP;
+				break;
+			case MOVE_DOWN:
+				direction = DIR_DOWN;
+				break;
+			case MOVE_RIGHT_OR_UP:
+				direction = (rand() & 1) ? DIR_RIGHT : DIR_UP;
+				break;
+			case MOVE_LEFT_OR_UP:
+				direction = (rand() & 1) ? DIR_LEFT : DIR_UP;
+				break;
+			case MOVE_RIGHT_OR_DOWN:
+				direction = (rand() & 1) ? DIR_RIGHT : DIR_DOWN;
+				break;
+			case MOVE_LEFT_OR_DOWN:
+				direction = (rand() & 1) ? DIR_LEFT : DIR_DOWN;
+				break;
+		}
+		if (direction) {
+			switch (direction) {
+				case DIR_UP:
+				case DIR_DOWN:
+					SetSpriteAnim(THIS, anim_ufo_move_vert, ANIMATION_SPEED_MOVE);
 					break;
-				case MOVE_DOWN:
-					direction = DIR_DOWN;
+				default:
+					SetSpriteAnim(THIS, anim_ufo_move_horiz, ANIMATION_SPEED_MOVE);
 					break;
+
 			}
-			if (direction) {
-				for (UINT8 i = 0; i != 16; ++i) {
-					THIS->x += x_delta[direction];
-					THIS->y += y_delta[direction];
-					YIELD;
-				}
-				x += x_delta[direction];
-				y += y_delta[direction];
-			} else {
+			for (UINT8 i = 0; i != 16; ++i) {
+				THIS->x += x_delta[direction];
+				THIS->y += y_delta[direction];
+				if (CheckCollision(THIS, GLUF)) restart = TRUE;
 				YIELD;
 			}
+			x += x_delta[direction];
+			y += y_delta[direction];
+		} else {
+			if (CheckCollision(THIS, GLUF)) restart = TRUE;
+			YIELD;
 		}
 	}
 }

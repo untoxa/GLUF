@@ -21,7 +21,7 @@ void SignLogic(void * custom_data) BANKED {
 	INT16 y = THIS->y;
 	UINT8 id = *((UINT8 *)custom_data);
 	SetSpriteAnim(THIS, anim_GLUF[id], ANIMATION_SPEED_NONE);
-	UINT8 counter = id * (sizeof(sine_table) / 4);
+	UINT8 counter = id * (sizeof(sine_table) / 8);
 	while (TRUE) {
 		THIS->y = y + sine_table[counter];
 		if (++counter == sizeof(sine_table)) counter = 0;

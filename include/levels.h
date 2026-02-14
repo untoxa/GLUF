@@ -32,11 +32,19 @@
 #define TILE_BATT_DISCHARGED 14
 #define TILE_BATT_CHARGED    15
 
-#define ENEMY_UFO_DOWN       0x26
-#define ENEMY_UFO_UP         0x27
+#define ENEMY_UFO_RIGHT      0x21
+#define ENEMY_UFO_LEFT       0x22
+#define ENEMY_UFO_UP         0x26
+#define ENEMY_UFO_DOWN       0x27
 
+#define MOVE_LEFT            0x10
+#define MOVE_RIGHT           0x11
 #define MOVE_DOWN            0x12
 #define MOVE_UP              0x13
+#define MOVE_RIGHT_OR_UP     0x14
+#define MOVE_LEFT_OR_UP      0x15
+#define MOVE_RIGHT_OR_DOWN   0x16
+#define MOVE_LEFT_OR_DOWN    0x17
 
 typedef enum enemy_dir_e {
 	DIR_NONE = 0,
