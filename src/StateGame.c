@@ -117,6 +117,9 @@ void spawn_enemies(void) {
 		for (UINT8 y = 0; y != LEVEL_HEIGHT; ++y) {
 			for (UINT8 x = 0; x != LEVEL_WIDTH; ++x) {
 				switch (*data) {
+					case ENEMY_JUMPER:
+						enemy = SpriteManagerAdd(SpriteJumper, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
+						break;
 					case ENEMY_UFO_LEFT:
 					case ENEMY_UFO_RIGHT:
 					case ENEMY_UFO_UP:
@@ -176,6 +179,7 @@ void intialize_level_data(UINT8 level) {
 				case TILE_LIFT_STOP:
 					id = TILE_LIFT_UP;
 					break;
+				case ENEMY_JUMPER:
 				case ENEMY_UFO_RIGHT:
 				case ENEMY_UFO_LEFT:
 				case ENEMY_SLUG:

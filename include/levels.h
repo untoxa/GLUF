@@ -16,7 +16,6 @@
 
 #define TILE_EMPTY           0
 #define TILE_START_POINT     4
-#define TILE_END_POINT       40
 
 #define TILE_DOOR            9
 
@@ -34,8 +33,10 @@
 
 #define TILE_VISIBLE_MASK    0x0f
 
+#define ENEMY_JUMPER         0x20
 #define ENEMY_UFO_LEFT       0x21
 #define ENEMY_UFO_RIGHT      0x22
+#define ENEMY_REDHEAD        0x23	// moves +/- 2 tiles susing sine
 #define ENEMY_SLUG           0x25
 #define ENEMY_UFO_UP         0x26
 #define ENEMY_UFO_DOWN       0x27
@@ -54,6 +55,8 @@
 #define MOVE_ANY_NOT_LEFT    0x1b
 #define MOVE_LEFT_OR_RIGHT   0x1c
 #define MOVE_UP_OR_DOWN      0x1d
+
+#define MOVE_GHOST_POINT     0x1f	// ghost teleport point
 
 typedef enum enemy_dir_e {
 	DIR_NONE = 0,
@@ -97,5 +100,12 @@ EXTERN_DATA(level22)
 EXTERN_DATA(level23)
 EXTERN_DATA(level24)
 EXTERN_DATA(level25)
+
+inline UINT8 check_collision(UINT8 id) {
+	if ((id < TILE_FIRST_SOLID) || (id > TILE_LAST_VISIBLE)) return TILE_EMPTY; else return id;
+}
+inline UINT8 check_lift(UINT8 id) {
+	if ((id == TILE_LIFT_UP) || (id == TILE_LIFT_DOWN) || (id == TILE_LIFT_STOP)) return id; else return TILE_LIFT_NONE;
+}
 
 #endif

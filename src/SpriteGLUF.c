@@ -36,13 +36,6 @@ static const UINT8 anim_fall[]       = VECTOR(  9, 10 );
 
 void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED;
 
-UINT8 check_collision(UINT8 id) {
-	if ((id < TILE_FIRST_SOLID) || (id > TILE_LAST_VISIBLE)) return TILE_EMPTY; else return id;
-}
-UINT8 check_lift(UINT8 id) {
-	if ((id == TILE_LIFT_UP) || (id == TILE_LIFT_DOWN) || (id == TILE_LIFT_STOP)) return id; else return TILE_LIFT_NONE;
-}
-
 void GLUFLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	static UINT8 tile_below;
