@@ -97,7 +97,7 @@ UINT8 load_level(UINT8 level) {
 	// initialize current level
 	intialize_level_data(level);
 	// spawn the player sprite
-	scroll_target = GLUF = SpriteManagerAdd(SpriteGLUF, (start_x << 4) + (TILE_BUFFER_OFFSET << 3), start_y << 4);
+	scroll_target = GLUF = SpriteManagerAdd(SpriteGLUF, (start_x << 4) + (TILE_BUFFER_OFFSET << 3) + 1, (start_y << 4) + 1);
 	// spawn enemies
 	spawn_enemies();
 	// initialize background with collisions (skip the very first tile (19), which is only for the player)
@@ -110,17 +110,17 @@ void spawn_enemies(void) {
 	// spawn the title
 	if (current_level == 0) {
 		for (UINT8 i = 0; i != 4; ++i) {
-			if (enemy = SpriteManagerAdd(SpriteSign, ((i + 4) << 4) + (TILE_BUFFER_OFFSET << 3), 13 << 4)) enemy->custom_data[0] = i;
+			if (enemy = SpriteManagerAdd(SpriteSign, ((i + 4) << 4) + (TILE_BUFFER_OFFSET << 3), (13 << 4))) enemy->custom_data[0] = i;
 		}
 	} else {
 		UINT8 * data = (UINT8 *)level_buffer;
 		for (UINT8 y = 0; y != LEVEL_HEIGHT; ++y) {
 			for (UINT8 x = 0; x != LEVEL_WIDTH; ++x) {
 				switch (*data) {
-					case ENEMY_UFO_RIGHT:
 					case ENEMY_UFO_LEFT:
-					case ENEMY_UFO_DOWN:
+					case ENEMY_UFO_RIGHT:
 					case ENEMY_UFO_UP:
+					case ENEMY_UFO_DOWN:
 						enemy = SpriteManagerAdd(SpriteUFO, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
 						break;
 					case ENEMY_SLUG:
@@ -189,10 +189,16 @@ void intialize_level_data(UINT8 level) {
 				case MOVE_LEFT_OR_UP:
 				case MOVE_RIGHT_OR_DOWN:
 				case MOVE_LEFT_OR_DOWN:
-					id = TILE_EMPTY;
+				case MOVE_ANY_NOT_UP:
+				case MOVE_ANY_NOT_DOWN:
+				case MOVE_ANY_NOT_RIGHT:
+				case MOVE_ANY_NOT_LEFT:
+				case MOVE_LEFT_OR_RIGHT:
+				case MOVE_UP_OR_DOWN:
+					id = (*(data - LEVEL_WIDTH) == TILE_LIFT_UP) ? TILE_LIFT_UP : TILE_EMPTY;
 					break;
 				default:
-					if (id > TILE_LAST_VISIBLE) id = 4;
+					if (id > TILE_LAST_VISIBLE) id = TILE_START_POINT;
 					break;
 			}
 			set_metatile(tile_buffer + ((y << 1) * TILE_BUFFER_WIDTH) + (x << 1) + TILE_BUFFER_OFFSET, id);

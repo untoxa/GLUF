@@ -30,10 +30,10 @@ void SlugLogic(void * custom_data) BANKED {
 		if (direction) {
 			switch (direction) {
 				case DIR_LEFT:
-					if (level_buffer[y+1][x-1] == TILE_EMPTY) direction = DIR_RIGHT;
+					if ((x == 0) || ((level_buffer[y+1][x-1] & TILE_VISIBLE_MASK) == TILE_EMPTY)) direction = DIR_RIGHT;
 					break;
 				case DIR_RIGHT:
-					if (level_buffer[y+1][x+1] == TILE_EMPTY) direction = DIR_LEFT;
+					if ((x == (LEVEL_WIDTH) - 1) || ((level_buffer[y+1][x+1] & TILE_VISIBLE_MASK) == TILE_EMPTY)) direction = DIR_LEFT;
 					break;
 				default:
 					direction = DIR_NONE;

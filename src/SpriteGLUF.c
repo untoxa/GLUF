@@ -61,7 +61,7 @@ void GLUFLogic(void * custom_data) BANKED {
 			// GLUF movements with joypad
 			tile_below = level_buffer[player_y + 1][player_x];
 			if (KEY_PRESSED(J_UP)) {
-				if (check_lift(level_buffer[player_y][player_x])) lifting = TILE_LIFT_UP;
+				if (check_lift(level_buffer[player_y - 1][player_x])) lifting = TILE_LIFT_UP;
 			} else if (KEY_PRESSED(J_DOWN)) {
 				if (((check_lift(level_buffer[player_y][player_x]))) && (!check_collision(tile_below))) lifting = TILE_LIFT_DOWN;
 				else if (check_lift(tile_below) == TILE_LIFT_DOWN) lifting = TILE_LIFT_DOWN;

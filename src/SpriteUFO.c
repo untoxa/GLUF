@@ -58,16 +58,74 @@ void UFOLogic(void * custom_data) BANKED {
 				direction = DIR_DOWN;
 				break;
 			case MOVE_RIGHT_OR_UP:
-				direction = (rand() & 1) ? DIR_RIGHT : DIR_UP;
+				direction = (rand() & 0x01) ? DIR_RIGHT : DIR_UP;
 				break;
 			case MOVE_LEFT_OR_UP:
-				direction = (rand() & 1) ? DIR_LEFT : DIR_UP;
+				direction = (rand() & 0x01) ? DIR_LEFT : DIR_UP;
 				break;
 			case MOVE_RIGHT_OR_DOWN:
-				direction = (rand() & 1) ? DIR_RIGHT : DIR_DOWN;
+				direction = (rand() & 0x01) ? DIR_RIGHT : DIR_DOWN;
 				break;
 			case MOVE_LEFT_OR_DOWN:
-				direction = (rand() & 1) ? DIR_LEFT : DIR_DOWN;
+				direction = (rand() & 0x01) ? DIR_LEFT : DIR_DOWN;
+				break;
+			case MOVE_ANY_NOT_DOWN:
+				switch ((rand() & 0x03)) {
+					case 1:	direction = DIR_UP;
+						break;
+					case 2: direction = DIR_LEFT;
+						break;
+					case 3: direction = DIR_RIGHT;
+						break;
+					default:
+						direction = DIR_UP;
+						break;
+				}
+				break;
+			case MOVE_ANY_NOT_UP:
+				switch ((rand() & 0x03)) {
+					case 1:	direction = DIR_DOWN;
+						break;
+					case 2: direction = DIR_LEFT;
+						break;
+					case 3: direction = DIR_RIGHT;
+						break;
+					default:
+						direction = DIR_DOWN;
+						break;
+				}
+				break;
+			case MOVE_ANY_NOT_RIGHT:
+				switch ((rand() & 0x03)) {
+					case 1:	direction = DIR_UP;
+						break;
+					case 2: direction = DIR_DOWN;
+						break;
+					case 3: direction = DIR_LEFT;
+						break;
+					default:
+						direction = DIR_LEFT;
+						break;
+				}
+				break;
+			case MOVE_ANY_NOT_LEFT:
+				switch ((rand() & 0x03)) {
+					case 1:	direction = DIR_UP;
+						break;
+					case 2: direction = DIR_DOWN;
+						break;
+					case 3: direction = DIR_RIGHT;
+						break;
+					default:
+						direction = DIR_RIGHT;
+						break;
+				}
+				break;
+			case MOVE_LEFT_OR_RIGHT:
+				direction = (rand() & 0x01) ? DIR_LEFT : DIR_RIGHT;
+				break;
+			case MOVE_UP_OR_DOWN:
+				direction = (rand() & 0x01) ? DIR_UP : DIR_DOWN;
 				break;
 		}
 		if (direction) {
