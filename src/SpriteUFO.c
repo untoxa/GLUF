@@ -23,17 +23,17 @@ static const INT8 y_delta[N_DIRECTIONS] = {  0, -1,  1,  0,  0 };
 void UFOLogic(void * custom_data) BANKED {
 	enemy_dir_e old_direction = N_DIRECTIONS, direction;
 	switch (((UINT8 *)custom_data)[0]) {
-		case ENEMY_UFO_RIGHT:
-			direction = DIR_RIGHT;
-			break;
 		case ENEMY_UFO_LEFT:
 			direction = DIR_LEFT;
 			break;
-		case ENEMY_UFO_DOWN:
-			direction = DIR_DOWN;
+		case ENEMY_UFO_RIGHT:
+			direction = DIR_RIGHT;
 			break;
 		case ENEMY_UFO_UP:
 			direction = DIR_UP;
+			break;
+		case ENEMY_UFO_DOWN:
+			direction = DIR_DOWN;
 			break;
 		default:
 			direction = DIR_NONE;

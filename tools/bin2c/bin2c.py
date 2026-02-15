@@ -5,7 +5,7 @@ from optparse import OptionParser
 import itertools
 
 def bin2c():
-    parser = OptionParser("Usage: png2metatiles.py [options] INPUT_FILE_NAME.PNG")
+    parser = OptionParser("Usage: bin2c.py [options] INPUT_FILE_NAME.BIN")
     parser.add_option("-o",  '--out',        dest='outfilename',                                       help='output file name')
     parser.add_option("-i",  '--identifier', dest='identifier',                                        help='source identifier')
     parser.add_option("-w",  '--width',      dest='width',       default="16",                         help='array width')
