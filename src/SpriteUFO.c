@@ -3,10 +3,13 @@
 #include <rand.h>
 
 #include "Sprite.h"
+#include "Sound.h"
 #include "Coroutines.h"
 #include "ZGBMain.h"
 
 #include "levels.h"
+
+DECLARE_SFX(sfx10dead_nonoise);
 
 #define ANIMATION_SPEED_MOVE 20
 static const UINT8 anim_UFO_move_vert[]  = VECTOR( 0, 1 );
@@ -135,13 +138,21 @@ void UFOLogic(void * custom_data) BANKED {
 			for (UINT8 i = 0; i != 16; ++i) {
 				THIS->x += x_delta[direction];
 				THIS->y += y_delta[direction];
-				if (CheckCollision(THIS, GLUF)) restart = TRUE;
+				if ((GLUF) && (CheckCollision(THIS, GLUF))) {
+					ExecuteSFX(BANK(sfx10dead_nonoise), sfx10dead_nonoise, SFX_MUTE_MASK(sfx10dead_nonoise), SFX_PRIORITY_HIGH);
+					SpriteManagerRemoveSprite(GLUF);
+					restart = TRUE;
+				}
 				YIELD;
 			}
 			x += x_delta[direction];
 			y += y_delta[direction];
 		} else {
-			if (CheckCollision(THIS, GLUF)) restart = TRUE;
+			if ((GLUF) && (CheckCollision(THIS, GLUF))) {
+				ExecuteSFX(BANK(sfx10dead_nonoise), sfx10dead_nonoise, SFX_MUTE_MASK(sfx10dead_nonoise), SFX_PRIORITY_HIGH);
+				SpriteManagerRemoveSprite(GLUF);
+				restart = TRUE;
+			}
 			YIELD;
 		}
 	}

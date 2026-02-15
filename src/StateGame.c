@@ -245,9 +245,22 @@ void GameLogic(void * custom_data) BANKED {
 		}
 		if (restart) {
 			restart = FALSE;
+			// todo: show "press fire" here
+			// ---
+
+			if (!GLUF) {
+				// wait for pressing A if GLUF was killed
+				while (!KEY_TICKED(J_A)) {
+					YIELD;
+				}
+			}
+			// fade manually
 			FadeIn();
-			if (!load_level(current_level)) return;
+			// reload the level
+			if (!load_level(current_level)) break;
+			// process engine once before unfade
 			YIELD;
+			// unfade manually
 			FadeOut();
 		}
 		YIELD;

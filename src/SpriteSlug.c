@@ -3,10 +3,13 @@
 #include <rand.h>
 
 #include "Sprite.h"
+#include "Sound.h"
 #include "Coroutines.h"
 #include "ZGBMain.h"
 
 #include "levels.h"
+
+DECLARE_SFX(sfx10dead_nonoise);
 
 #define ANIMATION_SPEED_SLOW 10
 static const UINT8 anim_slug_move_vert[]  = VECTOR( 0, 1 );
@@ -48,9 +51,17 @@ void SlugLogic(void * custom_data) BANKED {
 			}
 			for (UINT8 i = 0; i != 16; ++i) {
 				THIS->x += x_delta[direction];
-				if (CheckCollision(THIS, GLUF)) restart = TRUE;
+				if ((GLUF) && (CheckCollision(THIS, GLUF))) {
+					ExecuteSFX(BANK(sfx10dead_nonoise), sfx10dead_nonoise, SFX_MUTE_MASK(sfx10dead_nonoise), SFX_PRIORITY_HIGH);
+					SpriteManagerRemoveSprite(GLUF);
+					restart = TRUE;
+				}
 				YIELD;
-				if (CheckCollision(THIS, GLUF)) restart = TRUE;
+				if ((GLUF) && (CheckCollision(THIS, GLUF))) {
+					ExecuteSFX(BANK(sfx10dead_nonoise), sfx10dead_nonoise, SFX_MUTE_MASK(sfx10dead_nonoise), SFX_PRIORITY_HIGH);
+					SpriteManagerRemoveSprite(GLUF);
+					restart = TRUE;
+				}
 				YIELD;
 			}
 			x += x_delta[direction];
@@ -64,7 +75,11 @@ void SlugLogic(void * custom_data) BANKED {
 					break;
 			}
 		} else {
-			if (CheckCollision(THIS, GLUF)) restart = TRUE;
+			if ((GLUF) && (CheckCollision(THIS, GLUF))) {
+				ExecuteSFX(BANK(sfx10dead_nonoise), sfx10dead_nonoise, SFX_MUTE_MASK(sfx10dead_nonoise), SFX_PRIORITY_HIGH);
+				SpriteManagerRemoveSprite(GLUF);
+				restart = TRUE;
+			}
 			YIELD;
 		}
 	}
