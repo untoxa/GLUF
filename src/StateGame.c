@@ -80,8 +80,7 @@ struct MapInfo current_level_desc = {
 // current level
 UINT8 current_level;
 UINT8 restart;
-// score
-UINT16 game_score;
+UINT8 is_title_level;
 
 UINT8 battery_count;
 
@@ -109,7 +108,7 @@ UINT8 load_level(UINT8 level) {
 void spawn_enemies(void) {
 	Sprite * enemy;
 	// spawn the title
-	if (current_level == 0) {
+	if (is_title_level = (current_level == 0)) {
 		for (UINT8 i = 0; i != 4; ++i) {
 			if (enemy = SpriteManagerAdd(SpriteSign, ((i + 4) << 4) + (TILE_BUFFER_OFFSET << 3), (13 << 4))) enemy->custom_data[0] = i;
 		}
@@ -228,9 +227,8 @@ void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED {
 
 void GameLogic(void * custom_data) BANKED {
 	(void)custom_data;
-	UINT8 skip_press_fire = FALSE;
 	// initialization
-	game_score = 0;
+	UINT8 skip_press_fire = FALSE;
 	// load level
 	FadeIn();
 	load_level(current_level = 0);
@@ -248,8 +246,8 @@ void GameLogic(void * custom_data) BANKED {
 		if (restart) {
 			restart = FALSE;
 			if (!skip_press_fire) {
-				// remove "GLUF" sign on the tutorial level
-				if (current_level == 0) SpriteManagerReset();
+				// remove "GLUF" sign on the title level
+				if (is_title_level) SpriteManagerReset();
 				// add "push fire" sign
 				SpriteManagerAdd(SpriteFire, 0, 0);
 				// wait for pressing A if GLUF was killed
