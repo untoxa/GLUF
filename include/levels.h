@@ -55,6 +55,7 @@
 #define MOVE_ANY_NOT_LEFT    0x1b
 #define MOVE_LEFT_OR_RIGHT   0x1c
 #define MOVE_UP_OR_DOWN      0x1d
+#define MOVE_ANY             0x1e
 
 #define MOVE_GHOST_POINT     0x1f	// ghost teleport point
 

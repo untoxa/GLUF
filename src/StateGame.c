@@ -199,6 +199,7 @@ void intialize_level_data(UINT8 level) {
 				case MOVE_ANY_NOT_LEFT:
 				case MOVE_LEFT_OR_RIGHT:
 				case MOVE_UP_OR_DOWN:
+				case MOVE_ANY:
 					id = (*(data - LEVEL_WIDTH) == TILE_LIFT_UP) ? TILE_LIFT_UP : TILE_EMPTY;
 					break;
 				default:

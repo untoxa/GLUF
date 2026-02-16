@@ -130,6 +130,10 @@ void UFOLogic(void * custom_data) BANKED {
 			case MOVE_UP_OR_DOWN:
 				direction = (rand() & 0x01) ? DIR_UP : DIR_DOWN;
 				break;
+			case MOVE_ANY:
+				if (rand() & 0x01) direction = (rand() & 0x03) + DIR_UP;
+				break;
+
 		}
 		if (direction) {
 			if (direction != old_direction) {
