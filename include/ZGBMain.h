@@ -17,6 +17,7 @@ _SPRITE(SpriteJumper,     jumper,     FLIP_NONE)\
 _SPRITE(SpriteFire,       fire,       FLIP_NONE)\
 _SPRITE(SpriteRetrosouls, retrosouls, FLIP_NONE)\
 _SPRITE(SpriteTeslafrog,  teslafrog,  FLIP_NONE)\
+_SPRITE(SpriteJaws,       jaws,       FLIP_NONE)\
 SPRITE_DEF_END
 
 #include "ZGBMain_Init.h"

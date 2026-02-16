@@ -1,0 +1,56 @@
+#include "Banks/SetAutoBank.h"
+
+#include "Sprite.h"
+#include "Sound.h"
+#include "Coroutines.h"
+#include "ZGBMain.h"
+
+#include "levels.h"
+
+DECLARE_SFX(sfx10dead_nonoise);
+
+#define ANIMATION_SPEED_IDLE 12
+static const UINT8 anim_jaws[] = VECTOR( 0, 1 );
+
+extern Sprite * GLUF;
+extern UINT8 restart;
+
+static const INT8 sine_table[] = {
+	  0,  1,  2,  3,  4,  5,  7,  8,  9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
+	 33, 34, 35, 36, 37, 37, 38, 39, 39, 40, 41, 41, 42, 42, 43, 43, 44, 44, 45, 45, 45, 46, 46, 46, 47, 47, 47, 47, 47, 47, 47, 47,
+	 48, 47, 47, 47, 47, 47, 47, 47, 47, 46, 46, 46, 45, 45, 45, 44, 44, 43, 43, 42, 42, 41, 41, 40, 39, 39, 38, 37, 37, 36, 35, 34,
+	 33, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 13, 12, 11, 10,  9,  8,  7,  5,  4,  3,  2,  1,
+	  0, -1, -2, -3, -4, -5, -7, -8, -9,-10,-11,-12,-13,-15,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,
+	-33,-34,-35,-36,-37,-37,-38,-39,-39,-40,-41,-41,-42,-42,-43,-43,-44,-44,-45,-45,-45,-46,-46,-46,-47,-47,-47,-47,-47,-47,-47,-47,
+	-48,-47,-47,-47,-47,-47,-47,-47,-47,-46,-46,-46,-45,-45,-45,-44,-44,-43,-43,-42,-42,-41,-41,-40,-39,-39,-38,-37,-37,-36,-35,-34,
+	-33,-33,-32,-31,-30,-29,-28,-27,-26,-25,-24,-23,-22,-21,-20,-19,-18,-17,-16,-15,-13,-12,-11,-10, -9, -8, -7, -5, -4, -3, -2, -1
+};
+
+void JawsLogic(void * custom_data) BANKED {
+	(void)custom_data;
+	INT16 y = THIS->y;
+	SetSpriteAnim(THIS, anim_jaws, ANIMATION_SPEED_IDLE);
+	UINT8 counter = 0;
+	while (TRUE) {
+		THIS->y = y + sine_table[++counter];
+		if ((GLUF) && (CheckCollision(THIS, GLUF))) {
+			ExecuteSFX(BANK(sfx10dead_nonoise), sfx10dead_nonoise, SFX_MUTE_MASK(sfx10dead_nonoise), SFX_PRIORITY_HIGH);
+			SpriteManagerRemoveSprite(GLUF);
+			scroll_target = NULL;
+			restart = TRUE;
+		}
+		YIELD;
+	}
+}
+
+void START(void) {
+	INIT_CORO(BANK(SpriteJaws), JawsLogic);
+}
+
+void UPDATE(void) {
+	ITER_CORO;
+}
+
+void DESTROY(void) {
+	FREE_CORO;
+}

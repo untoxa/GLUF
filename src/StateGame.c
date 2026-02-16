@@ -16,7 +16,7 @@
 #include "tiles3.h"
 #include "tiles4.h"
 
-#define INITIAL_LEVEL_NUMBER 0
+#define INITIAL_LEVEL_NUMBER 11
 
 extern const struct TilesInfo common_tiles;	// fix png2asset export bug
 BANKREF_EXTERN(common_tiles)
@@ -84,7 +84,7 @@ UINT8 current_level;
 UINT8 restart;
 UINT8 is_title_level;
 
-UINT8 battery_count;
+UINT8 battery_count, teleport_count;
 
 extern Sprite * GLUF;
 extern UINT8 start_x, start_y;
@@ -128,6 +128,9 @@ void spawn_enemies(void) {
 					case ENEMY_UFO_DOWN:
 						enemy = SpriteManagerAdd(SpriteUFO, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
 						break;
+					case ENEMY_JAWS:
+						enemy = SpriteManagerAdd(SpriteJaws, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
+						break;
 					case ENEMY_SLUG:
 						enemy = SpriteManagerAdd(SpriteSlug, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
 						break;
@@ -160,7 +163,7 @@ void intialize_level_data(UINT8 level) {
 	current_level_desc.extra_tiles_bank = levels[level].tiles_bank;
 	current_level_desc.extra_tiles = levels[level].tiles;
 
-	battery_count = 0;
+	battery_count = teleport_count = 0;
 	start_x = start_y = 0;
 
 	memset(tile_buffer, 0, sizeof(tile_buffer));
@@ -182,11 +185,12 @@ void intialize_level_data(UINT8 level) {
 					id = TILE_LIFT_UP;
 					break;
 				case ENEMY_JUMPER:
-				case ENEMY_UFO_RIGHT:
 				case ENEMY_UFO_LEFT:
+				case ENEMY_UFO_RIGHT:
+				case ENEMY_JAWS:
 				case ENEMY_SLUG:
-				case ENEMY_UFO_DOWN:
 				case ENEMY_UFO_UP:
+				case ENEMY_UFO_DOWN:
 				case MOVE_LEFT:
 				case MOVE_RIGHT:
 				case MOVE_DOWN:
@@ -203,6 +207,10 @@ void intialize_level_data(UINT8 level) {
 				case MOVE_UP_OR_DOWN:
 				case MOVE_ANY:
 					id = (*(data - LEVEL_WIDTH) == TILE_LIFT_UP) ? TILE_LIFT_UP : TILE_EMPTY;
+					break;
+				case MOVE_GHOST_POINT:
+					++teleport_count;
+					id = TILE_EMPTY;
 					break;
 				default:
 					if (id > TILE_LAST_VISIBLE) id = TILE_START_POINT;

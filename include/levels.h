@@ -36,7 +36,7 @@
 #define ENEMY_JUMPER         0x20
 #define ENEMY_UFO_LEFT       0x21
 #define ENEMY_UFO_RIGHT      0x22
-#define ENEMY_REDHEAD        0x23	// moves +/- 2 tiles susing sine
+#define ENEMY_JAWS           0x23
 #define ENEMY_SLUG           0x25
 #define ENEMY_UFO_UP         0x26
 #define ENEMY_UFO_DOWN       0x27
@@ -57,7 +57,7 @@
 #define MOVE_UP_OR_DOWN      0x1d
 #define MOVE_ANY             0x1e
 
-#define MOVE_GHOST_POINT     0x1f	// ghost teleport point
+#define MOVE_GHOST_POINT     0x1f
 
 typedef enum enemy_dir_e {
 	DIR_NONE = 0,
