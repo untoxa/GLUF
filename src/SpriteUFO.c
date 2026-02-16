@@ -3,22 +3,16 @@
 #include <rand.h>
 
 #include "Sprite.h"
-#include "Sound.h"
 #include "Coroutines.h"
 #include "ZGBMain.h"
 
 #include "levels.h"
-
-DECLARE_SFX(sfx10dead_nonoise);
 
 #define ANIMATION_SPEED_MOVE 20
 static const UINT8 anim_UFO_move_vert[]  = VECTOR( 0, 1 );
 static const UINT8 anim_UFO_move_horiz[] = VECTOR( 0, 2, 3, 4 );
 
 static const UINT8 * const anim_UFO[N_DIRECTIONS] = { anim_UFO_move_vert, anim_UFO_move_vert, anim_UFO_move_vert, anim_UFO_move_horiz, anim_UFO_move_horiz };
-
-extern Sprite * GLUF;
-extern UINT8 restart;
 
 static const INT8 x_delta[N_DIRECTIONS] = {  0,           0,           0, -MOVE_SPEED,  MOVE_SPEED };
 static const INT8 y_delta[N_DIRECTIONS] = {  0, -MOVE_SPEED,  MOVE_SPEED,           0,           0 };
@@ -142,23 +136,13 @@ void UFOLogic(void * custom_data) BANKED {
 			for (UINT8 i = 0; i != (16 / MOVE_SPEED); ++i) {
 				THIS->x += x_delta[direction];
 				THIS->y += y_delta[direction];
-				if ((GLUF) && (CheckCollision(THIS, GLUF))) {
-					ExecuteSFX(BANK(sfx10dead_nonoise), sfx10dead_nonoise, SFX_MUTE_MASK(sfx10dead_nonoise), SFX_PRIORITY_HIGH);
-					SpriteManagerRemoveSprite(GLUF);
-					scroll_target = NULL;
-					restart = TRUE;
-				}
+				CheckKillGLUF(THIS);
 				YIELD;
 			}
 			x += x_delta[direction];
 			y += y_delta[direction];
 		} else {
-			if ((GLUF) && (CheckCollision(THIS, GLUF))) {
-				ExecuteSFX(BANK(sfx10dead_nonoise), sfx10dead_nonoise, SFX_MUTE_MASK(sfx10dead_nonoise), SFX_PRIORITY_HIGH);
-				SpriteManagerRemoveSprite(GLUF);
-				scroll_target = NULL;
-				restart = TRUE;
-			}
+			CheckKillGLUF(THIS);
 			YIELD;
 		}
 	}

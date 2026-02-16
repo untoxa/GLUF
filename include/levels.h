@@ -1,6 +1,9 @@
 #ifndef __INCLUDE_LEVELS_H__
 #define __INCLUDE_LEVELS_H__
 
+#include "Sprite.h"
+#include "Sound.h"
+
 #define LEVEL_HEIGHT 20
 #define LEVEL_WIDTH  12
 #define LEVEL_METATILE_HEIGHT 2
@@ -107,6 +110,20 @@ inline UINT8 check_collision(UINT8 id) {
 }
 inline UINT8 check_lift(UINT8 id) {
 	if ((id == TILE_LIFT_UP) || (id == TILE_LIFT_DOWN) || (id == TILE_LIFT_STOP)) return id; else return TILE_LIFT_NONE;
+}
+
+extern Sprite * GLUF;
+extern UINT8 restart;
+
+DECLARE_SFX(sfx10dead_nonoise);
+
+inline void CheckKillGLUF(Sprite * sprite) {
+	if ((GLUF) && (CheckCollision(sprite, GLUF))) {
+		ExecuteSFX(BANK(sfx10dead_nonoise), sfx10dead_nonoise, SFX_MUTE_MASK(sfx10dead_nonoise), SFX_PRIORITY_HIGH);
+		SpriteManagerRemoveSprite(GLUF);
+		scroll_target = NULL;
+		restart = TRUE;
+	}
 }
 
 #endif

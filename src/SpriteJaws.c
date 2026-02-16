@@ -1,19 +1,13 @@
 #include "Banks/SetAutoBank.h"
 
 #include "Sprite.h"
-#include "Sound.h"
 #include "Coroutines.h"
 #include "ZGBMain.h"
 
 #include "levels.h"
 
-DECLARE_SFX(sfx10dead_nonoise);
-
 #define ANIMATION_SPEED_IDLE 12
 static const UINT8 anim_jaws[] = VECTOR( 0, 1 );
-
-extern Sprite * GLUF;
-extern UINT8 restart;
 
 static const INT8 sine_table[] = {
 	  0,  1,  2,  3,  4,  5,  7,  8,  9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
@@ -33,12 +27,7 @@ void JawsLogic(void * custom_data) BANKED {
 	UINT8 counter = 0;
 	while (TRUE) {
 		THIS->y = y + sine_table[++counter];
-		if ((GLUF) && (CheckCollision(THIS, GLUF))) {
-			ExecuteSFX(BANK(sfx10dead_nonoise), sfx10dead_nonoise, SFX_MUTE_MASK(sfx10dead_nonoise), SFX_PRIORITY_HIGH);
-			SpriteManagerRemoveSprite(GLUF);
-			scroll_target = NULL;
-			restart = TRUE;
-		}
+		CheckKillGLUF(THIS);
 		YIELD;
 	}
 }
