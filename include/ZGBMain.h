@@ -13,6 +13,7 @@ _SPRITE(SpriteDoor,   door,   FLIP_NONE)\
 _SPRITE(SpriteUFO,    ufo,    FLIP_NONE)\
 _SPRITE(SpriteSlug,   slug,   FLIP_NONE)\
 _SPRITE(SpriteJumper, jumper, FLIP_NONE)\
+_SPRITE(SpriteFire,   fire,   FLIP_NONE)\
 SPRITE_DEF_END
 
 #include "ZGBMain_Init.h"

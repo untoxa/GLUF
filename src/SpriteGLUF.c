@@ -51,7 +51,7 @@ void GLUFLogic(void * custom_data) BANKED {
 	player_x = start_x, player_y = start_y;
 	Sprite * sprite_door = NULL;
 	SetSpriteAnim(THIS, anim_enter, ANIMATION_SPEED_ENTER);
-	ExecuteSFX(BANK(sfx11exitsound), sfx11exitsound, SFX_MUTE_MASK(sfx11exitsound), SFX_PRIORITY_HIGH);
+	ExecuteSFX(BANK(sfx7exit), sfx7exit, SFX_MUTE_MASK(sfx7exit), SFX_PRIORITY_HIGH);
 	for (UINT8 i = 0; i != 42; ++i) {
 		YIELD;
 	}
@@ -178,12 +178,14 @@ void GLUFLogic(void * custom_data) BANKED {
 		if (level_buffer[player_y][player_x] == TILE_DOOR) {
 			if (sprite_door) SpriteManagerRemoveSprite(sprite_door);
 			SetSpriteAnim(THIS, anim_exit, ANIMATION_SPEED_ENTER);
-			ExecuteSFX(BANK(sfx11exitsound), sfx11exitsound, SFX_MUTE_MASK(sfx11exitsound), SFX_PRIORITY_HIGH);
+			ExecuteSFX(BANK(sfx7exit), sfx7exit, SFX_MUTE_MASK(sfx7exit), SFX_PRIORITY_HIGH);
 			for (UINT8 i = 0; i != 42; ++i) {
 				YIELD;
 			}
 			++current_level;
 			restart = TRUE;
+			// remove ourselves to prevent repeating animations
+			SpriteManagerRemoveSprite(THIS);
 		}
 		YIELD;
 	}

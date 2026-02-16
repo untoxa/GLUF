@@ -1,6 +1,7 @@
 #include "Banks/SetAutoBank.h"
 
 #include "Scroll.h"
+#include "Sprite.h"
 #include "SpriteManager.h"
 #include "Fade.h"
 #include "Vector.h"
@@ -227,6 +228,7 @@ void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED {
 
 void GameLogic(void * custom_data) BANKED {
 	(void)custom_data;
+	UINT8 skip_press_fire = FALSE;
 	// initialization
 	game_score = 0;
 	// load level
@@ -236,24 +238,26 @@ void GameLogic(void * custom_data) BANKED {
 	FadeOut();
 	while (TRUE) {
 		if (KEY_TICKED(J_A)) {
-			if (levels[++current_level].map_bank) restart = TRUE; else --current_level;
+			if (levels[++current_level].map_bank) skip_press_fire = restart = TRUE; else --current_level;
 		} else if (KEY_TICKED(J_B)) {
 			if (current_level) {
 				--current_level;
-				restart = TRUE;
+				skip_press_fire = restart = TRUE;
 			}
 		}
 		if (restart) {
 			restart = FALSE;
-			// todo: show "press fire" here
-			// ---
-
-			if (!GLUF) {
+			if (!skip_press_fire) {
+				// remove "GLUF" sign on the tutorial level
+				if (current_level == 0) SpriteManagerReset();
+				// add "push fire" sign
+				SpriteManagerAdd(SpriteFire, 0, 0);
 				// wait for pressing A if GLUF was killed
 				while (!KEY_TICKED(J_A)) {
 					YIELD;
 				}
 			}
+			skip_press_fire = FALSE;
 			// fade manually
 			FadeIn();
 			// reload the level
