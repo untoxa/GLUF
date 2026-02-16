@@ -16,6 +16,8 @@
 #include "tiles3.h"
 #include "tiles4.h"
 
+#define INITIAL_LEVEL_NUMBER 0
+
 extern const struct TilesInfo common_tiles;	// fix png2asset export bug
 BANKREF_EXTERN(common_tiles)
 
@@ -231,7 +233,7 @@ void GameLogic(void * custom_data) BANKED {
 	// initialization
 	UINT8 skip_press_fire = FALSE;
 	// load level
-	load_level(current_level = 0);
+	load_level(current_level = INITIAL_LEVEL_NUMBER);
 	YIELD;
 	while (TRUE) {
 		if (KEY_TICKED(J_A)) {

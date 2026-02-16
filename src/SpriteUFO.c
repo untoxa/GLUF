@@ -20,8 +20,8 @@ static const UINT8 * const anim_UFO[N_DIRECTIONS] = { anim_UFO_move_vert, anim_U
 extern Sprite * GLUF;
 extern UINT8 restart;
 
-static const INT8 x_delta[N_DIRECTIONS] = {  0,  0,  0, -1,  1 };
-static const INT8 y_delta[N_DIRECTIONS] = {  0, -1,  1,  0,  0 };
+static const INT8 x_delta[N_DIRECTIONS] = {  0,           0,           0, -MOVE_SPEED,  MOVE_SPEED };
+static const INT8 y_delta[N_DIRECTIONS] = {  0, -MOVE_SPEED,  MOVE_SPEED,           0,           0 };
 
 void UFOLogic(void * custom_data) BANKED {
 	enemy_dir_e old_direction = N_DIRECTIONS, direction;
@@ -139,7 +139,7 @@ void UFOLogic(void * custom_data) BANKED {
 			if (direction != old_direction) {
 				SetSpriteAnim(THIS, anim_UFO[direction], ANIMATION_SPEED_MOVE);
 			}
-			for (UINT8 i = 0; i != 16; ++i) {
+			for (UINT8 i = 0; i != (16 / MOVE_SPEED); ++i) {
 				THIS->x += x_delta[direction];
 				THIS->y += y_delta[direction];
 				if ((GLUF) && (CheckCollision(THIS, GLUF))) {

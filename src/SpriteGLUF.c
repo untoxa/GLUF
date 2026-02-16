@@ -22,11 +22,8 @@ extern UINT8 current_level;
 
 #define CHARGE_COOLDOWN 10
 #define CHARGE_MAXIMUM  10
-UINT8 charge, charge_cooldown;
 
-UINT8 falling;
-UINT8 lifting;
-UINT8 start_x, player_x, start_y, player_y;
+UINT8 start_x, start_y;
 Sprite * GLUF;
 
 #define ANIMATION_SPEED_IDLE  12
@@ -44,11 +41,11 @@ void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED;
 
 void GLUFLogic(void * custom_data) BANKED {
 	(void)custom_data;
-	static UINT8 tile_below;
-	falling = FALSE;
-	lifting = TILE_LIFT_NONE;
-	charge = charge_cooldown = 0;
-	player_x = start_x, player_y = start_y;
+	UINT8 tile_below;
+	UINT8 falling = FALSE;
+	UINT8 lifting = TILE_LIFT_NONE;
+	UINT8 charge = 0, charge_cooldown = 0;
+	UINT8 player_x = start_x, player_y = start_y;
 	Sprite * sprite_door = NULL;
 	SetSpriteAnim(THIS, anim_enter, ANIMATION_SPEED_ENTER);
 	ExecuteSFX(BANK(sfx7exit), sfx7exit, SFX_MUTE_MASK(sfx7exit), SFX_PRIORITY_HIGH);
@@ -65,22 +62,6 @@ void GLUFLogic(void * custom_data) BANKED {
 			} else if (KEY_PRESSED(J_DOWN)) {
 				if (((check_lift(level_buffer[player_y][player_x]))) && (!check_collision(tile_below))) lifting = TILE_LIFT_DOWN;
 				else if (check_lift(tile_below) == TILE_LIFT_DOWN) lifting = TILE_LIFT_DOWN;
-			} else if (KEY_PRESSED(J_RIGHT)) {
-				if (player_x < (LEVEL_WIDTH - 1)) {
-					if (check_collision(level_buffer[player_y][player_x + 1]) == 0) {
-						if (tile_below == TILE_DISAPPEARING) {
-							UpdateMetatile(player_x, player_y + 1, TILE_DISAPPEARED);
-						}
-						SetSpriteAnim(THIS, anim_jump_right, ANIMATION_SPEED_JUMP);
-						ExecuteSFX(BANK(sfx1jump), sfx1jump, SFX_MUTE_MASK(sfx1jump), SFX_PRIORITY_MINIMAL);
-						for (UINT8 i = 0; i != (16 / MOVE_SPEED); ++i) {
-							THIS->x += MOVE_SPEED;
-							YIELD;
-						}
-						SetSpriteAnim(THIS, anim_idle, ANIMATION_SPEED_IDLE);
-						player_x++;
-					}
-				}
 			} else if (KEY_PRESSED(J_LEFT)) {
 				if (player_x > 0) {
 					if (check_collision(level_buffer[player_y][player_x - 1]) == 0) {
@@ -95,6 +76,22 @@ void GLUFLogic(void * custom_data) BANKED {
 						}
 						SetSpriteAnim(THIS, anim_idle, ANIMATION_SPEED_IDLE);
 						player_x--;
+					}
+				}
+			} else if (KEY_PRESSED(J_RIGHT)) {
+				if (player_x < (LEVEL_WIDTH - 1)) {
+					if (check_collision(level_buffer[player_y][player_x + 1]) == 0) {
+						if (tile_below == TILE_DISAPPEARING) {
+							UpdateMetatile(player_x, player_y + 1, TILE_DISAPPEARED);
+						}
+						SetSpriteAnim(THIS, anim_jump_right, ANIMATION_SPEED_JUMP);
+						ExecuteSFX(BANK(sfx1jump), sfx1jump, SFX_MUTE_MASK(sfx1jump), SFX_PRIORITY_MINIMAL);
+						for (UINT8 i = 0; i != (16 / MOVE_SPEED); ++i) {
+							THIS->x += MOVE_SPEED;
+							YIELD;
+						}
+						SetSpriteAnim(THIS, anim_idle, ANIMATION_SPEED_IDLE);
+						player_x++;
 					}
 				}
 			}

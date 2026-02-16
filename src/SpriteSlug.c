@@ -20,11 +20,7 @@ static const UINT8 * const anim_slug[N_DIRECTIONS] = { anim_slug_move_vert, anim
 extern Sprite * GLUF;
 extern UINT8 restart;
 
-static const INT8 x_delta[N_DIRECTIONS] = {  0,  0,  0, -1,  1 };
-
-inline UINT8 check_slug_collision(UINT8 id) {
-	if ((id < TILE_DISAPPEARED) || (id > TILE_LAST_VISIBLE)) return TILE_EMPTY; else return id;
-}
+static const INT8 x_delta[N_DIRECTIONS] = {  0,  0,  0, -MOVE_SPEED,  MOVE_SPEED };
 
 void SlugLogic(void * custom_data) BANKED {
 	enemy_dir_e old_direction = N_DIRECTIONS, direction = (rand() & 1) ? DIR_LEFT : DIR_RIGHT;
@@ -36,10 +32,10 @@ void SlugLogic(void * custom_data) BANKED {
 		if (direction) {
 			switch (direction) {
 				case DIR_LEFT:
-					if ((x == 0) || (!check_slug_collision(level_buffer[y + 1][x - 1]))) direction = DIR_RIGHT;
+					if ((x == 0) || (!check_collision(level_buffer[y + 1][x - 1]))) direction = DIR_RIGHT;
 					break;
 				case DIR_RIGHT:
-					if ((x == (LEVEL_WIDTH) - 1) || (!check_slug_collision(level_buffer[y + 1][x + 1]))) direction = DIR_LEFT;
+					if ((x == (LEVEL_WIDTH) - 1) || (!check_collision(level_buffer[y + 1][x + 1]))) direction = DIR_LEFT;
 					break;
 				default:
 					direction = DIR_NONE;
@@ -49,7 +45,7 @@ void SlugLogic(void * custom_data) BANKED {
 			if (direction != old_direction) {
 				SetSpriteAnim(THIS, anim_slug[direction], ANIMATION_SPEED_SLOW);
 			}
-			for (UINT8 i = 0; i != 16; ++i) {
+			for (UINT8 i = 0; i != (16 / MOVE_SPEED); ++i) {
 				THIS->x += x_delta[direction];
 				if ((GLUF) && (CheckCollision(THIS, GLUF))) {
 					ExecuteSFX(BANK(sfx10dead_nonoise), sfx10dead_nonoise, SFX_MUTE_MASK(sfx10dead_nonoise), SFX_PRIORITY_HIGH);
