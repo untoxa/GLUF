@@ -230,10 +230,8 @@ void GameLogic(void * custom_data) BANKED {
 	// initialization
 	UINT8 skip_press_fire = FALSE;
 	// load level
-	FadeIn();
 	load_level(current_level = 0);
 	YIELD;
-	FadeOut();
 	while (TRUE) {
 		if (KEY_TICKED(J_A)) {
 			if (levels[++current_level].map_bank) skip_press_fire = restart = TRUE; else --current_level;
@@ -272,10 +270,9 @@ void GameLogic(void * custom_data) BANKED {
 void * game_state_context;
 
 void START(void) {
-	fade_mode = FADE_MANUAL;
 	scroll_bottom_movement_limit = 100;
 	// allocate coroutine context
-	game_state_context = coro_runner_alloc(GameLogic, BANK(StateGame), NULL);
+	coro_runner_process(game_state_context = coro_runner_alloc(GameLogic, BANK(StateGame), NULL));
 }
 
 void UPDATE(void) {
@@ -286,5 +283,4 @@ void UPDATE(void) {
 void DESTROY(void) {
 	// deallocate coroutine context
 	coro_runner_free(game_state_context);
-	fade_mode = FADE_DEFAULT;
 }

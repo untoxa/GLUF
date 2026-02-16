@@ -141,6 +141,7 @@ void UFOLogic(void * custom_data) BANKED {
 				if ((GLUF) && (CheckCollision(THIS, GLUF))) {
 					ExecuteSFX(BANK(sfx10dead_nonoise), sfx10dead_nonoise, SFX_MUTE_MASK(sfx10dead_nonoise), SFX_PRIORITY_HIGH);
 					SpriteManagerRemoveSprite(GLUF);
+					scroll_target = NULL;
 					restart = TRUE;
 				}
 				YIELD;
@@ -151,6 +152,7 @@ void UFOLogic(void * custom_data) BANKED {
 			if ((GLUF) && (CheckCollision(THIS, GLUF))) {
 				ExecuteSFX(BANK(sfx10dead_nonoise), sfx10dead_nonoise, SFX_MUTE_MASK(sfx10dead_nonoise), SFX_PRIORITY_HIGH);
 				SpriteManagerRemoveSprite(GLUF);
+				scroll_target = NULL;
 				restart = TRUE;
 			}
 			YIELD;

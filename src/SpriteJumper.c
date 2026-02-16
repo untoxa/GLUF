@@ -24,7 +24,7 @@ static const INT8 x_delta[N_DIRECTIONS] = {  0,  0,  0, -1,  1 };
 static const INT8 y_delta[N_DIRECTIONS] = {  0, -1,  1,  0,  0 };
 
 void JumperLogic(void * custom_data) BANKED {
-	enemy_dir_e old_direction = N_DIRECTIONS, direction = (rand() & 1) ? DIR_LEFT : DIR_RIGHT;
+	enemy_dir_e old_direction = N_DIRECTIONS, direction = (rand() & 0x01u) ? DIR_LEFT : DIR_RIGHT;
 	UINT8 x = ((UINT8 *)custom_data)[1];
 	UINT8 y = ((UINT8 *)custom_data)[2];
 	SetSpriteAnim(THIS, anim_jumper_idle, ANIMATION_SPEED_IDLE);

@@ -5,7 +5,7 @@
 #include "ZGBMain.h"
 
 // initialize the game state at start
-UINT8 next_state = StateGame;
+UINT8 next_state = StateTitle;
 
 // we don't need tile replacement here because this example has no background
 UINT8 GetTileReplacement(UINT8* tile_ptr, UINT8* tile) {

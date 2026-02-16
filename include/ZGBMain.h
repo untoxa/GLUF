@@ -3,17 +3,20 @@
 
 #define STATES \
 _STATE_EX(StateGame)\
+_STATE_EX(StateTitle)\
 STATE_DEF_END
 
 #define SPRITES \
-_SPRITE(SpriteGLUF,   gluf,   FLIP_NONE)\
-_SPRITE(SpriteGhost,  ghost,  FLIP_NONE)\
-_SPRITE(SpriteSign,   sign,   FLIP_NONE)\
-_SPRITE(SpriteDoor,   door,   FLIP_NONE)\
-_SPRITE(SpriteUFO,    ufo,    FLIP_NONE)\
-_SPRITE(SpriteSlug,   slug,   FLIP_NONE)\
-_SPRITE(SpriteJumper, jumper, FLIP_NONE)\
-_SPRITE(SpriteFire,   fire,   FLIP_NONE)\
+_SPRITE(SpriteGLUF,       gluf,       FLIP_NONE)\
+_SPRITE(SpriteGhost,      ghost,      FLIP_NONE)\
+_SPRITE(SpriteSign,       sign,       FLIP_NONE)\
+_SPRITE(SpriteDoor,       door,       FLIP_NONE)\
+_SPRITE(SpriteUFO,        ufo,        FLIP_NONE)\
+_SPRITE(SpriteSlug,       slug,       FLIP_NONE)\
+_SPRITE(SpriteJumper,     jumper,     FLIP_NONE)\
+_SPRITE(SpriteFire,       fire,       FLIP_NONE)\
+_SPRITE(SpriteRetrosouls, retrosouls, FLIP_NONE)\
+_SPRITE(SpriteTeslafrog,  teslafrog,  FLIP_NONE)\
 SPRITE_DEF_END
 
 #include "ZGBMain_Init.h"

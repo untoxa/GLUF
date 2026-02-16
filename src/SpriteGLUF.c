@@ -186,6 +186,7 @@ void GLUFLogic(void * custom_data) BANKED {
 			restart = TRUE;
 			// remove ourselves to prevent repeating animations
 			SpriteManagerRemoveSprite(THIS);
+			scroll_target = NULL;
 		}
 		YIELD;
 	}
