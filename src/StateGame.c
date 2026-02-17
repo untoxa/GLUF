@@ -16,6 +16,7 @@
 #include "tiles3.h"
 #include "tiles4.h"
 
+#define DEBUG_BUILD
 #define INITIAL_LEVEL_NUMBER 0
 
 extern const struct TilesInfo common_tiles;	// fix png2asset export bug
@@ -194,34 +195,6 @@ void intialize_level_data(UINT8 level) {
 				case TILE_LIFT_STOP:
 					id = TILE_LIFT_UP;
 					break;
-				case ENEMY_JUMPER:
-				case ENEMY_UFO_LEFT:
-				case ENEMY_UFO_RIGHT:
-				case ENEMY_JAWS:
-				case ENEMY_GHOST_LEFT:
-				case ENEMY_SLUG:
-				case ENEMY_UFO_UP:
-				case ENEMY_UFO_DOWN:
-				case ENEMY_GHOST_UP:
-				case ENEMY_GHOST_DOWN:
-				case ENEMY_GHOST_RIGHT:
-				case MOVE_LEFT:
-				case MOVE_RIGHT:
-				case MOVE_DOWN:
-				case MOVE_UP:
-				case MOVE_RIGHT_OR_UP:
-				case MOVE_LEFT_OR_UP:
-				case MOVE_RIGHT_OR_DOWN:
-				case MOVE_LEFT_OR_DOWN:
-				case MOVE_ANY_NOT_UP:
-				case MOVE_ANY_NOT_DOWN:
-				case MOVE_ANY_NOT_RIGHT:
-				case MOVE_ANY_NOT_LEFT:
-				case MOVE_LEFT_OR_RIGHT:
-				case MOVE_UP_OR_DOWN:
-				case MOVE_ANY:
-					id = (*(data - LEVEL_WIDTH) == TILE_LIFT_UP) ? TILE_LIFT_UP : TILE_EMPTY;
-					break;
 				case MOVE_GHOST_POINT:
 					teleport_x[teleport_count] = x;
 					teleport_y[teleport_count] = y;
@@ -229,7 +202,9 @@ void intialize_level_data(UINT8 level) {
 					id = TILE_EMPTY;
 					break;
 				default:
-					if (id > TILE_LAST_VISIBLE) id = TILE_START_POINT;
+					if (id > TILE_LAST_VISIBLE) {
+						id = (*(data - LEVEL_WIDTH) == TILE_LIFT_UP) ? TILE_LIFT_UP : TILE_EMPTY;
+					}
 					break;
 			}
 			set_metatile(tile_buffer + ((y << 1) * TILE_BUFFER_WIDTH) + (x << 1) + TILE_BUFFER_OFFSET, id);
@@ -256,18 +231,22 @@ void GameLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	// initialization
 	UINT8 skip_press_fire = FALSE;
+	// enable scroll limits
+	clamp_enabled = TRUE;
 	// load level
 	load_level(current_level = INITIAL_LEVEL_NUMBER);
 	YIELD;
 	while (TRUE) {
+#ifdef DEBUG_BUILD
 		if (KEY_TICKED(J_A)) {
-			if (levels[++current_level].map_bank) skip_press_fire = restart = TRUE; else --current_level;
+			if (levels[++current_level].map_bank) skip_press_fire = restart = TRUE; else SetState(StateTitres);
 		} else if (KEY_TICKED(J_B)) {
 			if (current_level) {
 				--current_level;
 				skip_press_fire = restart = TRUE;
-			}
+			} else SetState(StateTitle);
 		}
+#endif
 		if (restart) {
 			restart = FALSE;
 			if (!skip_press_fire) {
@@ -284,7 +263,7 @@ void GameLogic(void * custom_data) BANKED {
 			// fade manually
 			FadeIn();
 			// reload the level
-			if (!load_level(current_level)) break;
+			if (!load_level(current_level)) SetState(StateTitres);
 			// process engine once before unfade
 			YIELD;
 			// unfade manually

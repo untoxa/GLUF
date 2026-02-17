@@ -31,10 +31,8 @@
 #define TILE_DISAPPEARED        0x03
 
 #define TILE_BATT_CHARGER       0x0b
-#define TILE_BATT_DISCHARGED    0x0d
-#define TILE_BATT_CHARGED       0x0e
-
-#define TILE_VISIBLE_MASK       0x0f
+#define TILE_BATT_DISCHARGED    0x0e
+#define TILE_BATT_CHARGED       0x0f
 
 #define ENEMY_JUMPER            0x20
 #define ENEMY_UFO_LEFT          0x21

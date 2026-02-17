@@ -11,6 +11,8 @@ IMPORT_MAP(title);
 
 void TitleLogic(void * custom_data) BANKED {
 	(void)custom_data;
+	// disable scroll limits
+	clamp_enabled = FALSE;
 	// destroy all sprites
 	SpriteManagerReset();
 	// some parts of the screen are sprites

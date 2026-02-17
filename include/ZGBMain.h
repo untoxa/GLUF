@@ -4,6 +4,7 @@
 #define STATES \
 _STATE_EX(StateGame)\
 _STATE_EX(StateTitle)\
+_STATE_EX(StateTitres)\
 STATE_DEF_END
 
 #define SPRITES \
@@ -36,5 +37,13 @@ typedef union position_t {
 
 #define SPRITE_LIMIT_Y 256
 #define SPRITE_LIMIT_X 64
+
+#if defined(MASTERSYSTEM)
+	#define SCROLL_LEFT_OFFSET  8
+	#define SCROLL_RIGHT_OFFSET 0
+#else
+	#define SCROLL_LEFT_OFFSET  32
+	#define SCROLL_RIGHT_OFFSET 32
+#endif
 
 #endif

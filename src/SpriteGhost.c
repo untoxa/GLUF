@@ -154,6 +154,12 @@ void GhostLogic(void * custom_data) BANKED {
 
 		}
 		if (direction) {
+			// check out of bounds
+			if ((x == 0) && (direction == DIR_LEFT)) direction = DIR_RIGHT;
+			else if ((x == (LEVEL_WIDTH - 1)) && (direction == DIR_RIGHT)) direction = DIR_LEFT;
+			if ((y == 0) && (direction == DIR_UP)) direction = DIR_DOWN;
+			else if ((x == (LEVEL_HEIGHT - 1)) && (direction == DIR_DOWN)) direction = DIR_UP;
+			// move into direction
 			if (direction != old_direction) {
 				SetSpriteAnim(THIS, anim_ghost[direction], ANIMATION_SPEED_MOVE);
 			}

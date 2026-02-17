@@ -38,13 +38,6 @@ const metasprite_t * GetSpriteAnimation(Sprite* sprite, UINT16 anim_idx) {
 */
 
 // we need to override standard scroll clamping function
-#if defined(MASTERSYSTEM)
-	#define SCROLL_LEFT_OFFSET  8
-	#define SCROLL_RIGHT_OFFSET 0
-#else
-	#define SCROLL_LEFT_OFFSET  32
-	#define SCROLL_RIGHT_OFFSET 32
-#endif
 void ClampScrollLimits(void) {
 	if (clamp_enabled) {
 		if (scroll_x < SCROLL_LEFT_OFFSET) scroll_x = SCROLL_LEFT_OFFSET;
