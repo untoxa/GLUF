@@ -4,63 +4,67 @@
 #include "Sprite.h"
 #include "Sound.h"
 
-#define LEVEL_HEIGHT 20
-#define LEVEL_WIDTH  12
-#define LEVEL_METATILE_HEIGHT 2
-#define LEVEL_METATILE_WIDTH  2
+#define LEVEL_HEIGHT            20
+#define LEVEL_WIDTH             12
+#define LEVEL_METATILE_HEIGHT   2
+#define LEVEL_METATILE_WIDTH    2
 
-#define TILE_BUFFER_WIDTH  32
-#define TILE_BUFFER_HEIGHT (LEVEL_HEIGHT * LEVEL_METATILE_HEIGHT)
-#define TILE_BUFFER_OFFSET ((TILE_BUFFER_WIDTH - ((LEVEL_WIDTH * LEVEL_METATILE_WIDTH))) >> 1)
+#define TILE_BUFFER_WIDTH       32
+#define TILE_BUFFER_HEIGHT      (LEVEL_HEIGHT * LEVEL_METATILE_HEIGHT)
+#define TILE_BUFFER_OFFSET      ((TILE_BUFFER_WIDTH - ((LEVEL_WIDTH * LEVEL_METATILE_WIDTH))) >> 1)
 
-#define MOVE_SPEED 1
-#define FALL_SPEED 2
-#define LIFT_SPEED 2
+#define MOVE_SPEED              1
+#define FALL_SPEED              2
+#define LIFT_SPEED              2
 
-#define TILE_EMPTY           0
-#define TILE_START_POINT     4
+#define TILE_EMPTY              0x00
+#define TILE_START_POINT        0x04
 
-#define TILE_DOOR            9
+#define TILE_DOOR               0x09
 
-#define TILE_LIFT_NONE       TILE_EMPTY
-#define TILE_LIFT_UP         5
-#define TILE_LIFT_DOWN       10
-#define TILE_LIFT_STOP       40
+#define TILE_LIFT_NONE          TILE_EMPTY
+#define TILE_LIFT_UP            0x05
+#define TILE_LIFT_DOWN          0x0a
+#define TILE_LIFT_STOP          0x28
 
-#define TILE_DISAPPEARING    12
-#define TILE_DISAPPEARED     3
+#define TILE_DISAPPEARING       0x0c
+#define TILE_DISAPPEARED        0x03
 
-#define TILE_BATT_CHARGER    11
-#define TILE_BATT_DISCHARGED 14
-#define TILE_BATT_CHARGED    15
+#define TILE_BATT_CHARGER       0x0b
+#define TILE_BATT_DISCHARGED    0x0d
+#define TILE_BATT_CHARGED       0x0e
 
-#define TILE_VISIBLE_MASK    0x0f
+#define TILE_VISIBLE_MASK       0x0f
 
-#define ENEMY_JUMPER         0x20
-#define ENEMY_UFO_LEFT       0x21
-#define ENEMY_UFO_RIGHT      0x22
-#define ENEMY_JAWS           0x23
-#define ENEMY_SLUG           0x25
-#define ENEMY_UFO_UP         0x26
-#define ENEMY_UFO_DOWN       0x27
+#define ENEMY_JUMPER            0x20
+#define ENEMY_UFO_LEFT          0x21
+#define ENEMY_UFO_RIGHT         0x22
+#define ENEMY_JAWS              0x23
+#define ENEMY_GLOST_LEFT        0x24
+#define ENEMY_SLUG              0x25
+#define ENEMY_UFO_UP            0x26
+#define ENEMY_UFO_DOWN          0x27
+#define ENEMY_GHOST_UP	        0x29
+#define ENEMY_GHOST_DOWN        0x2a
+#define ENEMY_GHOST_RIGHT       0x2b
 
-#define MOVE_LEFT            0x10
-#define MOVE_RIGHT           0x11
-#define MOVE_DOWN            0x12
-#define MOVE_UP              0x13
-#define MOVE_RIGHT_OR_UP     0x14
-#define MOVE_LEFT_OR_UP      0x15
-#define MOVE_RIGHT_OR_DOWN   0x16
-#define MOVE_LEFT_OR_DOWN    0x17
-#define MOVE_ANY_NOT_DOWN    0x18
-#define MOVE_ANY_NOT_UP      0x19
-#define MOVE_ANY_NOT_RIGHT   0x1a
-#define MOVE_ANY_NOT_LEFT    0x1b
-#define MOVE_LEFT_OR_RIGHT   0x1c
-#define MOVE_UP_OR_DOWN      0x1d
-#define MOVE_ANY             0x1e
+#define MOVE_LEFT               0x10
+#define MOVE_RIGHT              0x11
+#define MOVE_DOWN               0x12
+#define MOVE_UP                 0x13
+#define MOVE_RIGHT_OR_UP        0x14
+#define MOVE_LEFT_OR_UP         0x15
+#define MOVE_RIGHT_OR_DOWN      0x16
+#define MOVE_LEFT_OR_DOWN       0x17
+#define MOVE_ANY_NOT_DOWN       0x18
+#define MOVE_ANY_NOT_UP         0x19
+#define MOVE_ANY_NOT_RIGHT      0x1a
+#define MOVE_ANY_NOT_LEFT       0x1b
+#define MOVE_LEFT_OR_RIGHT      0x1c
+#define MOVE_UP_OR_DOWN         0x1d
+#define MOVE_ANY                0x1e
 
-#define MOVE_GHOST_POINT     0x1f
+#define MOVE_GHOST_POINT        0x1f
 
 typedef enum enemy_dir_e {
 	DIR_NONE = 0,

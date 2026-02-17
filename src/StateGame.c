@@ -260,7 +260,7 @@ void GameLogic(void * custom_data) BANKED {
 				// add "push fire" sign
 				SpriteManagerAdd(SpriteFire, 0, 0);
 				// wait for pressing A if GLUF was killed
-				while (!KEY_TICKED(J_A)) {
+				while ((!KEY_TICKED(J_A)) && (!KEY_TICKED(J_START))) {
 					YIELD;
 				}
 			}
