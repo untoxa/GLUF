@@ -16,9 +16,6 @@
 #include "tiles3.h"
 #include "tiles4.h"
 
-#define DEBUG_BUILD
-#define INITIAL_LEVEL_NUMBER 0
-
 extern const struct TilesInfo common_tiles;	// fix png2asset export bug
 BANKREF_EXTERN(common_tiles)
 

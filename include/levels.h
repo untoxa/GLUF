@@ -4,6 +4,9 @@
 #include "Sprite.h"
 #include "Sound.h"
 
+// #define DEBUG_BUILD
+#define INITIAL_LEVEL_NUMBER    0
+
 #define LEVEL_HEIGHT            20
 #define LEVEL_WIDTH             12
 #define LEVEL_METATILE_HEIGHT   2

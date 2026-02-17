@@ -39,6 +39,50 @@ static const UINT8 anim_fall[]       = VECTOR(  9, 10 );
 
 void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED;
 
+#define LOOKAHEAD_DISTANCE_PX 192
+
+void CameraLogic(void) {
+	scroll_target = NULL;
+	UINT8 mask;
+	INT16 point;
+	if (KEY_PRESSED(J_UP | J_DOWN)) {
+		INT16 old_y = scroll_y, dy = 0;
+		if KEY_PRESSED(J_UP) {
+			mask = (J_A | J_UP), dy = -1;
+			point = (THIS->y + 16) - LOOKAHEAD_DISTANCE_PX;
+		} else {
+			mask = (J_A | J_DOWN ), dy = 1;
+			point = THIS->y + (LOOKAHEAD_DISTANCE_PX - DEVICE_SCREEN_PX_HEIGHT);
+		}
+		while (KEY_PRESSED(mask) == mask) {
+			if (scroll_y != point) MoveScroll(scroll_x, scroll_y + dy);
+			if ((UINT8)sys_time & 0x01) YIELD;
+		}
+		while (old_y != scroll_y) {
+			MoveScroll(scroll_x, scroll_y - dy);
+			if (((UINT8)sys_time & 0x01) == 0) YIELD;
+		}
+	} else if (KEY_PRESSED(J_LEFT | J_RIGHT)) {
+		INT16 old_x = scroll_x, dx = 0;
+		if (KEY_PRESSED(J_LEFT)) {
+			mask = (J_A | J_LEFT), dx = -1;
+			point = (THIS->x + 16) - LOOKAHEAD_DISTANCE_PX;
+		} else {
+			mask = (J_A | J_RIGHT), dx = 1;
+			point = THIS->x + (LOOKAHEAD_DISTANCE_PX - DEVICE_SCREEN_PX_WIDTH);
+		}
+		while (KEY_PRESSED(mask) == mask) {
+			if (scroll_x != point) MoveScroll(scroll_x + dx, scroll_y);
+			if ((UINT8)sys_time & 0x01) YIELD;
+		}
+		while (old_x != scroll_x) {
+			MoveScroll(scroll_x - dx, scroll_y);
+			if (((UINT8)sys_time & 0x01) == 0) YIELD;
+		}
+	}
+	scroll_target = THIS;
+}
+
 void GLUFLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	UINT8 tile_below;
@@ -55,6 +99,10 @@ void GLUFLogic(void * custom_data) BANKED {
 	SetSpriteAnim(THIS, anim_idle, ANIMATION_SPEED_IDLE);
 	while (TRUE) {
 		if ((!falling) && (!lifting)) {
+#ifndef DEBUG_BUILD
+			// "lookahead" camera
+			if (KEY_PRESSED(J_A)) CameraLogic();
+#endif
 			// GLUF movements with joypad
 			tile_below = level_buffer[player_y + 1][player_x];
 			if (KEY_PRESSED(J_UP)) {
