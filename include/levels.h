@@ -40,7 +40,7 @@
 #define ENEMY_UFO_LEFT          0x21
 #define ENEMY_UFO_RIGHT         0x22
 #define ENEMY_JAWS              0x23
-#define ENEMY_GLOST_LEFT        0x24
+#define ENEMY_GHOST_LEFT        0x24
 #define ENEMY_SLUG              0x25
 #define ENEMY_UFO_UP            0x26
 #define ENEMY_UFO_DOWN          0x27
@@ -63,8 +63,9 @@
 #define MOVE_LEFT_OR_RIGHT      0x1c
 #define MOVE_UP_OR_DOWN         0x1d
 #define MOVE_ANY                0x1e
-
 #define MOVE_GHOST_POINT        0x1f
+
+#define MAX_TELEPORTS		0x20
 
 typedef enum enemy_dir_e {
 	DIR_NONE = 0,

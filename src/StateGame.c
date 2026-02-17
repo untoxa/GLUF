@@ -16,7 +16,7 @@
 #include "tiles3.h"
 #include "tiles4.h"
 
-#define INITIAL_LEVEL_NUMBER 11
+#define INITIAL_LEVEL_NUMBER 0
 
 extern const struct TilesInfo common_tiles;	// fix png2asset export bug
 BANKREF_EXTERN(common_tiles)
@@ -84,7 +84,11 @@ UINT8 current_level;
 UINT8 restart;
 UINT8 is_title_level;
 
-UINT8 battery_count, teleport_count;
+UINT8 battery_count;
+
+UINT8 teleport_count;
+UINT8 teleport_x[MAX_TELEPORTS];
+UINT8 teleport_y[MAX_TELEPORTS];
 
 extern Sprite * GLUF;
 extern UINT8 start_x, start_y;
@@ -133,6 +137,12 @@ void spawn_enemies(void) {
 						break;
 					case ENEMY_SLUG:
 						enemy = SpriteManagerAdd(SpriteSlug, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
+						break;
+					case ENEMY_GHOST_LEFT:
+					case ENEMY_GHOST_UP:
+					case ENEMY_GHOST_DOWN:
+					case ENEMY_GHOST_RIGHT:
+						enemy = SpriteManagerAdd(SpriteGhost, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
 						break;
 					default:
 						enemy = NULL;
@@ -188,9 +198,13 @@ void intialize_level_data(UINT8 level) {
 				case ENEMY_UFO_LEFT:
 				case ENEMY_UFO_RIGHT:
 				case ENEMY_JAWS:
+				case ENEMY_GHOST_LEFT:
 				case ENEMY_SLUG:
 				case ENEMY_UFO_UP:
 				case ENEMY_UFO_DOWN:
+				case ENEMY_GHOST_UP:
+				case ENEMY_GHOST_DOWN:
+				case ENEMY_GHOST_RIGHT:
 				case MOVE_LEFT:
 				case MOVE_RIGHT:
 				case MOVE_DOWN:
@@ -209,6 +223,8 @@ void intialize_level_data(UINT8 level) {
 					id = (*(data - LEVEL_WIDTH) == TILE_LIFT_UP) ? TILE_LIFT_UP : TILE_EMPTY;
 					break;
 				case MOVE_GHOST_POINT:
+					teleport_x[teleport_count] = x;
+					teleport_y[teleport_count] = y;
 					++teleport_count;
 					id = TILE_EMPTY;
 					break;
