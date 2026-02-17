@@ -227,7 +227,9 @@ void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED {
 void GameLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	// initialization
+#ifdef DEBUG_BUILD
 	UINT8 skip_press_fire = FALSE;
+#endif
 	// enable scroll limits
 	clamp_enabled = TRUE;
 	// load level
@@ -246,7 +248,9 @@ void GameLogic(void * custom_data) BANKED {
 #endif
 		if (restart) {
 			restart = FALSE;
+#ifdef DEBUG_BUILD
 			if (!skip_press_fire) {
+#endif
 				// remove "GLUF" sign on the title level
 				if (is_title_level) SpriteManagerReset();
 				// add "push fire" sign
@@ -255,8 +259,10 @@ void GameLogic(void * custom_data) BANKED {
 				while ((!KEY_TICKED(J_A)) && (!KEY_TICKED(J_START))) {
 					YIELD;
 				}
+#ifdef DEBUG_BUILD
 			}
 			skip_press_fire = FALSE;
+#endif
 			// fade manually
 			FadeIn();
 			// reload the level
