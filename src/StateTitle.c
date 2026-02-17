@@ -28,6 +28,7 @@ void TitleLogic(void * custom_data) BANKED {
 #ifdef MASTERSYSTEM
 	MoveScroll(8, 0);
 #endif
+	YIELD;
 	while (TRUE) {
 		if ((KEY_TICKED(J_A)) || KEY_TICKED(J_START)) {
 			SetState(StateGame);

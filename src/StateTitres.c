@@ -24,6 +24,8 @@ void TitresLogic(void * custom_data) BANKED {
 #endif
 	GetMapSize(BANK(titres), &titres, NULL, &map_height);
 	map_height -= SCREEN_TILES_H;
+
+	YIELD;
 	// wait 5 seconds
 	for (UINT16 i = 0; i != (60 * 5); ++i, YIELD);
 	// scroll titres to the end
