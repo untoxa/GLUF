@@ -1,4 +1,4 @@
-PROJECT_NAME = GLUF
+PROJECT_NAME = GLUF_tesla_frog
 
 # Set platforms to build here, spaced separated. (These are in the separate Makefile.targets)
 # They can also be built/cleaned individually: "make gg" and "make gg-clean"

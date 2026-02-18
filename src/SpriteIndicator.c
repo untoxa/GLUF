@@ -1,0 +1,36 @@
+#include "Banks/SetAutoBank.h"
+
+#include "Scroll.h"
+#include "Sprite.h"
+#include "SpriteManager.h"
+#include "ZGBMain.h"
+
+#define ANIMATION_SPEED_ZERO 0
+static const UINT8 anim_charge[] = VECTOR(  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 );
+
+extern UINT8 GLUF_charge;
+
+Sprite * charge_indicator;
+
+inline void UpdatePosition(void) {
+#ifdef MASTERSYSTEM
+	THIS->y = scroll_y + (DEVICE_SCREEN_PX_HEIGHT - 12);
+	THIS->x = scroll_x + (DEVICE_SCREEN_PX_WIDTH - 40 - 32 - 16);
+#else
+	THIS->y = scroll_y + (DEVICE_SCREEN_PX_HEIGHT - 12);
+	THIS->x = scroll_x + (DEVICE_SCREEN_PX_WIDTH - 40 - 8);
+#endif
+}
+
+void START(void) {
+	SetSpriteAnim(THIS, anim_charge, ANIMATION_SPEED_ZERO);
+	UpdatePosition();
+}
+
+void UPDATE(void) {
+	SetSpriteAnimFrame(THIS, GLUF_charge);
+	UpdatePosition();
+}
+
+void DESTROY(void) {
+}

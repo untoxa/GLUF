@@ -20,10 +20,13 @@ extern UINT8 restart;
 extern UINT8 battery_count;
 extern UINT8 current_level;
 
+extern Sprite * charge_indicator;
+
 #define CHARGE_COOLDOWN 10
 #define CHARGE_MAXIMUM  10
 
 UINT8 start_x, start_y;
+UINT8 GLUF_charge;
 Sprite * GLUF;
 
 #define ANIMATION_SPEED_IDLE  12
@@ -45,41 +48,46 @@ void CameraLogic(void) {
 	scroll_target = NULL;
 	UINT8 mask;
 	INT16 point;
-	if (KEY_PRESSED(J_UP | J_DOWN)) {
-		INT16 old_y = scroll_y, dy = 0;
-		if KEY_PRESSED(J_UP) {
-			mask = (J_A | J_UP), dy = -1;
-			point = (THIS->y + 16) - LOOKAHEAD_DISTANCE_PX;
-		} else {
-			mask = (J_A | J_DOWN ), dy = 1;
-			point = THIS->y + (LOOKAHEAD_DISTANCE_PX - DEVICE_SCREEN_PX_HEIGHT);
+	if (charge_indicator) SetVisible(charge_indicator, FALSE);
+	while (TRUE) {
+		if (KEY_PRESSED(J_UP | J_DOWN)) {
+			INT16 old_y = scroll_y, dy = 0;
+			if KEY_PRESSED(J_UP) {
+				mask = (J_A | J_UP), dy = -1;
+				point = (THIS->y + 16) - LOOKAHEAD_DISTANCE_PX;
+			} else {
+				mask = (J_A | J_DOWN ), dy = 1;
+				point = THIS->y + (LOOKAHEAD_DISTANCE_PX - DEVICE_SCREEN_PX_HEIGHT);
+			}
+			while (KEY_PRESSED(mask) == mask) {
+				if (scroll_y != point) MoveScroll(scroll_x, scroll_y + dy);
+				if ((UINT8)sys_time & 0x01) YIELD;
+			}
+			while (old_y != scroll_y) {
+				MoveScroll(scroll_x, scroll_y - dy);
+				if (((UINT8)sys_time & 0x01) == 0) YIELD;
+			}
+		} else if (KEY_PRESSED(J_LEFT | J_RIGHT)) {
+			INT16 old_x = scroll_x, dx = 0;
+			if (KEY_PRESSED(J_LEFT)) {
+				mask = (J_A | J_LEFT), dx = -1;
+				point = (THIS->x + 16) - LOOKAHEAD_DISTANCE_PX;
+			} else {
+				mask = (J_A | J_RIGHT), dx = 1;
+				point = THIS->x + (LOOKAHEAD_DISTANCE_PX - DEVICE_SCREEN_PX_WIDTH);
+			}
+			while (KEY_PRESSED(mask) == mask) {
+				if (scroll_x != point) MoveScroll(scroll_x + dx, scroll_y);
+				if ((UINT8)sys_time & 0x01) YIELD;
+			}
+			while (old_x != scroll_x) {
+				MoveScroll(scroll_x - dx, scroll_y);
+				if (((UINT8)sys_time & 0x01) == 0) YIELD;
+			}
 		}
-		while (KEY_PRESSED(mask) == mask) {
-			if (scroll_y != point) MoveScroll(scroll_x, scroll_y + dy);
-			if ((UINT8)sys_time & 0x01) YIELD;
-		}
-		while (old_y != scroll_y) {
-			MoveScroll(scroll_x, scroll_y - dy);
-			if (((UINT8)sys_time & 0x01) == 0) YIELD;
-		}
-	} else if (KEY_PRESSED(J_LEFT | J_RIGHT)) {
-		INT16 old_x = scroll_x, dx = 0;
-		if (KEY_PRESSED(J_LEFT)) {
-			mask = (J_A | J_LEFT), dx = -1;
-			point = (THIS->x + 16) - LOOKAHEAD_DISTANCE_PX;
-		} else {
-			mask = (J_A | J_RIGHT), dx = 1;
-			point = THIS->x + (LOOKAHEAD_DISTANCE_PX - DEVICE_SCREEN_PX_WIDTH);
-		}
-		while (KEY_PRESSED(mask) == mask) {
-			if (scroll_x != point) MoveScroll(scroll_x + dx, scroll_y);
-			if ((UINT8)sys_time & 0x01) YIELD;
-		}
-		while (old_x != scroll_x) {
-			MoveScroll(scroll_x - dx, scroll_y);
-			if (((UINT8)sys_time & 0x01) == 0) YIELD;
-		}
+		if KEY_PRESSED(J_A) YIELD; else break;
 	}
+	if (charge_indicator) SetVisible(charge_indicator, TRUE);
 	scroll_target = THIS;
 }
 
@@ -88,9 +96,10 @@ void GLUFLogic(void * custom_data) BANKED {
 	UINT8 tile_below;
 	UINT8 falling = FALSE;
 	UINT8 lifting = TILE_LIFT_NONE;
-	UINT8 charge = 0, charge_cooldown = 0;
+	UINT8 charge_cooldown;
 	UINT8 player_x = start_x, player_y = start_y;
 	Sprite * sprite_door = NULL;
+	GLUF_charge = charge_cooldown = 0;
 	SetSpriteAnim(THIS, anim_enter, ANIMATION_SPEED_ENTER);
 	ExecuteSFX(BANK(sfx7exit), sfx7exit, SFX_MUTE_MASK(sfx7exit), SFX_PRIORITY_HIGH);
 	for (UINT8 i = 0; i != 42; ++i) {
@@ -200,8 +209,8 @@ void GLUFLogic(void * custom_data) BANKED {
 		// batteries
 		tile_below = level_buffer[player_y + 1][player_x];
 		if (tile_below == TILE_BATT_DISCHARGED) {
-			if (charge) {
-				--charge;
+			if (GLUF_charge) {
+				--GLUF_charge;
 				UpdateMetatile(player_x, player_y + 1, TILE_BATT_CHARGED);
 				if (--battery_count == 0) {
 					// activate door
@@ -213,8 +222,8 @@ void GLUFLogic(void * custom_data) BANKED {
 		} else if (tile_below == TILE_BATT_CHARGER) {
 			if (charge_cooldown) {
 				--charge_cooldown;
-			} else if (charge <= CHARGE_MAXIMUM) {
-				++charge;
+			} else if (GLUF_charge < CHARGE_MAXIMUM) {
+				++GLUF_charge;
 				charge_cooldown = CHARGE_COOLDOWN;
 				ExecuteSFX(BANK(sfx6noname), sfx6noname, SFX_MUTE_MASK(sfx6noname), SFX_PRIORITY_MINIMAL);
 			}

@@ -88,7 +88,7 @@ UINT8 teleport_count;
 UINT8 teleport_x[MAX_TELEPORTS];
 UINT8 teleport_y[MAX_TELEPORTS];
 
-extern Sprite * GLUF;
+extern Sprite * GLUF, * charge_indicator;
 extern UINT8 start_x, start_y;
 
 void intialize_level_data(UINT8 level);
@@ -102,6 +102,8 @@ UINT8 load_level(UINT8 level) {
 	intialize_level_data(level);
 	// spawn the player sprite
 	scroll_target = GLUF = SpriteManagerAdd(SpriteGLUF, (start_x << 4) + (TILE_BUFFER_OFFSET << 3) + 1, (start_y << 4) + 1);
+	// spawn charge indicator
+	charge_indicator = SpriteManagerAdd(SpriteIndicator, 0, 0);
 	// spawn enemies
 	spawn_enemies();
 	// initialize background with collisions (skip the very first tile (19), which is only for the player)

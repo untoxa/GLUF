@@ -118,7 +118,7 @@ inline UINT8 check_lift(UINT8 id) {
 	if ((id == TILE_LIFT_UP) || (id == TILE_LIFT_DOWN) || (id == TILE_LIFT_STOP)) return id; else return TILE_LIFT_NONE;
 }
 
-extern Sprite * GLUF;
+extern Sprite * GLUF, * charge_indicator;
 extern UINT8 restart;
 
 DECLARE_SFX(sfx10dead_nonoise);
@@ -127,6 +127,7 @@ inline void CheckKillGLUF(Sprite * sprite) {
 	if ((GLUF) && (CheckCollision(sprite, GLUF))) {
 		ExecuteSFX(BANK(sfx10dead_nonoise), sfx10dead_nonoise, SFX_MUTE_MASK(sfx10dead_nonoise), SFX_PRIORITY_HIGH);
 		SpriteManagerRemoveSprite(GLUF);
+		if (charge_indicator) SpriteManagerRemoveSprite(charge_indicator);
 		scroll_target = NULL;
 		restart = TRUE;
 	}
