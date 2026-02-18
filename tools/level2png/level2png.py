@@ -5,8 +5,8 @@ from optparse import OptionParser
 import itertools
 from PIL import Image
 
-def bin2c():
-    parser = OptionParser("Usage: drawlevel.py [options] INPUT_FILE_NAME.PNG [TILES_FILE_NAME.PNG]")
+def main():
+    parser = OptionParser("Usage: level2png.py [options] INPUT_FILE_NAME.PNG [TILES_FILE_NAME.PNG]")
     parser.add_option("-o",  '--out',        dest='outfilename',                                       help='output file name')
     parser.add_option("-w",  '--width',      dest='width',       default="12",                         help='array width')
 
@@ -47,4 +47,4 @@ def bin2c():
     return
 
 if __name__=='__main__':
-    bin2c()
+    main()
