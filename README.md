@@ -10,4 +10,4 @@ Music and SFX recreated by [Tronimal](https://github.com/Tronimal).
 
 Special thanks to [Bbbbbr](https://github.com/bbbbbr).
 
-Orifinal game by [Retrosouls](https://www.retrosouls.net/), written by [Denis Grachev](https://github.com/DenisGrachev). Special thanks and respect for everyone who worked on the design and art of the original.
+Original game by [Retrosouls](https://www.retrosouls.net/), written by [Denis Grachev](https://github.com/DenisGrachev). Special thanks and respect for everyone who worked on the design and art of the original.
