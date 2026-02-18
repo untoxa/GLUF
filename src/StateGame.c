@@ -281,7 +281,8 @@ void GameLogic(void * custom_data) BANKED {
 void * game_state_context;
 
 void START(void) {
-	scroll_bottom_movement_limit = 100;
+	scroll_top_movement_limit = 48;
+	scroll_bottom_movement_limit = 96;
 	// allocate coroutine context
 	coro_runner_process(game_state_context = coro_runner_alloc(GameLogic, BANK(StateGame), NULL));
 }
