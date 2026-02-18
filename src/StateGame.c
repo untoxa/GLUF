@@ -232,11 +232,16 @@ void GameLogic(void * custom_data) BANKED {
 #ifdef DEBUG_BUILD
 	UINT8 skip_press_fire = FALSE;
 #endif
-	// enable scroll limits
+	// set up CrossZGB scrolling parameters
+	scroll_top_movement_limit = 48;
+	scroll_bottom_movement_limit = 96;
 	clamp_enabled = TRUE;
+
 	// load level
 	load_level(current_level = INITIAL_LEVEL_NUMBER);
+
 	YIELD;
+
 	while (TRUE) {
 #ifdef DEBUG_BUILD
 		if (KEY_TICKED(J_A)) {
@@ -281,18 +286,13 @@ void GameLogic(void * custom_data) BANKED {
 void * game_state_context;
 
 void START(void) {
-	scroll_top_movement_limit = 48;
-	scroll_bottom_movement_limit = 96;
-	// allocate coroutine context
-	coro_runner_process(game_state_context = coro_runner_alloc(GameLogic, BANK(StateGame), NULL));
+	INIT_STATE_CORO(game_state_context, BANK(StateGame), GameLogic);
 }
 
 void UPDATE(void) {
-	// iterate coroutine
-	coro_runner_process(game_state_context);
+	ITER_STATE_CORO(game_state_context);
 }
 
 void DESTROY(void) {
-	// deallocate coroutine context
-	coro_runner_free(game_state_context);
+	FREE_STATE_CORO(game_state_context);
 }

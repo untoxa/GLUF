@@ -11,7 +11,7 @@ IMPORT_MAP(title);
 
 void TitleLogic(void * custom_data) BANKED {
 	(void)custom_data;
-	// disable scroll limits
+	// set up CrossZGB scrolling parameters
 	clamp_enabled = FALSE;
 	// destroy all sprites
 	SpriteManagerReset();
@@ -41,20 +41,15 @@ void TitleLogic(void * custom_data) BANKED {
 void * title_state_context;
 
 void START(void) {
-	// relocate SAT and name tables
 	MAP_OVERLAP_SPR;
-	// allocate coroutine context
-	coro_runner_process(title_state_context = coro_runner_alloc(TitleLogic, BANK(StateTitle), NULL));
+	INIT_STATE_CORO(title_state_context, BANK(StateTitle), TitleLogic);
 }
 
 void UPDATE(void) {
-	// iterate coroutine
-	coro_runner_process(title_state_context);
+	ITER_STATE_CORO(title_state_context);
 }
 
 void DESTROY(void) {
-	// deallocate coroutine context
-	coro_runner_free(title_state_context);
-	// relocate SAT and name tables
+	FREE_STATE_CORO(title_state_context);
 	MAP_OVERLAP_BKG;
 }

@@ -29,7 +29,8 @@ jobs:
         pip install pillow
 
     - name: Download ZGB-Linux-x64
-      run: wget https://github.com/gbdk-2020/CrossZGB/releases/latest/download/ZGB-Linux-x64.tar.gz
+#      run: wget https://github.com/gbdk-2020/CrossZGB/releases/latest/download/ZGB-Linux-x64.tar.gz
+      run: wget https://github.com/gbdk-2020/CrossZGB/releases/download/CrossZGB-next/ZGB-Linux-x64.tar.gz
 
     - name: Unpack ZGB-Linux-x64
       run: |
