@@ -1,1 +1,1 @@
---map --keep_dupes --bank 255 --width 2 --height 2 --bpp 4
+--map --keep_duplicates --bank 255 --width 2 --height 2 --bpp 4
