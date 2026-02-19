@@ -11,10 +11,11 @@
 
 #include "bankutils.h"
 #include "levels.h"
-#include "tiles1.h"
-#include "tiles2.h"
-#include "tiles3.h"
-#include "tiles4.h"
+
+IMPORT_TILES(tiles1);
+IMPORT_TILES(tiles2);
+IMPORT_TILES(tiles3);
+IMPORT_TILES(tiles4);
 
 extern const struct TilesInfo common_tiles;	// fix png2asset export bug
 BANKREF_EXTERN(common_tiles)
@@ -160,8 +161,9 @@ void spawn_enemies(void) {
 }
 
 static void set_metatile(UINT8 * ptr, UINT16 id) {
-	id = (id << 2) + 1;
-	*ptr++ = id++; *ptr = id++;
+	id = (id << 1) + 1;
+	*ptr++ = id++; *ptr = id;
+	id += ((TILE_LAST_VISIBLE << 1) + 1);
 	ptr += TILE_BUFFER_WIDTH - 1;
 	*ptr++ = id++; *ptr = id;
 }
@@ -217,11 +219,12 @@ void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED {
 	y = (y << 1);
 	x = (x << 1) + TILE_BUFFER_OFFSET;
 	set_metatile(tile_buffer + (y * TILE_BUFFER_WIDTH) + x, id);
-	id = (id << 2) + 1;
 	x += scroll_offset_x + SCREEN_BKG_OFFSET_X;
 	y += scroll_offset_y;
+	id = (id << 1) + 1;
 	UpdateMapTile(TARGET_BKG, x,     y,     0, id++, NULL);
-	UpdateMapTile(TARGET_BKG, x + 1, y,     0, id++, NULL);
+	UpdateMapTile(TARGET_BKG, x + 1, y,     0, id,   NULL);
+	id += ((TILE_LAST_VISIBLE << 1) + 1);
 	UpdateMapTile(TARGET_BKG, x,     y + 1, 0, id++, NULL);
 	UpdateMapTile(TARGET_BKG, x + 1, y + 1, 0, id,   NULL);
 }

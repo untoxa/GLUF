@@ -1,1 +1,1 @@
-@python ./tools/romusage/romusage.py ./bin/sms/GLUF.sms
+@python ./tools/romusage/romusage.py ./bin/sms/GLUF_tesla_frog.sms
