@@ -12,6 +12,7 @@ IMPORT_MAP(title);
 void TitleLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	// set up CrossZGB scrolling parameters
+	SPRITES_8x16;
 	MAP_OVERLAP_SPR;
 	clamp_enabled = FALSE;
 	// destroy all sprites
@@ -45,6 +46,7 @@ void TitleLogic(void * custom_data) BANKED {
 void TitleLogicFinalizer(void * custom_data) BANKED {
 	(void)custom_data;
 	MAP_OVERLAP_BKG;
+	SPRITES_8x8;
 }
 
 STATE_COROUTINE(BANK(StateTitle), TitleLogic, TitleLogicFinalizer)
