@@ -246,15 +246,9 @@ void GLUFLogic(void * custom_data) BANKED {
 	}
 }
 
-void START(void) {
-	INIT_CORO(BANK(SpriteGLUF), GLUFLogic);
-}
-
-void UPDATE(void) {
-	ITER_CORO;
-}
-
-void DESTROY(void) {
+void GLUFLogicFinalizer(void * custom_data) BANKED {
+	(void)custom_data;
 	GLUF = NULL;
-	FREE_CORO;
 }
+
+SPRITE_COROUTINE(BANK(SpriteGLUF), GLUFLogic, GLUFLogicFinalizer)

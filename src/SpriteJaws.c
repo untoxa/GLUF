@@ -32,14 +32,4 @@ void JawsLogic(void * custom_data) BANKED {
 	}
 }
 
-void START(void) {
-	INIT_CORO(BANK(SpriteJaws), JawsLogic);
-}
-
-void UPDATE(void) {
-	ITER_CORO;
-}
-
-void DESTROY(void) {
-	FREE_CORO;
-}
+SPRITE_COROUTINE(BANK(SpriteJaws), JawsLogic, NULL)

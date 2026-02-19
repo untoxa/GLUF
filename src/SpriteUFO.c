@@ -154,14 +154,4 @@ void UFOLogic(void * custom_data) BANKED {
 	}
 }
 
-void START(void) {
-	INIT_CORO(BANK(SpriteUFO), UFOLogic);
-}
-
-void UPDATE(void) {
-	ITER_CORO;
-}
-
-void DESTROY(void) {
-	FREE_CORO;
-}
+SPRITE_COROUTINE(BANK(SpriteUFO), UFOLogic, NULL)

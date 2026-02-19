@@ -283,16 +283,4 @@ void GameLogic(void * custom_data) BANKED {
 	}
 }
 
-void * game_state_context;
-
-void START(void) {
-	INIT_STATE_CORO(game_state_context, BANK(StateGame), GameLogic);
-}
-
-void UPDATE(void) {
-	ITER_STATE_CORO(game_state_context);
-}
-
-void DESTROY(void) {
-	FREE_STATE_CORO(game_state_context);
-}
+STATE_COROUTINE(BANK(StateGame), GameLogic, NULL)

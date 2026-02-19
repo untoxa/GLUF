@@ -63,14 +63,4 @@ void SlugLogic(void * custom_data) BANKED {
 	}
 }
 
-void START(void) {
-	INIT_CORO(BANK(SpriteSlug), SlugLogic);
-}
-
-void UPDATE(void) {
-	ITER_CORO;
-}
-
-void DESTROY(void) {
-	FREE_CORO;
-}
+SPRITE_COROUTINE(BANK(SpriteSlug), SlugLogic, NULL)

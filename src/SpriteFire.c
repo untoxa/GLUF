@@ -10,7 +10,7 @@
 #include "levels.h"
 
 #define ANIMATION_SPEED_IDLE 0
-static const UINT8 anim_fire_idle[] = VECTOR( 0, 1 );
+static const UINT8 anim_fire_idle[] = VECTOR( 0 );
 
 static const INT8 sine_table[] = {
 	0,1,3,4,5,6,7,7,8,7,7,6,5,4,3,1,0,-1,-3,-4,-5,-6,-7,-7,-8,-7,-7,-6,-5,-4,-3,-1
@@ -30,14 +30,4 @@ void FireLogic(void * custom_data) BANKED {
 	}
 }
 
-void START(void) {
-	INIT_CORO(BANK(SpriteFire), FireLogic);
-}
-
-void UPDATE(void) {
-	ITER_CORO;
-}
-
-void DESTROY(void) {
-	FREE_CORO;
-}
+SPRITE_COROUTINE(BANK(SpriteFire), FireLogic, NULL)

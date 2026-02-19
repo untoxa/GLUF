@@ -12,6 +12,7 @@ IMPORT_MAP(title);
 void TitleLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	// set up CrossZGB scrolling parameters
+	MAP_OVERLAP_SPR;
 	clamp_enabled = FALSE;
 	// destroy all sprites
 	SpriteManagerReset();
@@ -29,27 +30,21 @@ void TitleLogic(void * custom_data) BANKED {
 	MoveScroll(8, 0);
 #endif
 	YIELD;
+
 	while (TRUE) {
 		if ((KEY_TICKED(J_A)) || KEY_TICKED(J_START)) {
 			SetState(StateGame);
-			return;
+			break;
 		}
 		YIELD;
 	}
+	// wait forever
+	for (;; YIELD);
 }
 
-void * title_state_context;
-
-void START(void) {
-	MAP_OVERLAP_SPR;
-	INIT_STATE_CORO(title_state_context, BANK(StateTitle), TitleLogic);
-}
-
-void UPDATE(void) {
-	ITER_STATE_CORO(title_state_context);
-}
-
-void DESTROY(void) {
-	FREE_STATE_CORO(title_state_context);
+void TitleLogicFinalizer(void * custom_data) BANKED {
+	(void)custom_data;
 	MAP_OVERLAP_BKG;
 }
+
+STATE_COROUTINE(BANK(StateTitle), TitleLogic, TitleLogicFinalizer)

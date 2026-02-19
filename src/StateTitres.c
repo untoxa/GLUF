@@ -13,6 +13,7 @@ void TitresLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	INT16 map_height;
 	// set up CrossZGB scrolling parameters
+	MAP_OVERLAP_SPR;
 	clamp_enabled = FALSE;
 	// destroy all sprites
 	SpriteManagerReset();
@@ -24,8 +25,8 @@ void TitresLogic(void * custom_data) BANKED {
 #endif
 	GetMapSize(BANK(titres), &titres, NULL, &map_height);
 	map_height -= SCREEN_TILES_H;
-
 	YIELD;
+
 	// wait 5 seconds
 	for (UINT16 i = 0; i != (60 * 5); ++i, YIELD);
 	// scroll titres to the end
@@ -47,18 +48,9 @@ void TitresLogic(void * custom_data) BANKED {
 	for (;; YIELD);
 }
 
-void * titres_state_context;
-
-void START(void) {
-	MAP_OVERLAP_SPR;
-	INIT_STATE_CORO(titres_state_context, BANK(StateTitres), TitresLogic);
-}
-
-void UPDATE(void) {
-	ITER_STATE_CORO(titres_state_context);
-}
-
-void DESTROY(void) {
-	FREE_STATE_CORO(titres_state_context);
+void TitresLogicFinalizer(void * custom_data) BANKED {
+	(void)custom_data;
 	MAP_OVERLAP_BKG;
 }
+
+STATE_COROUTINE(BANK(StateTitres), TitresLogic, TitresLogicFinalizer)
