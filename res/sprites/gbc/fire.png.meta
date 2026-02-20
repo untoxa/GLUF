@@ -1,1 +1,1 @@
--keep_palette_order -px 16 -py 16 -pw 1 -ph 1 -sh 32 -sw 32
+-keep_palette_order -repair_indexed_pal -px 16 -py 16 -pw 1 -ph 1 -sh 32 -sw 32
