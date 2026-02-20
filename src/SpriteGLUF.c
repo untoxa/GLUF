@@ -231,6 +231,7 @@ void GLUFLogic(void * custom_data) BANKED {
 		// exit
 		if (level_buffer[player_y][player_x] == TILE_DOOR) {
 			if (sprite_door) SpriteManagerRemoveSprite(sprite_door);
+			SetAnimationLoop(THIS, FALSE);
 			SetSpriteAnim(THIS, anim_exit, ANIMATION_SPEED_ENTER);
 			ExecuteSFX(BANK(sfx7exit), sfx7exit, SFX_MUTE_MASK(sfx7exit), SFX_PRIORITY_HIGH);
 			for (UINT8 i = 0; i != 42; ++i) {
@@ -240,7 +241,6 @@ void GLUFLogic(void * custom_data) BANKED {
 			restart = TRUE;
 			// remove ourselves to prevent repeating animations
 			SpriteManagerRemoveSprite(THIS);
-			scroll_target = NULL;
 		}
 		YIELD;
 	}
@@ -248,7 +248,7 @@ void GLUFLogic(void * custom_data) BANKED {
 
 void GLUFLogicFinalizer(void * custom_data) BANKED {
 	(void)custom_data;
-	GLUF = NULL;
+	scroll_target = GLUF = NULL;
 }
 
 SPRITE_COROUTINE(BANK(SpriteGLUF), GLUFLogic, GLUFLogicFinalizer)
