@@ -20,7 +20,6 @@ void FireLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	UINT8 counter = 0;
 	THIS->x = scroll_x + (((SCREEN_WIDTH - (SCREEN_BKG_OFFSET_X << 3)) >> 1));
-
 	INT16 y = THIS->y = scroll_y + (SCREEN_HEIGHT >> 1);
 	SetSpriteAnim(THIS, anim_fire_idle, ANIMATION_SPEED_IDLE);
 	while (TRUE) {
