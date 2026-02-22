@@ -6,8 +6,9 @@
 #include "Fade.h"
 #include "Vector.h"
 #include "Keys.h"
-#include "ZGBMain.h"
+#include "Music.h"
 #include "Coroutines.h"
+#include "ZGBMain.h"
 
 #include "bankutils.h"
 #include "levels.h"
@@ -16,6 +17,8 @@ IMPORT_TILES(tiles1);
 IMPORT_TILES(tiles2);
 IMPORT_TILES(tiles3);
 IMPORT_TILES(tiles4);
+
+DECLARE_MUSIC(polkka);
 
 extern const struct TilesInfo common_tiles;	// fix png2asset export bug
 BANKREF_EXTERN(common_tiles)
@@ -96,6 +99,8 @@ void intialize_level_data(UINT8 level);
 void spawn_enemies(void);
 
 UINT8 load_level(UINT8 level) {
+	// play music
+	PlayMusic(polkka, 1);
 	// destroy all sprites
 	SpriteManagerReset();
 	if (!levels[level].map_bank) return FALSE;
