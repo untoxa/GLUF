@@ -122,7 +122,7 @@ void spawn_enemies(void) {
 	// spawn the title
 	if (is_title_level = (current_level == 0)) {
 		for (UINT8 i = 0; i != 4; ++i) {
-			if (enemy = SpriteManagerAdd(SpriteSign, ((i + 4) << 4) + (TILE_BUFFER_OFFSET << 3), (13 << 4) - 1)) enemy->custom_data[0] = i;
+			if (enemy = SpriteManagerAdd(SpriteSign, ((i + 4) << 4) + (TILE_BUFFER_OFFSET << 3), 13 << 4)) enemy->custom_data[0] = i;
 		}
 	} else {
 		UINT8 * data = (UINT8 *)level_buffer;
