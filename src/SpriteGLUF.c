@@ -96,10 +96,10 @@ void GLUFLogic(void * custom_data) BANKED {
 	UINT8 tile_below;
 	UINT8 falling = FALSE;
 	UINT8 lifting = TILE_LIFT_NONE;
-	UINT8 charge_cooldown;
+	UINT8 charge_cooldown = CHARGE_COOLDOWN;
 	UINT8 player_x = start_x, player_y = start_y;
 	Sprite * sprite_door = NULL;
-	GLUF_charge = charge_cooldown = 0;
+	GLUF_charge = 0;
 	SetSpriteAnim(THIS, anim_enter, ANIMATION_SPEED_ENTER);
 	ExecuteSFX(BANK(sfx7exit), sfx7exit, SFX_MUTE_MASK(sfx7exit), SFX_PRIORITY_HIGH);
 	for (UINT8 i = 0; i != 42; ++i) {
@@ -219,7 +219,8 @@ void GLUFLogic(void * custom_data) BANKED {
 				}
 				ExecuteSFX(BANK(sfx5paint), sfx5paint, SFX_MUTE_MASK(sfx5paint), SFX_PRIORITY_NORMAL);
 			}
-		} else if (tile_below == TILE_BATT_CHARGER) {
+		}
+		if (tile_below == TILE_BATT_CHARGER) {
 			if (charge_cooldown) {
 				--charge_cooldown;
 			} else if (GLUF_charge < CHARGE_MAXIMUM) {
@@ -227,7 +228,7 @@ void GLUFLogic(void * custom_data) BANKED {
 				charge_cooldown = CHARGE_COOLDOWN;
 				ExecuteSFX(BANK(sfx6noname), sfx6noname, SFX_MUTE_MASK(sfx6noname), SFX_PRIORITY_MINIMAL);
 			}
-		}
+		} else charge_cooldown = CHARGE_COOLDOWN;
 		// exit
 		if (level_buffer[player_y][player_x] == TILE_DOOR) {
 			// disable collision checking with the enemies
