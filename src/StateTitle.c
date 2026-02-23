@@ -4,10 +4,13 @@
 #include "Sprite.h"
 #include "SpriteManager.h"
 #include "Keys.h"
-#include "ZGBMain.h"
+#include "Music.h"
 #include "Coroutines.h"
+#include "ZGBMain.h"
 
 IMPORT_MAP(title);
+
+DECLARE_MUSIC(polkka);
 
 void TitleLogic(void * custom_data) BANKED {
 	(void)custom_data;
@@ -15,6 +18,9 @@ void TitleLogic(void * custom_data) BANKED {
 	SPRITES_8x16;
 	MAP_OVERLAP_SPR;
 	clamp_enabled = FALSE;
+	// start music
+	stop_music_on_new_state = FALSE;
+	PlayMusic(polkka, 1);
 	// destroy all sprites
 	SpriteManagerReset();
 	// some parts of the screen are sprites
