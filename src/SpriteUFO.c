@@ -154,4 +154,4 @@ void UFOLogic(void * custom_data) BANKED {
 	}
 }
 
-SPRITE_COROUTINE(BANK(SpriteUFO), UFOLogic, NULL)
+SPRITE_COROUTINE(UFOLogic, NONE)

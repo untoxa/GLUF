@@ -180,4 +180,4 @@ void GhostLogic(void * custom_data) BANKED {
 	}
 }
 
-SPRITE_COROUTINE(BANK(SpriteGhost), GhostLogic, NULL)
+SPRITE_COROUTINE(GhostLogic, NONE)

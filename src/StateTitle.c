@@ -49,4 +49,4 @@ void TitleLogicFinalizer(void * custom_data) BANKED {
 	SPRITES_8x8;
 }
 
-STATE_COROUTINE(BANK(StateTitle), TitleLogic, TitleLogicFinalizer)
+STATE_COROUTINE(TitleLogic, TitleLogicFinalizer)

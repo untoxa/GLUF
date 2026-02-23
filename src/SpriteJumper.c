@@ -146,4 +146,4 @@ void JumperLogic(void * custom_data) BANKED {
 	}
 }
 
-SPRITE_COROUTINE(BANK(SpriteJumper), JumperLogic, NULL)
+SPRITE_COROUTINE(JumperLogic, NONE)

@@ -230,6 +230,9 @@ void GLUFLogic(void * custom_data) BANKED {
 		}
 		// exit
 		if (level_buffer[player_y][player_x] == TILE_DOOR) {
+			// disable collision checking with the enemies
+			GLUF = NULL;
+			// play level exit animation
 			if (sprite_door) SpriteManagerRemoveSprite(sprite_door);
 			SetAnimationLoop(THIS, FALSE);
 			SetSpriteAnim(THIS, anim_exit, ANIMATION_SPEED_ENTER);
@@ -237,9 +240,10 @@ void GLUFLogic(void * custom_data) BANKED {
 			for (UINT8 i = 0; i != 42; ++i) {
 				YIELD;
 			}
+			// increase level number, restart level
 			++current_level;
 			restart = TRUE;
-			// remove ourselves to prevent repeating animations
+			// remove ourselves
 			SpriteManagerRemoveSprite(THIS);
 		}
 		YIELD;
@@ -251,4 +255,4 @@ void GLUFLogicFinalizer(void * custom_data) BANKED {
 	scroll_target = GLUF = NULL;
 }
 
-SPRITE_COROUTINE(BANK(SpriteGLUF), GLUFLogic, GLUFLogicFinalizer)
+SPRITE_COROUTINE(GLUFLogic, GLUFLogicFinalizer)

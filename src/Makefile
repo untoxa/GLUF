@@ -14,7 +14,7 @@ N_BANKS = A
 # Default hardware sprites size: SPRITES_8x16(default) or SPRITES_8x8
 DEFAULT_SPRITES_SIZE = SPRITES_8x8
 
-# Decrease maximum amount of coroutine contexts to 12
+# Decrease maximum amount of coroutine contexts to 10
 CORO_MAX_CONTEXTS = 10
 
 # Increase context stack size

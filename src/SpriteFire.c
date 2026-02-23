@@ -29,4 +29,4 @@ void FireLogic(void * custom_data) BANKED {
 	}
 }
 
-SPRITE_COROUTINE(BANK(SpriteFire), FireLogic, NULL)
+SPRITE_COROUTINE(FireLogic, NONE)

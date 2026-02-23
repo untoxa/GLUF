@@ -55,4 +55,4 @@ void TitresLogicFinalizer(void * custom_data) BANKED {
 	SPRITES_8x8;
 }
 
-STATE_COROUTINE(BANK(StateTitres), TitresLogic, TitresLogicFinalizer)
+STATE_COROUTINE(TitresLogic, TitresLogicFinalizer)

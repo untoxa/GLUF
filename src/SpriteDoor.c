@@ -14,4 +14,4 @@ void DoorLogic(void * custom_data) BANKED {
 	}
 }
 
-SPRITE_COROUTINE(BANK(SpriteDoor), DoorLogic, NULL)
+SPRITE_COROUTINE(DoorLogic, NONE)

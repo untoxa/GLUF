@@ -63,4 +63,4 @@ void SlugLogic(void * custom_data) BANKED {
 	}
 }
 
-SPRITE_COROUTINE(BANK(SpriteSlug), SlugLogic, NULL)
+SPRITE_COROUTINE(SlugLogic, NONE)

@@ -29,4 +29,4 @@ void SignLogic(void * custom_data) BANKED {
 	}
 }
 
-SPRITE_COROUTINE(BANK(SpriteSign), SignLogic, NULL)
+SPRITE_COROUTINE(SignLogic, NONE)

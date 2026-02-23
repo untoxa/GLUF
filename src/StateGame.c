@@ -291,4 +291,4 @@ void GameLogic(void * custom_data) BANKED {
 	}
 }
 
-STATE_COROUTINE(BANK(StateGame), GameLogic, NULL)
+STATE_COROUTINE(GameLogic, NONE)

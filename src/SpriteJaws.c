@@ -32,4 +32,4 @@ void JawsLogic(void * custom_data) BANKED {
 	}
 }
 
-SPRITE_COROUTINE(BANK(SpriteJaws), JawsLogic, NULL)
+SPRITE_COROUTINE(JawsLogic, NONE)
