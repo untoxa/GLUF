@@ -18,12 +18,18 @@ void TitleLogic(void * custom_data) BANKED {
 	// destroy all sprites
 	SpriteManagerReset();
 	// some parts of the screen are sprites
-#ifdef MASTERSYSTEM
+#if defined(MASTERSYSTEM)
 	SpriteManagerAdd(SpriteTeslafrog, 152, 24);
 	SpriteManagerAdd(SpriteRetrosouls, 187, 104);
+	SpriteManagerAdd(SpriteTonyandco, 176, 72);
+#elif defined(GAMEGEAR)
+	SpriteManagerAdd(SpriteTeslafrog, 92, 8);
+	SpriteManagerAdd(SpriteRetrosouls, 120, 88);
+	SpriteManagerAdd(SpriteTonyandco, 114, 56);
 #else
 	SpriteManagerAdd(SpriteTeslafrog, 92, 8);
 	SpriteManagerAdd(SpriteRetrosouls, 120, 88);
+	SpriteManagerAdd(SpriteTonyandco, 122, 56);
 #endif
 	// initialize background with collisions (skip the very first tile (19), which is only for the player)
 	InitScroll(BANK(title), &title, NULL, NULL);

@@ -13,6 +13,7 @@
 #include "bankutils.h"
 #include "levels.h"
 
+IMPORT_TILES(common_tiles);
 IMPORT_TILES(tiles1);
 IMPORT_TILES(tiles2);
 IMPORT_TILES(tiles3);
@@ -20,11 +21,10 @@ IMPORT_TILES(tiles4);
 
 DECLARE_MUSIC(polkka);
 
-extern const struct TilesInfo common_tiles;	// fix png2asset export bug
-BANKREF_EXTERN(common_tiles)
-
-#define BANKED_MAP(MAP, TILES) {BANK(MAP), (const UINT8 *)&MAP, BANK(TILES), &TILES}
-#define LEVELS_END {0, NULL}
+typedef enum {
+	MUSIC_POLKKA  = 0,
+	N_MUSICS
+} music_e;
 
 // dynamic level map
 UINT8 level_buffer[LEVEL_HEIGHT][LEVEL_WIDTH];
@@ -37,35 +37,39 @@ typedef struct MapInfoBanked_t {
 	const UINT8 * map;
 	UINT8 tiles_bank;
 	struct TilesInfo * tiles;
+	music_e music;
 } MapInfoBanked_t;
+
+#define BANKED_MAP(MAP, TILES, MUSIC) {.map_bank = BANK(MAP), .map = (const UINT8 *)&MAP, .tiles_bank = BANK(TILES), .tiles = &TILES, .music = MUSIC}
+#define LEVELS_END {.map_bank = 0, .map = NULL, .tiles_bank = 0, .tiles = NULL, .music = N_MUSICS}
 
 // level list
 const MapInfoBanked_t levels[] = {
-	BANKED_MAP(level01, tiles1),
-	BANKED_MAP(level02, tiles1),
-	BANKED_MAP(level03, tiles1),
-	BANKED_MAP(level04, tiles1),
-	BANKED_MAP(level05, tiles1),
-	BANKED_MAP(level06, tiles1),
-	BANKED_MAP(level07, tiles1),
-	BANKED_MAP(level08, tiles1),
-	BANKED_MAP(level09, tiles2),
-	BANKED_MAP(level10, tiles2),
-	BANKED_MAP(level11, tiles2),
-	BANKED_MAP(level12, tiles2),
-	BANKED_MAP(level13, tiles2),
-	BANKED_MAP(level14, tiles2),
-	BANKED_MAP(level15, tiles3),
-	BANKED_MAP(level16, tiles3),
-	BANKED_MAP(level17, tiles3),
-	BANKED_MAP(level18, tiles3),
-	BANKED_MAP(level19, tiles3),
-	BANKED_MAP(level20, tiles3),
-	BANKED_MAP(level21, tiles4),
-	BANKED_MAP(level22, tiles4),
-	BANKED_MAP(level23, tiles4),
-	BANKED_MAP(level24, tiles4),
-	BANKED_MAP(level25, tiles4),
+	BANKED_MAP(level01, tiles1, MUSIC_POLKKA),
+	BANKED_MAP(level02, tiles1, MUSIC_POLKKA),
+	BANKED_MAP(level03, tiles1, MUSIC_POLKKA),
+	BANKED_MAP(level04, tiles1, MUSIC_POLKKA),
+	BANKED_MAP(level05, tiles1, MUSIC_POLKKA),
+	BANKED_MAP(level06, tiles1, MUSIC_POLKKA),
+	BANKED_MAP(level07, tiles1, MUSIC_POLKKA),
+	BANKED_MAP(level08, tiles1, MUSIC_POLKKA),
+	BANKED_MAP(level09, tiles2, MUSIC_POLKKA),
+	BANKED_MAP(level10, tiles2, MUSIC_POLKKA),
+	BANKED_MAP(level11, tiles2, MUSIC_POLKKA),
+	BANKED_MAP(level12, tiles2, MUSIC_POLKKA),
+	BANKED_MAP(level13, tiles2, MUSIC_POLKKA),
+	BANKED_MAP(level14, tiles2, MUSIC_POLKKA),
+	BANKED_MAP(level15, tiles3, MUSIC_POLKKA),
+	BANKED_MAP(level16, tiles3, MUSIC_POLKKA),
+	BANKED_MAP(level17, tiles3, MUSIC_POLKKA),
+	BANKED_MAP(level18, tiles3, MUSIC_POLKKA),
+	BANKED_MAP(level19, tiles3, MUSIC_POLKKA),
+	BANKED_MAP(level20, tiles3, MUSIC_POLKKA),
+	BANKED_MAP(level21, tiles4, MUSIC_POLKKA),
+	BANKED_MAP(level22, tiles4, MUSIC_POLKKA),
+	BANKED_MAP(level23, tiles4, MUSIC_POLKKA),
+	BANKED_MAP(level24, tiles4, MUSIC_POLKKA),
+	BANKED_MAP(level25, tiles4, MUSIC_POLKKA),
 	LEVELS_END
 };
 
@@ -98,9 +102,18 @@ extern UINT8 start_x, start_y;
 void intialize_level_data(UINT8 level);
 void spawn_enemies(void);
 
+void load_music(music_e music) {
+	switch (music) {
+		case MUSIC_POLKKA:
+			PlayMusic(polkka, 1);
+			break;
+		default:
+			StopMusic;
+			break;
+	}
+}
+
 UINT8 load_level(UINT8 level) {
-	// play music
-	PlayMusic(polkka, 1);
 	// destroy all sprites
 	SpriteManagerReset();
 	if (!levels[level].map_bank) return FALSE;
@@ -179,6 +192,9 @@ void intialize_level_data(UINT8 level) {
 
 	current_level_desc.extra_tiles_bank = levels[level].tiles_bank;
 	current_level_desc.extra_tiles = levels[level].tiles;
+
+	// play music
+	load_music(levels[level].music);
 
 	battery_count = teleport_count = 0;
 	start_x = start_y = 0;
