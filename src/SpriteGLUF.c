@@ -40,11 +40,7 @@ static const UINT8 anim_jump_left[]  = VECTOR(  2,  8,  7,  6,  5,  4,  3,  2 );
 #define ANIMATION_SPEED_FALL  10
 static const UINT8 anim_fall[]       = VECTOR(  9, 10 );
 #define ANIMATION_SPEED_LIFT  10
-#if defined(SEGA)
 static const UINT8 anim_lift[]       = VECTOR( 18, 19 );
-#else
-static const UINT8 anim_lift[]       = VECTOR(  9, 10 );
-#endif
 
 void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED;
 

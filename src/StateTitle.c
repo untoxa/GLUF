@@ -25,7 +25,7 @@ const sprite_coords_t title_sprites[] = {
 #elif defined(GAMEGEAR)
 	{SpriteTeslafrog,  92,  8}, {SpriteRetrosouls, 120,  88}, {SpriteTonyandco, 114, 56}
 #else
-	{SpriteTeslafrog,  92,  8}, {SpriteRetrosouls, 121,  89}, {SpriteTonyandco, 123, 56}
+	{SpriteTeslafrog,  92,  8}, {SpriteRetrosouls, 121,  89}, {SpriteTonyandco, 123, 54}
 #endif
 };
 
