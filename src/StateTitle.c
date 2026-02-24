@@ -34,8 +34,8 @@ void TitleLogic(void * custom_data) BANKED {
 	SpriteManagerAdd(SpriteTonyandco, 114, 56);
 #else
 	SpriteManagerAdd(SpriteTeslafrog, 92, 8);
-	SpriteManagerAdd(SpriteRetrosouls, 120, 88);
-	SpriteManagerAdd(SpriteTonyandco, 122, 56);
+	SpriteManagerAdd(SpriteRetrosouls, 121, 89);
+	SpriteManagerAdd(SpriteTonyandco, 123, 56);
 #endif
 	// initialize background with collisions (skip the very first tile (19), which is only for the player)
 	InitScroll(BANK(title), &title, NULL, NULL);
