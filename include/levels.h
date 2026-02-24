@@ -133,4 +133,10 @@ inline void CheckKillGLUF(Sprite * sprite) {
 	}
 }
 
+inline void CompensateScroll(void) {
+#ifdef MASTERSYSTEM
+	MoveScroll(8, 0);
+#endif
+}
+
 #endif

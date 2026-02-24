@@ -7,6 +7,8 @@
 #include "ZGBMain.h"
 #include "Coroutines.h"
 
+#include "levels.h"
+
 IMPORT_MAP(titres);
 
 void TitresLogic(void * custom_data) BANKED {
@@ -19,11 +21,11 @@ void TitresLogic(void * custom_data) BANKED {
 	// destroy all sprites
 	SpriteManagerReset();
 	Sprite * retrosouls = SpriteManagerAdd(SpriteRetrosouls, DEVICE_SCREEN_PX_WIDTH + 16, 0);
-	// initialize background with collisions (skip the very first tile (19), which is only for the player)
+	// initialize background
 	InitScroll(BANK(titres), &titres, NULL, NULL);
-#ifdef MASTERSYSTEM
-	MoveScroll(8, 0);
-#endif
+	// compensate hidden column on SMS so background is centered
+	CompensateScroll();
+	// calculate the scroll limit for the titres
 	GetMapSize(BANK(titres), &titres, NULL, &map_height);
 	map_height -= SCREEN_TILES_H;
 	YIELD;

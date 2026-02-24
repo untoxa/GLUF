@@ -8,9 +8,26 @@
 #include "Coroutines.h"
 #include "ZGBMain.h"
 
+#include "levels.h"
+
 IMPORT_MAP(title);
 
 DECLARE_MUSIC(polkka);
+
+typedef struct {
+	SPRITE_TYPE type;
+	UINT8 x, y;
+} sprite_coords_t;
+
+const sprite_coords_t title_sprites[] = {
+#if defined(MASTERSYSTEM)
+	{SpriteTeslafrog, 152, 24}, {SpriteRetrosouls, 187, 104}, {SpriteTonyandco, 176, 72}
+#elif defined(GAMEGEAR)
+	{SpriteTeslafrog,  92,  8}, {SpriteRetrosouls, 120,  88}, {SpriteTonyandco, 114, 56}
+#else
+	{SpriteTeslafrog,  92,  8}, {SpriteRetrosouls, 121,  89}, {SpriteTonyandco, 123, 56}
+#endif
+};
 
 void TitleLogic(void * custom_data) BANKED {
 	(void)custom_data;
@@ -24,24 +41,13 @@ void TitleLogic(void * custom_data) BANKED {
 	// destroy all sprites
 	SpriteManagerReset();
 	// some parts of the screen are sprites
-#if defined(MASTERSYSTEM)
-	SpriteManagerAdd(SpriteTeslafrog, 152, 24);
-	SpriteManagerAdd(SpriteRetrosouls, 187, 104);
-	SpriteManagerAdd(SpriteTonyandco, 176, 72);
-#elif defined(GAMEGEAR)
-	SpriteManagerAdd(SpriteTeslafrog, 92, 8);
-	SpriteManagerAdd(SpriteRetrosouls, 120, 88);
-	SpriteManagerAdd(SpriteTonyandco, 114, 56);
-#else
-	SpriteManagerAdd(SpriteTeslafrog, 92, 8);
-	SpriteManagerAdd(SpriteRetrosouls, 121, 89);
-	SpriteManagerAdd(SpriteTonyandco, 123, 56);
-#endif
-	// initialize background with collisions (skip the very first tile (19), which is only for the player)
+	for (UINT8 i = 0; i != (sizeof(title_sprites)/sizeof(title_sprites[0])); ++i) {
+		SpriteManagerAdd(title_sprites[i].type, title_sprites[i].x, title_sprites[i].y);
+	}
+	// initialize background
 	InitScroll(BANK(title), &title, NULL, NULL);
-#ifdef MASTERSYSTEM
-	MoveScroll(8, 0);
-#endif
+	// compensate hidden column on SMS so background is centered
+	CompensateScroll();
 	YIELD;
 
 	while (TRUE) {
