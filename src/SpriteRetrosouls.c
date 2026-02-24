@@ -3,6 +3,8 @@
 #include "Coroutines.h"
 #include "ZGBMain.h"
 
+// sprite with empty logic
+
 void START(void) {
 }
 

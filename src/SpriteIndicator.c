@@ -2,7 +2,7 @@
 
 #include "Scroll.h"
 #include "Sprite.h"
-#include "SpriteManager.h"
+#include "Coroutines.h"
 #include "ZGBMain.h"
 
 #define ANIMATION_SPEED_ZERO 0
@@ -22,15 +22,14 @@ inline void UpdatePosition(void) {
 #endif
 }
 
-void START(void) {
+void IndicatorLogic(void * custom_data) BANKED {
+	(void)custom_data;
 	SetSpriteAnim(THIS, anim_charge, ANIMATION_SPEED_ZERO);
-	UpdatePosition();
+	while (TRUE) {
+		SetSpriteAnimFrame(THIS, GLUF_charge);
+		UpdatePosition();
+		YIELD;
+	}
 }
 
-void UPDATE(void) {
-	SetSpriteAnimFrame(THIS, GLUF_charge);
-	UpdatePosition();
-}
-
-void DESTROY(void) {
-}
+SPRITE_COROUTINE(IndicatorLogic, NONE)
