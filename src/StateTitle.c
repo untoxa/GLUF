@@ -21,7 +21,7 @@ typedef struct {
 
 const sprite_coords_t title_sprites[] = {
 #if defined(MASTERSYSTEM)
-	{SpriteTeslafrog, 152, 24}, {SpriteRetrosouls, 187, 104}, {SpriteTonyandco, 176, 72}
+	{SpriteTeslafrog, 152, 24}, {SpriteRetrosouls, 183, 102}, {SpriteTonyandco, 175, 70}
 #elif defined(GAMEGEAR)
 	{SpriteTeslafrog,  92,  8}, {SpriteRetrosouls, 120,  88}, {SpriteTonyandco, 114, 56}
 #else
