@@ -1,5 +1,6 @@
 # rules for the binaries
 BIN2C = python ../tools/bin2c/bin2c.py
+GBCOMPRESS = $(GBDK_HOME_UNIX)/bin/gbcompress
 
 DATAS = $(foreach dir,../res/data,$(notdir $(wildcard $(dir)/*.bin)))
 
@@ -8,4 +9,5 @@ SEC_TARGETS := $(DATAS:%.bin=$(OBJDIR_RES)/%.c) $(SEC_TARGETS)
 
 .SECONDEXPANSION:
 $(OBJDIR_RES)/%.c: ../res/data/%.bin $$(wildcard ../res/data/%.bin.meta)
-	@$(BIN2C) -o $@ $(if $(wildcard $<.meta),`cat <$<.meta`) $<
+	@$(GBCOMPRESS) --alg=zx0 $< $(basename $@).zx0
+	@$(BIN2C) -i $(basename $(notdir $<)) -o $@ $(if $(wildcard $<.meta),`cat <$<.meta`) $(basename $@).zx0

@@ -200,7 +200,7 @@ void intialize_level_data(UINT8 level) {
 	start_x = start_y = 0;
 
 	memset(tile_buffer, 0, sizeof(tile_buffer));
-	memcpy_banked(level_buffer, levels[level].map, sizeof(level_buffer), levels[level].map_bank);
+	zx0_decompress_banked(levels[level].map, level_buffer, levels[level].map_bank);
 
 	UINT8 * data = (UINT8 *)level_buffer;
 	for (UINT8 y = 0; y != LEVEL_HEIGHT; ++y) {

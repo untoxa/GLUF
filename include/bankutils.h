@@ -4,6 +4,6 @@
 #include <gbdk/platform.h>
 #include <stdint.h>
 
-void * memcpy_banked(void *dest, const void *src, size_t len, uint8_t bank) NONBANKED;
+void * zx0_decompress_banked(const void *sour, void *dest, uint8_t bank);
 
 #endif
