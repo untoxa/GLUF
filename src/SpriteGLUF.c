@@ -39,6 +39,12 @@ static const UINT8 anim_jump_right[] = VECTOR(  2,  3,  4,  5,  6,  7,  8,  2 );
 static const UINT8 anim_jump_left[]  = VECTOR(  2,  8,  7,  6,  5,  4,  3,  2 );
 #define ANIMATION_SPEED_FALL  10
 static const UINT8 anim_fall[]       = VECTOR(  9, 10 );
+#define ANIMATION_SPEED_LIFT  10
+#if defined(SEGA)
+static const UINT8 anim_lift[]       = VECTOR( 18, 19 );
+#else
+static const UINT8 anim_lift[]       = VECTOR(  9, 10 );
+#endif
 
 void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED;
 
@@ -156,7 +162,7 @@ void GLUFLogic(void * custom_data) BANKED {
 		// lifts and physics
 		tile_below = level_buffer[player_y + 1][player_x];
 		if (lifting == TILE_LIFT_UP) {
-			SetSpriteAnim(THIS, anim_fall, ANIMATION_SPEED_FALL);
+			SetSpriteAnim(THIS, anim_lift, ANIMATION_SPEED_LIFT);
 			ExecuteSFX(BANK(sfx4lift), sfx4lift, SFX_MUTE_MASK(sfx4lift), SFX_PRIORITY_MINIMAL);
 			for (UINT8 i = 0; i != (16 / LIFT_SPEED); ++i) {
 				THIS->y -= LIFT_SPEED;
@@ -173,7 +179,7 @@ void GLUFLogic(void * custom_data) BANKED {
 					break;
 			}
 		} else if (lifting == TILE_LIFT_DOWN) {
-			SetSpriteAnim(THIS, anim_fall, ANIMATION_SPEED_FALL);
+			SetSpriteAnim(THIS, anim_lift, ANIMATION_SPEED_LIFT);
 			ExecuteSFX(BANK(sfx4lift), sfx4lift, SFX_MUTE_MASK(sfx4lift), SFX_PRIORITY_MINIMAL);
 			for (UINT8 i = 0; i != (16 / LIFT_SPEED); ++i) {
 				THIS->y += LIFT_SPEED;
