@@ -1,4 +1,5 @@
 {
+    "C_Cpp.errorSquiggles": "Disabled",
     "files.exclude": {
         "obj": true,
         "Debug": true,
