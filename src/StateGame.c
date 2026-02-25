@@ -291,9 +291,7 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 				// add "push fire" sign
 				SpriteManagerAdd(SpriteFire, 0, 0);
 				// wait for pressing A if GLUF was killed
-				while ((!KEY_TICKED(J_A)) && (!KEY_TICKED(J_START))) {
-					YIELD;
-				}
+				for (; (!KEY_TICKED(START_BUTTONS)); YIELD);
 #ifdef ENABLE_CHEATS
 			}
 			skip_press_fire = FALSE;

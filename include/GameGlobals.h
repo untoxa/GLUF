@@ -1,11 +1,19 @@
 #ifndef __INCLUDE_GAME_GLOBALS_H__
 #define __INCLUDE_GAME_GLOBALS_H__
 
+#include <gbdk/platform.h>
+
 #include <rand.h>
 #include <stdbool.h>
 
 #include "Sprite.h"
 #include "Sound.h"
+
+#if defined(MASTERSYSTEM)
+	#define START_BUTTONS (J_A)
+#else
+	#define START_BUTTONS (J_A | J_START)
+#endif
 
 #define ENABLE_CHEATS
 #define INITIAL_LEVEL_NUMBER    0

@@ -31,17 +31,8 @@ const sprite_coords_t title_sprites[] = {
 #endif
 };
 
-#if defined(MASTERSYSTEM)
-	#define START_BUTTONS (J_A)
-#elif defined(GAMEGEAR)
-	#define START_BUTTONS (J_A | J_START)
-#else
-	#define START_BUTTONS (J_START)
-#endif
-
-
 extern UINT8 is_cheating;
-static const UINT8 konami_code[] = {J_UP, J_UP, J_DOWN, J_DOWN, J_LEFT, J_RIGHT, J_LEFT, J_RIGHT, J_B, J_A};
+static const UINT8 konami_code[] = { J_UP, J_UP, J_DOWN, J_DOWN, J_LEFT, J_RIGHT, J_LEFT, J_RIGHT, J_B, J_A };
 static const UINT8 * konami_code_ptr;
 
 NORETURN void TitleLogic(void * custom_data) BANKED {
@@ -71,13 +62,15 @@ NORETURN void TitleLogic(void * custom_data) BANKED {
 		if (KEY_TICKED(*konami_code_ptr)) ++konami_code_ptr;
 		else if (KEY_TICKED(~(*konami_code_ptr))) konami_code_ptr = konami_code;
 		if (konami_code_ptr == (konami_code + sizeof(konami_code))) {
+			// toggle the cheat mode on code enter
 			is_cheating = !is_cheating;
-			konami_code_ptr = konami_code;
+			// play SFX
 			ExecuteSFX(BANK(sfx4lift), sfx4lift, SFX_MUTE_MASK(sfx4lift), SFX_PRIORITY_NORMAL);
+			// reset code sequence
+			konami_code_ptr = konami_code;
 		} else if (KEY_TICKED(START_BUTTONS)) {
+			// start game
 			SetState(StateGame);
-			// wait until the CrossZGB engine switch the states
-			for (;; YIELD);
 		}
 	}
 }
