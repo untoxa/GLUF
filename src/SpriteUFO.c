@@ -17,6 +17,11 @@ static const UINT8 * const anim_UFO[N_DIRECTIONS] = { anim_UFO_move_vert, anim_U
 static const INT8 x_delta[N_DIRECTIONS] = {  0,           0,           0, -MOVE_SPEED,  MOVE_SPEED };
 static const INT8 y_delta[N_DIRECTIONS] = {  0, -MOVE_SPEED,  MOVE_SPEED,           0,           0 };
 
+static const enemy_dir_e move_any_not_up[]    = {         DIR_DOWN, DIR_LEFT, DIR_RIGHT };
+static const enemy_dir_e move_any_not_down[]  = { DIR_UP,           DIR_LEFT, DIR_RIGHT };
+static const enemy_dir_e move_any_not_left[]  = { DIR_UP, DIR_DOWN,           DIR_RIGHT };
+static const enemy_dir_e move_any_not_right[] = { DIR_UP, DIR_DOWN, DIR_LEFT            };
+
 void UFOLogic(void * custom_data) BANKED {
 	enemy_dir_e old_direction = N_DIRECTIONS, direction;
 	switch (((UINT8 *)custom_data)[0]) {
@@ -55,77 +60,37 @@ void UFOLogic(void * custom_data) BANKED {
 				direction = DIR_DOWN;
 				break;
 			case MOVE_RIGHT_OR_UP:
-				direction = (rand() & 0x01) ? DIR_RIGHT : DIR_UP;
+				direction = (chance_50_percent()) ? DIR_RIGHT : DIR_UP;
 				break;
 			case MOVE_LEFT_OR_UP:
-				direction = (rand() & 0x01) ? DIR_LEFT : DIR_UP;
+				direction = (chance_50_percent()) ? DIR_LEFT : DIR_UP;
 				break;
 			case MOVE_RIGHT_OR_DOWN:
-				direction = (rand() & 0x01) ? DIR_RIGHT : DIR_DOWN;
+				direction = (chance_50_percent()) ? DIR_RIGHT : DIR_DOWN;
 				break;
 			case MOVE_LEFT_OR_DOWN:
-				direction = (rand() & 0x01) ? DIR_LEFT : DIR_DOWN;
+				direction = (chance_50_percent()) ? DIR_LEFT : DIR_DOWN;
 				break;
 			case MOVE_ANY_NOT_DOWN:
-				switch ((rand() & 0x03)) {
-					case 1:	direction = DIR_UP;
-						break;
-					case 2: direction = DIR_LEFT;
-						break;
-					case 3: direction = DIR_RIGHT;
-						break;
-					default:
-						direction = DIR_UP;
-						break;
-				}
+				direction = ARRAY_PICK_RANDOM(move_any_not_down);
 				break;
 			case MOVE_ANY_NOT_UP:
-				switch ((rand() & 0x03)) {
-					case 1:	direction = DIR_DOWN;
-						break;
-					case 2: direction = DIR_LEFT;
-						break;
-					case 3: direction = DIR_RIGHT;
-						break;
-					default:
-						direction = DIR_DOWN;
-						break;
-				}
+				direction = ARRAY_PICK_RANDOM(move_any_not_up);
 				break;
 			case MOVE_ANY_NOT_RIGHT:
-				switch ((rand() & 0x03)) {
-					case 1:	direction = DIR_UP;
-						break;
-					case 2: direction = DIR_DOWN;
-						break;
-					case 3: direction = DIR_LEFT;
-						break;
-					default:
-						direction = DIR_LEFT;
-						break;
-				}
+				direction = ARRAY_PICK_RANDOM(move_any_not_right);
 				break;
 			case MOVE_ANY_NOT_LEFT:
-				switch ((rand() & 0x03)) {
-					case 1:	direction = DIR_UP;
-						break;
-					case 2: direction = DIR_DOWN;
-						break;
-					case 3: direction = DIR_RIGHT;
-						break;
-					default:
-						direction = DIR_RIGHT;
-						break;
-				}
+				direction = ARRAY_PICK_RANDOM(move_any_not_left);
 				break;
 			case MOVE_LEFT_OR_RIGHT:
-				direction = (rand() & 0x01) ? DIR_LEFT : DIR_RIGHT;
+				direction = (chance_50_percent()) ? DIR_LEFT : DIR_RIGHT;
 				break;
 			case MOVE_UP_OR_DOWN:
-				direction = (rand() & 0x01) ? DIR_UP : DIR_DOWN;
+				direction = (chance_50_percent()) ? DIR_UP : DIR_DOWN;
 				break;
 			case MOVE_ANY:
-				if (rand() & 0x01) direction = (rand() & 0x03) + DIR_UP;
+				if (chance_50_percent()) direction = (rand() & 0x03) + DIR_UP;
 				break;
 
 		}

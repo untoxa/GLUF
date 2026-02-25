@@ -19,7 +19,7 @@ static const UINT8 anim_jumper_fall[] = VECTOR( 0, 1 );
 static const enemy_dir_e rand_directions[] = { DIR_NONE, DIR_UP, DIR_DOWN, DIR_UP, DIR_LEFT, DIR_RIGHT, DIR_UP };
 
 void JumperLogic(void * custom_data) BANKED {
-	enemy_dir_e direction = (rand() & 0x01u) ? DIR_LEFT : DIR_RIGHT;
+	enemy_dir_e direction = (chance_50_percent()) ? DIR_LEFT : DIR_RIGHT;
 	UINT8 tile_below;
 	UINT8 x = ((UINT8 *)custom_data)[1];
 	UINT8 y = ((UINT8 *)custom_data)[2];
@@ -35,15 +35,13 @@ void JumperLogic(void * custom_data) BANKED {
 					for (UINT8 i = 0; i != 16 ; ++i) {
 						YIELD;
 					}
-					direction = rand_directions[rand() % sizeof(rand_directions)];
+					direction = ARRAY_PICK_RANDOM(rand_directions);
 					break;
 				case DIR_UP:
 					if (check_lift(level_buffer[y - 1][x])) {
 						lifting = TILE_LIFT_UP;
-					} else {
-//						direction = (rand() & 0x01) ? DIR_LEFT : DIR_RIGHT;
 					}
-					direction = (rand() & 0x01) ? DIR_LEFT : DIR_RIGHT;
+					direction = (chance_50_percent()) ? DIR_LEFT : DIR_RIGHT;
 					break;
 				case DIR_DOWN:
 					if (((check_lift(level_buffer[y][x]))) && (!check_collision(tile_below))) {
@@ -51,10 +49,8 @@ void JumperLogic(void * custom_data) BANKED {
 					} else {
 						if (check_lift(tile_below) == TILE_LIFT_DOWN) {
 							lifting = TILE_LIFT_DOWN;
-						} else {
-//							direction = (rand() & 0x01) ? DIR_LEFT : DIR_RIGHT;
 						}
-						direction = (rand() & 0x01) ? DIR_LEFT : DIR_RIGHT;
+						direction = (chance_50_percent()) ? DIR_LEFT : DIR_RIGHT;
 					}
 					break;
 				case DIR_LEFT:
@@ -68,7 +64,7 @@ void JumperLogic(void * custom_data) BANKED {
 							}
 							SetSpriteAnim(THIS, anim_jumper_idle, ANIMATION_SPEED_IDLE);
 							x--;
-							if (rand() & 0x03) direction = rand_directions[rand() % sizeof(rand_directions)];
+							if (chance_75_percent()) direction = ARRAY_PICK_RANDOM(rand_directions);
 						} else direction = DIR_NONE;
 					} else direction = DIR_NONE;
 					break;
@@ -83,7 +79,7 @@ void JumperLogic(void * custom_data) BANKED {
 							}
 							SetSpriteAnim(THIS, anim_jumper_idle, ANIMATION_SPEED_IDLE);
 							x++;
-							if (rand() & 0x03) direction = rand_directions[rand() % sizeof(rand_directions)];
+							if (chance_75_percent()) direction = ARRAY_PICK_RANDOM(rand_directions);
 						} else direction = DIR_NONE;
 					} else direction = DIR_NONE;
 					break;

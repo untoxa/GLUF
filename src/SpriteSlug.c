@@ -17,7 +17,7 @@ static const UINT8 * const anim_slug[N_DIRECTIONS] = { anim_slug_move_vert, anim
 static const INT8 x_delta[N_DIRECTIONS] = {  0,  0,  0, -MOVE_SPEED,  MOVE_SPEED };
 
 void SlugLogic(void * custom_data) BANKED {
-	enemy_dir_e old_direction = N_DIRECTIONS, direction = (rand() & 1) ? DIR_LEFT : DIR_RIGHT;
+	enemy_dir_e old_direction = N_DIRECTIONS, direction = (chance_50_percent()) ? DIR_LEFT : DIR_RIGHT;
 	UINT8 x = ((UINT8 *)custom_data)[1];
 	UINT8 y = ((UINT8 *)custom_data)[2];
 	SetSpriteAnim(THIS, anim_slug[direction], ANIMATION_SPEED_SLOW);

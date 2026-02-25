@@ -1,6 +1,9 @@
 #ifndef __INCLUDE_LEVELS_H__
 #define __INCLUDE_LEVELS_H__
 
+#include <rand.h>
+#include <stdbool.h>
+
 #include "Sprite.h"
 #include "Sound.h"
 
@@ -138,5 +141,17 @@ inline void CompensateScroll(void) {
 	MoveScroll(8, 0);
 #endif
 }
+
+inline bool chance_25_percent(void) {
+	return ((rand() & 0x03) == 0);
+}
+inline bool chance_50_percent(void) {
+	return (rand() & 0x01);
+}
+inline bool chance_75_percent(void) {
+	return (rand() & 0x03);
+}
+
+#define ARRAY_PICK_RANDOM(ARRAY) (ARRAY[(rand() % sizeof(ARRAY))])
 
 #endif
