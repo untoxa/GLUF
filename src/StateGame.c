@@ -250,7 +250,7 @@ void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED {
 	UpdateMapTile(TARGET_BKG, x + 1, y + 1, 0, id,   NULL);
 }
 
-void GameLogic(void * custom_data) BANKED {
+NORETURN void GameLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	// initialization
 #ifdef DEBUG_BUILD
@@ -266,7 +266,7 @@ void GameLogic(void * custom_data) BANKED {
 
 	YIELD;
 
-	while (TRUE) {
+	for (;; YIELD) {
 #ifdef DEBUG_BUILD
 		if (KEY_TICKED(J_A)) {
 			if (levels[++current_level].map_bank) skip_press_fire = restart = TRUE; else SetState(StateTitres);
@@ -303,7 +303,6 @@ void GameLogic(void * custom_data) BANKED {
 			// unfade manually
 			FadeOut();
 		}
-		YIELD;
 	}
 }
 

@@ -29,7 +29,7 @@ const sprite_coords_t title_sprites[] = {
 #endif
 };
 
-void TitleLogic(void * custom_data) BANKED {
+NORETURN void TitleLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	// set up CrossZGB scrolling parameters
 	SPRITES_8x16;
@@ -50,15 +50,13 @@ void TitleLogic(void * custom_data) BANKED {
 	CompensateScroll();
 	YIELD;
 
-	while (TRUE) {
+	for (;; YIELD) {
 		if ((KEY_TICKED(J_A)) || KEY_TICKED(J_START)) {
 			SetState(StateGame);
-			break;
+			// wait until the CrossZGB engine switch the states
+			for (;; YIELD);
 		}
-		YIELD;
 	}
-	// wait forever
-	for (;; YIELD);
 }
 
 void TitleLogicFinalizer(void * custom_data) BANKED {

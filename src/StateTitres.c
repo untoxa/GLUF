@@ -11,7 +11,7 @@
 
 IMPORT_MAP(titres);
 
-void TitresLogic(void * custom_data) BANKED {
+NORETURN void TitresLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	INT16 map_height;
 	// set up CrossZGB scrolling parameters
