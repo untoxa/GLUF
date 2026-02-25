@@ -89,6 +89,7 @@ struct MapInfo current_level_desc = {
 UINT8 current_level;
 UINT8 restart;
 UINT8 is_title_level;
+UINT8 is_cheating;
 
 UINT8 battery_count;
 
@@ -253,7 +254,7 @@ void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED {
 NORETURN void GameLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	// initialization
-#ifdef DEBUG_BUILD
+#ifdef ENABLE_CHEATS
 	UINT8 skip_press_fire = FALSE;
 #endif
 	// set up CrossZGB scrolling parameters
@@ -267,19 +268,22 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 	YIELD;
 
 	for (;; YIELD) {
-#ifdef DEBUG_BUILD
-		if (KEY_TICKED(J_A)) {
-			if (levels[++current_level].map_bank) skip_press_fire = restart = TRUE; else SetState(StateTitres);
-		} else if (KEY_TICKED(J_B)) {
-			if (current_level) {
-				--current_level;
-				skip_press_fire = restart = TRUE;
-			} else SetState(StateTitle);
+#ifdef ENABLE_CHEATS
+		// if cheating - allow change levels with B + D-PAD
+		if ((is_cheating) && (KEY_PRESSED(J_B))) {
+			if (KEY_TICKED(J_UP)) {
+				if (levels[++current_level].map_bank) skip_press_fire = restart = TRUE; else SetState(StateTitres);
+			} else if (KEY_TICKED(J_DOWN)) {
+				if (current_level) {
+					--current_level;
+					skip_press_fire = restart = TRUE;
+				} else SetState(StateTitle);
+			}
 		}
 #endif
 		if (restart) {
 			restart = FALSE;
-#ifdef DEBUG_BUILD
+#ifdef ENABLE_CHEATS
 			if (!skip_press_fire) {
 #endif
 				// remove "GLUF" sign on the title level
@@ -290,7 +294,7 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 				while ((!KEY_TICKED(J_A)) && (!KEY_TICKED(J_START))) {
 					YIELD;
 				}
-#ifdef DEBUG_BUILD
+#ifdef ENABLE_CHEATS
 			}
 			skip_press_fire = FALSE;
 #endif

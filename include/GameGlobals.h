@@ -7,7 +7,7 @@
 #include "Sprite.h"
 #include "Sound.h"
 
-// #define DEBUG_BUILD
+#define ENABLE_CHEATS
 #define INITIAL_LEVEL_NUMBER    0
 
 #define LEVEL_HEIGHT            20
