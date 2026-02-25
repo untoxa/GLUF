@@ -7,7 +7,7 @@
 #include "ZGBMain.h"
 #include "Coroutines.h"
 
-#include "levels.h"
+#include "GameGlobals.h"
 
 IMPORT_MAP(titres);
 

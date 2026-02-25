@@ -1,5 +1,5 @@
-#ifndef __INCLUDE_LEVELS_H__
-#define __INCLUDE_LEVELS_H__
+#ifndef __INCLUDE_GAME_GLOBALS_H__
+#define __INCLUDE_GAME_GLOBALS_H__
 
 #include <rand.h>
 #include <stdbool.h>

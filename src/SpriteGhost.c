@@ -6,7 +6,7 @@
 #include "Coroutines.h"
 #include "ZGBMain.h"
 
-#include "levels.h"
+#include "GameGlobals.h"
 
 #define ANIMATION_SPEED_MOVE 10
 static const UINT8 anim_ghost_move_vert[]  = VECTOR( 0, 1 );

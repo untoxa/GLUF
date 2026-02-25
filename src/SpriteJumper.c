@@ -6,7 +6,7 @@
 #include "Coroutines.h"
 #include "ZGBMain.h"
 
-#include "levels.h"
+#include "GameGlobals.h"
 
 #define ANIMATION_SPEED_IDLE 12
 static const UINT8 anim_jumper_idle[] = VECTOR( 0, 1 );

@@ -3,7 +3,7 @@
 #include "Coroutines.h"
 #include "ZGBMain.h"
 
-#include "levels.h"
+#include "GameGlobals.h"
 
 #define ANIMATION_SPEED_NONE 0
 static const UINT8 anim_G[] = VECTOR( 0 );

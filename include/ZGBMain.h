@@ -25,18 +25,6 @@ SPRITE_DEF_END
 
 #include "ZGBMain_Init.h"
 
-// tile coodrdinates structure
-typedef union position_t {
-	struct {
-		UINT8 x;
-		UINT8 y;
-	};
-	UINT16 v;
-} position_t;
-
-#define IS_ODD_FRAME ((UINT8)sys_time & 1)
-#define IS_EVEN_FRAME (!((UINT8)sys_time & 1))
-
 #define SPRITE_LIMIT_Y 256
 #define SPRITE_LIMIT_X 64
 

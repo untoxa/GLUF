@@ -7,7 +7,7 @@
 #include "Coroutines.h"
 #include "ZGBMain.h"
 
-#include "levels.h"
+#include "GameGlobals.h"
 
 #define ANIMATION_SPEED_IDLE 0
 static const UINT8 anim_fire_idle[] = VECTOR( 0 );

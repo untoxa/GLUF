@@ -11,7 +11,7 @@
 #include "ZGBMain.h"
 
 #include "bankutils.h"
-#include "levels.h"
+#include "GameGlobals.h"
 
 IMPORT_TILES(common_tiles);
 IMPORT_TILES(tiles1);

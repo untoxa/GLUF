@@ -25,10 +25,9 @@ inline void UpdatePosition(void) {
 void IndicatorLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	SetSpriteAnim(THIS, anim_charge, ANIMATION_SPEED_ZERO);
-	while (TRUE) {
+	for (;; YIELD) {
 		SetSpriteAnimFrame(THIS, GLUF_charge);
 		UpdatePosition();
-		YIELD;
 	}
 }
 

@@ -5,7 +5,7 @@
 #include "Sound.h"
 #include "ZGBMain.h"
 
-#include "levels.h"
+#include "GameGlobals.h"
 
 DECLARE_SFX(sfx1jump);
 DECLARE_SFX(sfx3fall);
