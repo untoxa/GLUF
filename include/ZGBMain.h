@@ -21,6 +21,8 @@ _SPRITE(SpriteTeslafrog,  teslafrog,  FLIP_NONE)\
 _SPRITE(SpriteJaws,       jaws,       FLIP_NONE)\
 _SPRITE(SpriteIndicator,  indicator,  FLIP_NONE)\
 _SPRITE(SpriteTonyandco,  tonyandco,  FLIP_NONE)\
+_SPRITE(SpriteLevel,      level,      FLIP_NONE)\
+_SPRITE(SpriteBolt,       bolt,       FLIP_NONE)\
 SPRITE_DEF_END
 
 #include "ZGBMain_Init.h"

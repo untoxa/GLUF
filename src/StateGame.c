@@ -124,6 +124,8 @@ UINT8 load_level(UINT8 level) {
 	scroll_target = GLUF = SpriteManagerAdd(SpriteGLUF, (start_x << 4) + (TILE_BUFFER_OFFSET << 3) + 1, (start_y << 4) + 1);
 	// spawn charge indicator
 	charge_indicator = SpriteManagerAdd(SpriteIndicator, 0, 0);
+	// spawn level number
+	SpriteManagerAdd(SpriteLevel, 0, 0);
 	// spawn enemies
 	spawn_enemies();
 	// initialize background with collisions (skip the very first tile (19), which is only for the player)

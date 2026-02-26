@@ -219,6 +219,7 @@ void GLUFLogic(void * custom_data) BANKED {
 					level_buffer[start_y][start_x] = TILE_DOOR;
 					sprite_door = SpriteManagerAdd(SpriteDoor, (start_x << 4) + (TILE_BUFFER_OFFSET << 3), start_y << 4);
 				}
+				// play GLUF discharging sound
 				ExecuteSFX(BANK(sfx5paint), sfx5paint, SFX_MUTE_MASK(sfx5paint), SFX_PRIORITY_NORMAL);
 			}
 		}
@@ -228,7 +229,10 @@ void GLUFLogic(void * custom_data) BANKED {
 			} else if (GLUF_charge < CHARGE_MAXIMUM) {
 				++GLUF_charge;
 				charge_cooldown = CHARGE_COOLDOWN;
+				// play GLUF charging sound
 				ExecuteSFX(BANK(sfx6noname), sfx6noname, SFX_MUTE_MASK(sfx6noname), SFX_PRIORITY_MINIMAL);
+				// launch tiny lightning
+				SpriteManagerAdd(SpriteBolt, THIS->x + 8, THIS->y);
 			}
 		} else charge_cooldown = CHARGE_COOLDOWN;
 		// exit
