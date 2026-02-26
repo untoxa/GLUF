@@ -232,7 +232,7 @@ void GLUFLogic(void * custom_data) BANKED {
 				// play GLUF charging sound
 				ExecuteSFX(BANK(sfx6noname), sfx6noname, SFX_MUTE_MASK(sfx6noname), SFX_PRIORITY_MINIMAL);
 				// launch tiny lightning
-				SpriteManagerAdd(SpriteBolt, THIS->x + 8, THIS->y);
+				SpriteManagerAdd(SpriteBolt, THIS->x, THIS->y);
 			}
 		} else charge_cooldown = CHARGE_COOLDOWN;
 		// exit
