@@ -24,7 +24,7 @@ void process_parallax(void) {
 	__save = CURRENT_BANK;
 
 	const UINT8 * ptr;
-	UINT16 offset = ((UINT16)(16u - (scroll_y_vblank & 0x0f)) << 1) + ((UINT16)(scroll_x_vblank & 0x0f) << (4 + 3));
+	UINT16 offset = ((UINT16)(16u - ((scroll_y_vblank >> 1) & 0x0f)) << 1) + ((UINT16)((scroll_x_vblank  >> 1) & 0x0f) << (4 + 3));
 
 	SWITCH_ROM(parallax_banks[current_tileset]);
 
