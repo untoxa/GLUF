@@ -21,11 +21,6 @@ IMPORT_TILES(tiles4);
 
 DECLARE_MUSIC(polkka);
 
-typedef enum {
-	MUSIC_POLKKA  = 0,
-	N_MUSICS
-} music_e;
-
 // dynamic level map
 UINT8 level_buffer[LEVEL_HEIGHT][LEVEL_WIDTH];
 // dynamic map buffer
@@ -35,41 +30,53 @@ UINT8 tile_buffer[TILE_BUFFER_HEIGHT * TILE_BUFFER_WIDTH];
 typedef struct MapInfoBanked_t {
 	UINT8 map_bank;
 	const UINT8 * map;
-	UINT8 tiles_bank;
-	struct TilesInfo * tiles;
 	music_e music;
+	tilesets_e tileset;
 } MapInfoBanked_t;
 
-#define BANKED_MAP(MAP, TILES, MUSIC) {.map_bank = BANK(MAP), .map = (const UINT8 *)&MAP, .tiles_bank = BANK(TILES), .tiles = &TILES, .music = MUSIC}
-#define LEVELS_END {.map_bank = 0, .map = NULL, .tiles_bank = 0, .tiles = NULL, .music = N_MUSICS}
+#define BANKED_MAP(MAP, MUSIC, TILESET) {.map_bank = BANK(MAP), .map = (const UINT8 *)&MAP, .music = MUSIC, .tileset = TILESET}
+#define LEVELS_END {.map_bank = 0, .map = NULL, .music = N_MUSICS, .tileset = N_TILESETS}
+
+// tileset list structure
+typedef struct TilesetBanked_t {
+	UINT8 tiles_bank;
+	struct TilesInfo * tiles;
+} TilesetBanked_t;
+
+const TilesetBanked_t tilesets[] = {
+	[TILESET_1] = {.tiles_bank = BANK(tiles1), .tiles = &tiles1},
+	[TILESET_2] = {.tiles_bank = BANK(tiles2), .tiles = &tiles2},
+	[TILESET_3] = {.tiles_bank = BANK(tiles3), .tiles = &tiles3},
+	[TILESET_4] = {.tiles_bank = BANK(tiles4), .tiles = &tiles4}
+};
 
 // level list
 const MapInfoBanked_t levels[] = {
-	BANKED_MAP(level01, tiles1, MUSIC_POLKKA),
-	BANKED_MAP(level02, tiles1, MUSIC_POLKKA),
-	BANKED_MAP(level03, tiles1, MUSIC_POLKKA),
-	BANKED_MAP(level04, tiles1, MUSIC_POLKKA),
-	BANKED_MAP(level05, tiles1, MUSIC_POLKKA),
-	BANKED_MAP(level06, tiles1, MUSIC_POLKKA),
-	BANKED_MAP(level07, tiles1, MUSIC_POLKKA),
-	BANKED_MAP(level08, tiles1, MUSIC_POLKKA),
-	BANKED_MAP(level09, tiles2, MUSIC_POLKKA),
-	BANKED_MAP(level10, tiles2, MUSIC_POLKKA),
-	BANKED_MAP(level11, tiles2, MUSIC_POLKKA),
-	BANKED_MAP(level12, tiles2, MUSIC_POLKKA),
-	BANKED_MAP(level13, tiles2, MUSIC_POLKKA),
-	BANKED_MAP(level14, tiles2, MUSIC_POLKKA),
-	BANKED_MAP(level15, tiles3, MUSIC_POLKKA),
-	BANKED_MAP(level16, tiles3, MUSIC_POLKKA),
-	BANKED_MAP(level17, tiles3, MUSIC_POLKKA),
-	BANKED_MAP(level18, tiles3, MUSIC_POLKKA),
-	BANKED_MAP(level19, tiles3, MUSIC_POLKKA),
-	BANKED_MAP(level20, tiles3, MUSIC_POLKKA),
-	BANKED_MAP(level21, tiles4, MUSIC_POLKKA),
-	BANKED_MAP(level22, tiles4, MUSIC_POLKKA),
-	BANKED_MAP(level23, tiles4, MUSIC_POLKKA),
-	BANKED_MAP(level24, tiles4, MUSIC_POLKKA),
-	BANKED_MAP(level25, tiles4, MUSIC_POLKKA),
+	BANKED_MAP(level01, MUSIC_POLKKA, TILESET_1),
+	BANKED_MAP(level02, MUSIC_POLKKA, TILESET_1),
+	BANKED_MAP(level03, MUSIC_POLKKA, TILESET_1),
+	BANKED_MAP(level04, MUSIC_POLKKA, TILESET_1),
+	BANKED_MAP(level05, MUSIC_POLKKA, TILESET_1),
+	BANKED_MAP(level06, MUSIC_POLKKA, TILESET_1),
+	BANKED_MAP(level07, MUSIC_POLKKA, TILESET_1),
+	BANKED_MAP(level08, MUSIC_POLKKA, TILESET_1),
+	BANKED_MAP(level09, MUSIC_POLKKA, TILESET_2),
+	BANKED_MAP(level10, MUSIC_POLKKA, TILESET_2),
+	BANKED_MAP(level11, MUSIC_POLKKA, TILESET_2),
+	BANKED_MAP(level12, MUSIC_POLKKA, TILESET_2),
+	BANKED_MAP(level13, MUSIC_POLKKA, TILESET_2),
+	BANKED_MAP(level14, MUSIC_POLKKA, TILESET_2),
+	BANKED_MAP(level15, MUSIC_POLKKA, TILESET_3),
+	BANKED_MAP(level16, MUSIC_POLKKA, TILESET_3),
+	BANKED_MAP(level17, MUSIC_POLKKA, TILESET_3),
+	BANKED_MAP(level18, MUSIC_POLKKA, TILESET_3),
+	BANKED_MAP(level19, MUSIC_POLKKA, TILESET_3),
+	BANKED_MAP(level20, MUSIC_POLKKA, TILESET_3),
+	BANKED_MAP(level21, MUSIC_POLKKA, TILESET_4),
+	BANKED_MAP(level22, MUSIC_POLKKA, TILESET_4),
+	BANKED_MAP(level23, MUSIC_POLKKA, TILESET_4),
+	BANKED_MAP(level24, MUSIC_POLKKA, TILESET_4),
+	BANKED_MAP(level25, MUSIC_POLKKA, TILESET_4),
 	LEVELS_END
 };
 
@@ -90,6 +97,7 @@ UINT8 current_level;
 UINT8 restart;
 UINT8 is_title_level;
 UINT8 is_cheating;
+tilesets_e current_tileset;
 
 UINT8 battery_count;
 
@@ -193,8 +201,9 @@ void intialize_level_data(UINT8 level) {
 	// current level data bank
 	static UINT8 id;
 
-	current_level_desc.extra_tiles_bank = levels[level].tiles_bank;
-	current_level_desc.extra_tiles = levels[level].tiles;
+	current_tileset = levels[level].tileset;
+	current_level_desc.extra_tiles_bank = tilesets[current_tileset].tiles_bank;
+	current_level_desc.extra_tiles = tilesets[current_tileset].tiles;
 
 	// play music
 	load_music(levels[level].music);
@@ -210,6 +219,11 @@ void intialize_level_data(UINT8 level) {
 		for (UINT8 x = 0; x != LEVEL_WIDTH; ++x) {
 			id = *data;
 			switch (id) {
+#ifdef ENABLE_PARALLAX
+				case TILE_EMPTY_EXT:
+					id = TILE_EMPTY;
+					break;
+#endif
 				case TILE_START_POINT:
 					start_x = x, start_y = y;
 					id = TILE_DOOR;

@@ -7,6 +7,7 @@
 #include <stdbool.h>
 
 #include "Sprite.h"
+#include "SpriteManager.h"
 #include "Sound.h"
 
 #if defined(MASTERSYSTEM)
@@ -16,6 +17,11 @@
 #endif
 
 #define ENABLE_CHEATS
+
+#if defined(NINTENDO)
+	#define ENABLE_PARALLAX
+#endif
+
 #define INITIAL_LEVEL_NUMBER    0
 
 #define LEVEL_HEIGHT            20
@@ -32,6 +38,7 @@
 #define LIFT_SPEED              2
 
 #define TILE_EMPTY              0x00
+#define TILE_EMPTY_EXT          0x02
 #define TILE_START_POINT        0x04
 
 #define TILE_DOOR               0x09
@@ -90,6 +97,19 @@ typedef enum enemy_dir_e {
 
 #define TILE_FIRST_SOLID     TILE_LIFT_DOWN
 #define TILE_LAST_VISIBLE    TILE_BATT_CHARGED
+
+typedef enum {
+	MUSIC_POLKKA  = 0,
+	N_MUSICS
+} music_e;
+
+typedef enum {
+	TILESET_1  = 0,
+	TILESET_2,
+	TILESET_3,
+	TILESET_4,
+	N_TILESETS
+} tilesets_e;
 
 extern UINT8 level_buffer[LEVEL_HEIGHT][LEVEL_WIDTH];
 

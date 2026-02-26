@@ -11,3 +11,15 @@ SEC_TARGETS := $(DATAS:%.bin=$(OBJDIR_RES)/%.c) $(SEC_TARGETS)
 $(OBJDIR_RES)/%.c: ../res/data/%.bin $$(wildcard ../res/data/%.bin.meta)
 	@$(GBCOMPRESS) --alg=zx0 $< $(basename $@).zx0
 	@$(BIN2C) -i $(basename $(notdir $<)) -o $@ $(if $(wildcard $<.meta),`cat <$<.meta`) $(basename $@).zx0
+
+#rules for the parallax tiles
+PNG2PARALLAX = python ../tools/parallax/parallax.py
+
+PARALLAXTILES = $(foreach dir,../res/parallax/$(EXT),$(notdir $(wildcard $(dir)/*.png)))
+
+OBJS := $(PARALLAXTILES:%.png=$(OBJDIR_RES)/%.o) $(OBJS)
+SEC_TARGETS := $(PARALLAXTILES:%.png=$(OBJDIR_RES)/%.c) $(SEC_TARGETS)
+
+.SECONDEXPANSION:
+$(OBJDIR_RES)/%.c: ../res/parallax/$(EXT)/%.png $$(wildcard ../res/parallax/$(EXT)/%.png.meta)
+	@$(PNG2PARALLAX) -o $@ $(if $(wildcard $<.meta),`cat <$<.meta`) $<
