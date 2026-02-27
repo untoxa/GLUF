@@ -17,10 +17,7 @@
 #endif
 
 #define ENABLE_CHEATS
-
-#if defined(NINTENDO)
-	#define ENABLE_PARALLAX
-#endif
+#define ENABLE_PARALLAX
 
 #define INITIAL_LEVEL_NUMBER    0
 

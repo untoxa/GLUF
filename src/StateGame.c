@@ -267,6 +267,8 @@ void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED {
 	UpdateMapTile(TARGET_BKG, x + 1, y + 1, 0, id,   NULL);
 }
 
+extern UINT8 parallax_enabled;
+
 NORETURN void GameLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	// initialization
@@ -277,6 +279,11 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 	scroll_top_movement_limit = 48;
 	scroll_bottom_movement_limit = 96;
 	clamp_enabled = TRUE;
+
+#ifdef ENABLE_PARALLAX
+	// enable parallax
+	parallax_enabled = TRUE;
+#endif
 
 	// load level
 	load_level(current_level = INITIAL_LEVEL_NUMBER);
@@ -324,4 +331,10 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 	}
 }
 
-STATE_COROUTINE(GameLogic, NONE)
+void GameLogicFinalizer(void * custom_data) BANKED {
+#ifdef ENABLE_PARALLAX
+	parallax_enabled = FALSE;
+#endif
+}
+
+STATE_COROUTINE(GameLogic, GameLogicFinalizer)
