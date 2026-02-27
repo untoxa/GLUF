@@ -27,12 +27,10 @@ static const UINT8 * const parallax_tiles[] = { parallax_tiles1_0, parallax_tile
 
 extern tilesets_e current_tileset;
 
-UINT8 parallax_enabled;
-
+static UINT8 parallax_enabled;
+static INT16 old_x, old_y;
 void process_parallax(INT16 x, INT16 y) {
 	static UINT8 __save;
-	static INT16 old_x, old_y;
-	__save = CURRENT_BANK;
 
 	if ((x == old_x) && (y == old_y)) return;
 	old_x = x, old_y = y;
@@ -40,6 +38,7 @@ void process_parallax(INT16 x, INT16 y) {
 	const UINT8 * ptr;
 	UINT16 offset = ((UINT16)(16u - (y & 0x0f)) << BPP_SHIFT) + ((UINT16)(x & 0x0f) << ((3 + BPP_SHIFT) + 3));
 
+	__save = CURRENT_BANK;
 	SWITCH_ROM(parallax_banks[current_tileset]);
 
 	ptr = parallax_tiles[current_tileset] + offset;
@@ -69,5 +68,24 @@ void SyncVBlank(void) NONBANKED {
 	if (parallax_enabled) process_parallax(scroll_x_vblank >> 1, scroll_y_vblank >> 1);
 }
 #endif
+
+void enable_parallax(void) {
+	old_x = old_y = 32767;
+	parallax_enabled = TRUE;
+}
+
+void disable_parallax(void) {
+	parallax_enabled = FALSE;
+}
+
+#else
+
+void enable_parallax(void) {
+	return;
+}
+
+void disable_parallax(void) {
+	return;
+}
 
 #endif

@@ -11,6 +11,7 @@
 #include "ZGBMain.h"
 
 #include "bankutils.h"
+#include "parallax.h"
 #include "GameGlobals.h"
 
 IMPORT_TILES(common_tiles);
@@ -267,8 +268,6 @@ void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED {
 	UpdateMapTile(TARGET_BKG, x + 1, y + 1, 0, id,   NULL);
 }
 
-extern UINT8 parallax_enabled;
-
 NORETURN void GameLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	// initialization
@@ -280,14 +279,11 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 	scroll_bottom_movement_limit = 96;
 	clamp_enabled = TRUE;
 
-#ifdef ENABLE_PARALLAX
 	// enable parallax
-	parallax_enabled = TRUE;
-#endif
-
+	enable_parallax();
 	// load level
 	load_level(current_level = INITIAL_LEVEL_NUMBER);
-
+	// process once to exit the state INIT()
 	YIELD;
 
 	for (;; YIELD) {
@@ -325,6 +321,8 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 			if (!load_level(current_level)) SetState(StateTitres);
 			// process engine once before unfade
 			YIELD;
+			// force parallax redraw
+			SyncVBlank();
 			// unfade manually
 			FadeOut();
 		}
@@ -332,9 +330,8 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 }
 
 void GameLogicFinalizer(void * custom_data) BANKED {
-#ifdef ENABLE_PARALLAX
-	parallax_enabled = FALSE;
-#endif
+	(void)custom_data;
+	disable_parallax();
 }
 
 STATE_COROUTINE(GameLogic, GameLogicFinalizer)
