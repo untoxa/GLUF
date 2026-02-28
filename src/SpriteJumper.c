@@ -33,6 +33,7 @@ void JumperLogic(void * custom_data) BANKED {
 			switch(direction) {
 				case DIR_NONE:
 					for (UINT8 i = 0; i != 16 ; ++i) {
+						CheckKillGLUF(THIS);
 						YIELD;
 					}
 					direction = ARRAY_PICK_RANDOM(rand_directions);

@@ -19,11 +19,11 @@ $(OBJDIR_RES)/%.c: ../res/data/%.bin $$(wildcard ../res/data/%.bin.meta)
 # rules for the parallax tiles
 PNG2PARALLAX = python ../tools/parallax/parallax.py
 
-PARALLAXTILES = $(foreach dir,../res/parallax/$(EXT),$(notdir $(wildcard $(dir)/*.png)))
+PARALLAXTILES = $(foreach dir,../res/parallax/$(EXT),$(notdir $(wildcard $(dir)/*.parallax)))
 
-OBJS := $(PARALLAXTILES:%.png=$(OBJDIR_RES)/%.o) $(OBJS)
-SEC_TARGETS := $(PARALLAXTILES:%.png=$(OBJDIR_RES)/%.c) $(SEC_TARGETS)
+OBJS := $(PARALLAXTILES:%.parallax=$(OBJDIR_RES)/parallax_%.o) $(OBJS)
+SEC_TARGETS := $(PARALLAXTILES:%.parallax=$(OBJDIR_RES)/parallax_%.c) $(SEC_TARGETS)
 
 .SECONDEXPANSION:
-$(OBJDIR_RES)/%.c: ../res/parallax/$(EXT)/%.png $$(wildcard ../res/parallax/$(EXT)/%.png.meta)
-	@$(PNG2PARALLAX) -o $@ $(if $(wildcard $<.meta),`cat <$<.meta`) $<
+$(OBJDIR_RES)/parallax_%.c: ../res/parallax/$(EXT)/%.parallax $$(wildcard ../res/parallax/$(EXT)/%.parallax.meta)
+	@$(PNG2PARALLAX) -s ../res/backgrounds/$(EXT)/$(basename $(notdir $<)).png -o $@ $(if $(wildcard $<.meta),`cat <$<.meta`) -i parallax_$(basename $(notdir $<))

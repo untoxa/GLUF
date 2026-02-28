@@ -49,6 +49,7 @@ def output_array(outf, name, array, width):
 
 def main():
     parser = OptionParser("Usage: parallax.py [options] INPUT_FILE_NAME.PNG")
+    parser.add_option("-s",  '--src',        dest='srcfilename',                                       help='output file name')
     parser.add_option("-o",  '--out',        dest='outfilename',                                       help='output file name')
     parser.add_option("-i",  '--identifier', dest='identifier',                                        help='source identifier')
     parser.add_option("-b",  '--bank',       dest='bank',        default="255",                        help='BANK number (default AUTO=255)')    
@@ -57,11 +58,14 @@ def main():
 
     (options, args) = parser.parse_args()
 
-    if (len(args) == 0):
+    if (len(args) == 0) and (options.srcfilename == None):
         parser.print_help()
         parser.error("Input file name required\n")
     
-    infilename = Path(args[0])
+    if options.srcfilename == None:
+        infilename = Path(args[0])
+    else:
+        infilename = Path(options.srcfilename)
 
     if options.outfilename == None:
         outfilename = infilename.with_suffix('.c')
