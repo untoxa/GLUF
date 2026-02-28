@@ -22,6 +22,7 @@ IMPORT_TILES(tiles4);
 
 DECLARE_MUSIC(polkka);
 DECLARE_MUSIC(entertainer);
+DECLARE_MUSIC(whirlwind);
 
 // dynamic level map
 UINT8 level_buffer[LEVEL_HEIGHT][LEVEL_WIDTH];
@@ -54,8 +55,8 @@ const TilesetBanked_t tilesets[] = {
 
 // level list
 const MapInfoBanked_t levels[] = {
-	BANKED_MAP(level01, MUSIC_INTRO,  TILESET_1),
-	BANKED_MAP(level02, MUSIC_POLKKA, TILESET_1),
+	BANKED_MAP(level01, MUSIC_INTRO, TILESET_1),
+	BANKED_MAP(level02, MUSIC_INTRO, TILESET_1),
 	BANKED_MAP(level03, MUSIC_POLKKA, TILESET_1),
 	BANKED_MAP(level04, MUSIC_POLKKA, TILESET_1),
 	BANKED_MAP(level05, MUSIC_POLKKA, TILESET_1),
@@ -122,6 +123,9 @@ void load_music(music_e music) BANKED {
 			break;
 		case MUSIC_ENTERTAINER:
 			PlayMusic(entertainer, 1);
+			break;
+		case MUSIC_WHIRLWIND:
+			PlayMusic(whirlwind, 1);
 			break;
 		default:
 			StopMusic;
