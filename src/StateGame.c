@@ -125,6 +125,8 @@ void load_music(music_e music) {
 }
 
 UINT8 load_level(UINT8 level) {
+	// disable parallax
+	disable_parallax();
 	// destroy all sprites
 	SpriteManagerReset();
 	if (!levels[level].map_bank) return FALSE;
@@ -145,6 +147,9 @@ UINT8 load_level(UINT8 level) {
 	ScrollSetMap(BANK(StateGame), &current_level_desc);
 	// redraw the screen
 	ScrollScreenRedraw();
+	// enable parallax and force parallax redraw
+	enable_parallax();
+	SyncVBlank();
 	// level loaded successfully
 	return TRUE;
 }
@@ -292,8 +297,6 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 	scroll_bottom_movement_limit = 96;
 	clamp_enabled = TRUE;
 
-	// enable parallax
-	enable_parallax();
 	// load level
 	load_level(current_level = INITIAL_LEVEL_NUMBER);
 	// process once to exit the state INIT()
@@ -334,8 +337,6 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 			if (!load_level(current_level)) SetState(StateTitres);
 			// process engine once before unfade
 			YIELD;
-			// force parallax redraw
-			SyncVBlank();
 			// unfade manually
 			FadeOut();
 		}
