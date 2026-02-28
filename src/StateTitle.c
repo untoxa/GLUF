@@ -41,8 +41,9 @@ NORETURN void TitleLogic(void * custom_data) BANKED {
 	SPRITES_8x16;
 	MAP_OVERLAP_SPR;
 	clamp_enabled = FALSE;
-	// start music
+	// set up and start music
 	stop_music_on_new_state = FALSE;
+	music_enable_NTSC_compensation();
 	PlayMusic(polkka, 1);
 	// destroy all sprites
 	SpriteManagerReset();
