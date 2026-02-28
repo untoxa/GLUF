@@ -1,4 +1,8 @@
-# rules for the binaries
+# this file contains specific rules for some specific assets which are used in this game,
+# but not supported by the CrossZGB itself. CrossZGB Makefile system includes this file
+# and everything get built together at once
+
+# rules for the binary files with the level data
 BIN2C = python ../tools/bin2c/bin2c.py
 GBCOMPRESS = $(GBDK_HOME_UNIX)/bin/gbcompress
 
@@ -12,7 +16,7 @@ $(OBJDIR_RES)/%.c: ../res/data/%.bin $$(wildcard ../res/data/%.bin.meta)
 	@$(GBCOMPRESS) --alg=zx0 $< $(basename $@).zx0
 	@$(BIN2C) -i $(basename $(notdir $<)) -o $@ $(if $(wildcard $<.meta),`cat <$<.meta`) $(basename $@).zx0
 
-#rules for the parallax tiles
+# rules for the parallax tiles
 PNG2PARALLAX = python ../tools/parallax/parallax.py
 
 PARALLAXTILES = $(foreach dir,../res/parallax/$(EXT),$(notdir $(wildcard $(dir)/*.png)))

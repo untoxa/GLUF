@@ -111,6 +111,7 @@ extern UINT8 start_x, start_y;
 
 void intialize_level_data(UINT8 level);
 void spawn_enemies(void);
+void set_metatile_priority(UINT8 id);
 
 void load_music(music_e music) {
 	switch (music) {
@@ -137,8 +138,14 @@ UINT8 load_level(UINT8 level) {
 	SpriteManagerAdd(SpriteLevel, 0, 0);
 	// spawn enemies
 	spawn_enemies();
-	// initialize background with collisions (skip the very first tile (19), which is only for the player)
-	InitScroll(BANK(StateGame), &current_level_desc, NULL, NULL);
+	// initialize scroll (we don't use InitScroll(), because we need to patch priority for some tiles)
+	ScrollInitTilesFromMap(0, BANK(StateGame), &current_level_desc);
+	set_metatile_priority(TILE_EMPTY_EXT);
+	// initialize scroll map
+	ScrollSetMap(BANK(StateGame), &current_level_desc);
+	// redraw the screen
+	ScrollScreenRedraw();
+	// level loaded successfully
 	return TRUE;
 }
 
@@ -190,6 +197,17 @@ void spawn_enemies(void) {
 	}
 }
 
+void set_metatile_priority(UINT8 id) {
+	id = (id << 1) + 1;
+	scroll_tile_info[id] |= S_PRIORITY;
+	++id;
+	scroll_tile_info[id] |= S_PRIORITY;
+	id += ((TILE_LAST_VISIBLE << 1) + 1);
+	scroll_tile_info[id] |= S_PRIORITY;
+	++id;
+	scroll_tile_info[id] |= S_PRIORITY;
+}
+
 static void set_metatile(UINT8 * ptr, UINT16 id) {
 	id = (id << 1) + 1;
 	*ptr++ = id++; *ptr = id;
@@ -220,11 +238,6 @@ void intialize_level_data(UINT8 level) {
 		for (UINT8 x = 0; x != LEVEL_WIDTH; ++x) {
 			id = *data;
 			switch (id) {
-#ifdef ENABLE_PARALLAX
-				case TILE_EMPTY_EXT:
-					id = TILE_EMPTY;
-					break;
-#endif
 				case TILE_START_POINT:
 					start_x = x, start_y = y;
 					id = TILE_DOOR;

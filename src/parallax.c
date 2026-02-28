@@ -70,7 +70,7 @@ void SyncVBlank(void) NONBANKED {
 #endif
 
 void enable_parallax(void) {
-	old_x = old_y = 32767;
+	old_x = old_y = 0x7fff;
 	parallax_enabled = TRUE;
 }
 
