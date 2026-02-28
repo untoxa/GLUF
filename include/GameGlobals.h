@@ -97,6 +97,8 @@ typedef enum enemy_dir_e {
 
 typedef enum {
 	MUSIC_POLKKA  = 0,
+	MUSIC_INTRO   = MUSIC_POLKKA,
+	MUSIC_ENTERTAINER,
 	N_MUSICS
 } music_e;
 

@@ -14,8 +14,6 @@ IMPORT_MAP(title);
 
 DECLARE_SFX(sfx4lift);
 
-DECLARE_MUSIC(polkka);
-
 typedef struct {
 	SPRITE_TYPE type;
 	UINT8 x, y;
@@ -31,9 +29,13 @@ const sprite_coords_t title_sprites[] = {
 #endif
 };
 
+#ifdef ENABLE_CHEATS
 extern UINT8 is_cheating;
 static const UINT8 konami_code[] = { J_UP, J_UP, J_DOWN, J_DOWN, J_LEFT, J_RIGHT, J_LEFT, J_RIGHT, J_B, J_A };
-static const UINT8 * konami_code_ptr;
+static const UINT8 * konami_code_ptr = konami_code;
+#endif
+
+void load_music(music_e music) BANKED;
 
 NORETURN void TitleLogic(void * custom_data) BANKED {
 	(void)custom_data;
@@ -44,7 +46,7 @@ NORETURN void TitleLogic(void * custom_data) BANKED {
 	// set up and start music
 	stop_music_on_new_state = FALSE;
 	music_enable_NTSC_compensation();
-	PlayMusic(polkka, 1);
+	load_music(MUSIC_INTRO);
 	// destroy all sprites
 	SpriteManagerReset();
 	// some parts of the screen are sprites
@@ -57,8 +59,8 @@ NORETURN void TitleLogic(void * custom_data) BANKED {
 	CompensateScroll();
 	YIELD;
 
-	konami_code_ptr = konami_code;
 	for (;; YIELD) {
+#ifdef ENABLE_CHEATS
 		// process KNOAMI code, enable cheat mode if entered
 		if (KEY_TICKED(*konami_code_ptr)) ++konami_code_ptr;
 		else if (KEY_TICKED(~(*konami_code_ptr))) konami_code_ptr = konami_code;
@@ -69,7 +71,9 @@ NORETURN void TitleLogic(void * custom_data) BANKED {
 			ExecuteSFX(BANK(sfx4lift), sfx4lift, SFX_MUTE_MASK(sfx4lift), SFX_PRIORITY_NORMAL);
 			// reset code sequence
 			konami_code_ptr = konami_code;
-		} else if (KEY_TICKED(START_BUTTONS)) {
+		} else
+#endif
+		if (KEY_TICKED(START_BUTTONS)) {
 			// start game
 			SetState(StateGame);
 		}
