@@ -24,7 +24,7 @@ void FireLogic(void * custom_data) BANKED {
 	SetSpriteAnim(THIS, anim_fire_idle, ANIMATION_SPEED_IDLE);
 	while (TRUE) {
 		THIS->y = y + sine_table[counter];
-		if (++counter == sizeof(sine_table)) counter = 0;
+		if (++counter == ARRAY_LENGTH(sine_table)) counter = 0;
 		YIELD;
 	}
 }

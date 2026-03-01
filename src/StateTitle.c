@@ -48,13 +48,16 @@ NORETURN void TitleLogic(void * custom_data) BANKED {
 	// destroy all sprites
 	SpriteManagerReset();
 	// some parts of the screen are sprites
-	for (UINT8 i = 0; i != (sizeof(title_sprites)/sizeof(title_sprites[0])); ++i) {
+	for (UINT8 i = 0; i != ARRAY_LENGTH(title_sprites); ++i) {
 		SpriteManagerAdd(title_sprites[i].type, title_sprites[i].x, title_sprites[i].y);
 	}
 	// initialize background
 	InitScroll(BANK(title), &title, NULL, NULL);
 	// compensate hidden column on SMS so background is centered
 	CompensateScroll();
+
+	// the first YIELD call separate initialization of the state from processing
+	// for example, unfading happens there
 	YIELD;
 
 	for (;; YIELD) {

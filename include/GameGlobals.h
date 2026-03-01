@@ -96,12 +96,11 @@ typedef enum enemy_dir_e {
 #define TILE_LAST_VISIBLE    TILE_BATT_CHARGED
 
 typedef enum {
-	MUSIC_POLKKA  = 0,
-	MUSIC_ENTERTAINER,
-	MUSIC_WHIRLWIND,
+	MUSIC_INGAME1  = 0,
+	MUSIC_INGAME2,
+	MUSIC_OUTRO,
 	N_MUSICS,
-	MUSIC_INTRO   = MUSIC_WHIRLWIND,
-	MUSIC_OUTRO   = MUSIC_WHIRLWIND
+	MUSIC_INTRO   = MUSIC_INGAME1,
 } music_e;
 
 typedef enum {
@@ -182,6 +181,7 @@ inline bool chance_75_percent(void) {
 }
 
 #define ARRAY_PICK_RANDOM(ARRAY) (ARRAY[(rand() % sizeof(ARRAY))])
+#define ARRAY_LENGTH(ARRAY) (sizeof(ARRAY)/sizeof(ARRAY[0]))
 
 void load_music(music_e music) BANKED;
 
