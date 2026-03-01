@@ -100,7 +100,8 @@ typedef enum {
 	MUSIC_ENTERTAINER,
 	MUSIC_WHIRLWIND,
 	N_MUSICS,
-	MUSIC_INTRO   = MUSIC_WHIRLWIND
+	MUSIC_INTRO   = MUSIC_WHIRLWIND,
+	MUSIC_OUTRO   = MUSIC_WHIRLWIND
 } music_e;
 
 typedef enum {
@@ -181,5 +182,7 @@ inline bool chance_75_percent(void) {
 }
 
 #define ARRAY_PICK_RANDOM(ARRAY) (ARRAY[(rand() % sizeof(ARRAY))])
+
+void load_music(music_e music) BANKED;
 
 #endif

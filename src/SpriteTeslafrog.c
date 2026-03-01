@@ -5,11 +5,4 @@
 
 // sprite with empty logic
 
-void START(void) {
-}
-
-void UPDATE(void) {
-}
-
-void DESTROY(void) {
-}
+EMPTY_LOGIC()

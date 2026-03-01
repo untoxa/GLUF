@@ -35,8 +35,6 @@ static const UINT8 konami_code[] = { J_UP, J_UP, J_DOWN, J_DOWN, J_LEFT, J_RIGHT
 static const UINT8 * konami_code_ptr = konami_code;
 #endif
 
-void load_music(music_e music) BANKED;
-
 NORETURN void TitleLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	// set up CrossZGB scrolling parameters

@@ -18,6 +18,8 @@ NORETURN void TitresLogic(void * custom_data) BANKED {
 	SPRITES_8x16;
 	MAP_OVERLAP_SPR;
 	clamp_enabled = FALSE;
+	// play outro music
+	load_music(MUSIC_OUTRO);
 	// destroy all sprites
 	SpriteManagerReset();
 	Sprite * retrosouls = SpriteManagerAdd(SpriteRetrosouls, DEVICE_SCREEN_PX_WIDTH + 16, 0);

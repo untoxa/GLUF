@@ -55,8 +55,8 @@ const TilesetBanked_t tilesets[] = {
 
 // level list
 const MapInfoBanked_t levels[] = {
-	BANKED_MAP(level01, MUSIC_INTRO, TILESET_1),
-	BANKED_MAP(level02, MUSIC_INTRO, TILESET_1),
+	BANKED_MAP(level01, MUSIC_POLKKA, TILESET_1),
+	BANKED_MAP(level02, MUSIC_POLKKA, TILESET_1),
 	BANKED_MAP(level03, MUSIC_POLKKA, TILESET_1),
 	BANKED_MAP(level04, MUSIC_POLKKA, TILESET_1),
 	BANKED_MAP(level05, MUSIC_POLKKA, TILESET_1),
