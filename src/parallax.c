@@ -14,14 +14,6 @@
 
 #ifdef ENABLE_PARALLAX
 
-#if defined(NINTENDO)
-#define BPP_SHIFT 1
-#else
-#define BPP_SHIFT 2
-#endif
-
-#define TILE_SIZE_BYTES (8 << BPP_SHIFT)
-
 static const UINT8 parallax_banks[] = { {BANK(parallax_tiles1)}, {BANK(parallax_tiles2)}, {BANK(parallax_tiles3)}, {BANK(parallax_tiles4)} };
 static const UINT8 * const parallax_tiles[] = { parallax_tiles1_0, parallax_tiles2_0, parallax_tiles3_0, parallax_tiles4_0 };
 

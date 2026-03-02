@@ -187,4 +187,12 @@ void load_music(music_e music) BANKED;
 
 #define SECONDS(A) ((A) * 60)
 
+#if defined(NINTENDO)
+#define BPP_SHIFT 1
+#else
+#define BPP_SHIFT 2
+#endif
+
+#define TILE_SIZE_BYTES (8 << BPP_SHIFT)
+
 #endif

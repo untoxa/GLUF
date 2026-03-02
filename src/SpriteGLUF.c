@@ -46,6 +46,9 @@ void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED;
 
 #define LOOKAHEAD_DISTANCE_PX 192
 
+extern tilesets_e current_tileset;
+static const UINT8 battery_sprites[N_TILESETS] = {SpriteBattery1, SpriteBattery2, SpriteBattery3, SpriteBattery4};
+
 void CameraLogic(void) {
 	scroll_target = NULL;
 	UINT8 mask;
@@ -100,7 +103,7 @@ void GLUFLogic(void * custom_data) BANKED {
 	UINT8 lifting = TILE_LIFT_NONE;
 	UINT8 charge_cooldown = CHARGE_COOLDOWN;
 	UINT8 player_x = start_x, player_y = start_y;
-	Sprite * sprite_door = NULL;
+	Sprite * sprite_door = NULL, * sprite_temp;
 	GLUF_charge = 0;
 	SetSpriteAnim(THIS, anim_enter, ANIMATION_SPEED_ENTER);
 	ExecuteSFX(BANK(sfx7exit), sfx7exit, SFX_MUTE_MASK(sfx7exit), SFX_PRIORITY_HIGH);
@@ -124,8 +127,17 @@ void GLUFLogic(void * custom_data) BANKED {
 			} else if (KEY_PRESSED(J_LEFT)) {
 				if (player_x > 0) {
 					if (check_collision(level_buffer[player_y][player_x - 1]) == 0) {
-						if (tile_below == TILE_DISAPPEARING) {
-							UpdateMetatile(player_x, player_y + 1, TILE_DISAPPEARED);
+						switch (tile_below) {
+							case TILE_DISAPPEARING:
+								UpdateMetatile(player_x, player_y + 1, TILE_DISAPPEARED);
+								break;
+							case TILE_BATT_DISCHARGED:
+							case TILE_BATT_CHARGED:
+								sprite_temp = SpriteManagerAdd(battery_sprites[current_tileset], THIS->x, THIS->y + 16);
+								if (sprite_temp) sprite_temp->custom_data[0] = tile_below;
+								break;
+							default:
+								break;
 						}
 						SetSpriteAnim(THIS, anim_jump_left, ANIMATION_SPEED_JUMP);
 						ExecuteSFX(BANK(sfx1jump), sfx1jump, SFX_MUTE_MASK(sfx1jump), SFX_PRIORITY_MINIMAL);
@@ -140,8 +152,17 @@ void GLUFLogic(void * custom_data) BANKED {
 			} else if (KEY_PRESSED(J_RIGHT)) {
 				if (player_x < (LEVEL_WIDTH - 1)) {
 					if (check_collision(level_buffer[player_y][player_x + 1]) == 0) {
-						if (tile_below == TILE_DISAPPEARING) {
-							UpdateMetatile(player_x, player_y + 1, TILE_DISAPPEARED);
+						switch (tile_below) {
+							case TILE_DISAPPEARING:
+								UpdateMetatile(player_x, player_y + 1, TILE_DISAPPEARED);
+								break;
+							case TILE_BATT_DISCHARGED:
+							case TILE_BATT_CHARGED:
+								sprite_temp = SpriteManagerAdd(battery_sprites[current_tileset], THIS->x, THIS->y + 16);
+								if (sprite_temp) sprite_temp->custom_data[0] = tile_below;
+								break;
+							default:
+								break;
 						}
 						SetSpriteAnim(THIS, anim_jump_right, ANIMATION_SPEED_JUMP);
 						ExecuteSFX(BANK(sfx1jump), sfx1jump, SFX_MUTE_MASK(sfx1jump), SFX_PRIORITY_MINIMAL);
@@ -198,6 +219,17 @@ void GLUFLogic(void * custom_data) BANKED {
 						YIELD;
 					}
 				} else {
+					if (falling) {
+						switch (tile_below) {
+							case TILE_BATT_DISCHARGED:
+							case TILE_BATT_CHARGED:
+								sprite_temp = SpriteManagerAdd(battery_sprites[current_tileset], THIS->x, THIS->y + 16);
+								if (sprite_temp) sprite_temp->custom_data[0] = tile_below;
+								break;
+							default:
+								break;
+						}
+					}
 					falling = FALSE;
 					SetSpriteAnim(THIS, anim_idle, ANIMATION_SPEED_IDLE);
 				}
