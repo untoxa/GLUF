@@ -9,7 +9,13 @@
 #define ANIMATION_SPEED_IDLE 12
 static const UINT8 anim_jaws[] = VECTOR( 0, 1 );
 
-static const INT8 sine_table[] = {
+static const INT8 sine_table_x[] = {
+	 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
+	 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+	 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+	-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+};
+static const INT8 sine_table_y[] = {
 	  0,  1,  2,  3,  4,  5,  7,  8,  9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
 	 33, 34, 35, 36, 37, 37, 38, 39, 39, 40, 41, 41, 42, 42, 43, 43, 44, 44, 45, 45, 45, 46, 46, 46, 47, 47, 47, 47, 47, 47, 47, 47,
 	 48, 47, 47, 47, 47, 47, 47, 47, 47, 46, 46, 46, 45, 45, 45, 44, 44, 43, 43, 42, 42, 41, 41, 40, 39, 39, 38, 37, 37, 36, 35, 34,
@@ -22,11 +28,14 @@ static const INT8 sine_table[] = {
 
 void JawsLogic(void * custom_data) BANKED {
 	(void)custom_data;
+	INT16 x = THIS->x + 1;
 	INT16 y = THIS->y;
 	SetSpriteAnim(THIS, anim_jaws, ANIMATION_SPEED_IDLE);
 	UINT8 counter = 0;
 	while (TRUE) {
-		THIS->y = y + sine_table[++counter];
+		THIS->x = x + sine_table_x[counter & 0x7f];
+		THIS->y = y + sine_table_y[counter];
+		++counter;
 		CheckKillGLUF(THIS);
 		YIELD;
 	}
