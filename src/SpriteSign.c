@@ -1,3 +1,6 @@
+// G-L-U-F sign, each sprite shows one letter out of 4 and moves using sine; 4 of such are spawned on the level 1
+// creating the wobbling "GLUF" title
+
 #include "Banks/SetAutoBank.h"
 
 #include "Coroutines.h"

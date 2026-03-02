@@ -1,3 +1,6 @@
+// game state - implements the logic of the game; loads levels, spawn sprites, then check conditions for 
+// restart or switch to the next one. when all levels are beaten, switches itself to the titres state
+
 #include "Banks/SetAutoBank.h"
 
 #include "Scroll.h"

@@ -1,3 +1,5 @@
+// door sprite indicates the exit when it is activated after charging all batteries
+
 #include "Banks/SetAutoBank.h"
 
 #include "Coroutines.h"

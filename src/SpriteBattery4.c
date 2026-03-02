@@ -1,3 +1,5 @@
+// same logic as in SpriteBattery1; graphics from the tileset 4
+
 #include "Banks/SetAutoBank.h"
 
 #include "Coroutines.h"

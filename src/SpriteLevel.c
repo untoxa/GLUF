@@ -1,3 +1,5 @@
+// Level number indicator sprite shows itself for a few seconds each time level (re)starts, then destroys itself
+
 #include "Banks/SetAutoBank.h"
 
 #include "Scroll.h"

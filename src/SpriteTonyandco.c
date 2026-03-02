@@ -1,3 +1,5 @@
+// blinking "Tony&Co" logo sprite for the title screen
+
 #include "Banks/SetAutoBank.h"
 
 #include "Coroutines.h"

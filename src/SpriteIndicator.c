@@ -1,3 +1,5 @@
+// Charge indicator sprite; shows the amount of charge GLUF has
+
 #include "Banks/SetAutoBank.h"
 
 #include "Scroll.h"

@@ -1,3 +1,7 @@
+// "fake parallax" is achieved by streaming 4 shifted background tiles each VBlank, 
+// depending on the scroll position; "background" is scrolling twice slower than the 
+// "foreground" and that produces illusion as if it is "farer" from the viewer
+
 #include <gbdk/platform.h>
 
 #include "Math.h"

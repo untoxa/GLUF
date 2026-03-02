@@ -1,3 +1,5 @@
+// Jumper enemy obey similar rules to the player, but moves randomly
+
 #include "Banks/SetAutoBank.h"
 
 #include <rand.h>

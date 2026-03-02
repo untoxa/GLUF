@@ -1,3 +1,5 @@
+// CrossZGB fuctions which need to be overridden by the game
+
 #include <gbdk/platform.h>
 
 #include "Scroll.h"

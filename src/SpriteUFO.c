@@ -1,3 +1,5 @@
+// UFO enemy sprite - goes between the control points, randomly changing direction at those points
+
 #include "Banks/SetAutoBank.h"
 
 #include <rand.h>

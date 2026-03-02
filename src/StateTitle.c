@@ -1,3 +1,6 @@
+// title screen state - shows the title screen, put sprite logos over it, then wait for A/START;
+// also checks for entering the konami code which enables fast switching between the levels
+
 #include "Banks/SetAutoBank.h"
 
 #include "Scroll.h"

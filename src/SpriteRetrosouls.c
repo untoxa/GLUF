@@ -1,3 +1,5 @@
+// RetroSouls logo sprite
+
 #include "Banks/SetAutoBank.h"
 
 #include "Coroutines.h"

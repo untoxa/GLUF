@@ -1,3 +1,5 @@
+// bolt of lightning, spawned when GLUF is charging; fires itself at random height with random speed of 1 or 2
+
 #include "Banks/SetAutoBank.h"
 
 #include <rand.h>

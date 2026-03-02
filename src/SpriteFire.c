@@ -1,3 +1,5 @@
+// "press fire" banner sprite
+
 #include "Banks/SetAutoBank.h"
 
 #include <rand.h>

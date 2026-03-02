@@ -1,3 +1,5 @@
+// Ghost sprite, work similar to the UFO sprite but may randomly teleport itself from and to any of the specified locations
+
 #include "Banks/SetAutoBank.h"
 
 #include <rand.h>

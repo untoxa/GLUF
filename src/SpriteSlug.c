@@ -1,3 +1,5 @@
+// Slug enemy sprite walks left or right randomly, twice slower than the player; don't fall or use elevators
+
 #include "Banks/SetAutoBank.h"
 
 #include <rand.h>

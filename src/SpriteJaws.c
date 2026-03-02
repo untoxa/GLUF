@@ -1,3 +1,5 @@
+// Jaws enemy, goes up and down using sine, slightly wobbling to the sides
+
 #include "Banks/SetAutoBank.h"
 
 #include "Sprite.h"

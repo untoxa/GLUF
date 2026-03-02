@@ -1,3 +1,6 @@
+// GLUF is the player character, may walk through the levels, use elevators, fall, charge itself by 
+// standing on the charger tile, then charge the floor batteries, if collected enough charge
+
 #include "Banks/SetAutoBank.h"
 
 #include "Coroutines.h"

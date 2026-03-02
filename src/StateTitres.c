@@ -1,3 +1,5 @@
+// titles state - scrolls through the final titres, then waits forever
+
 #include "Banks/SetAutoBank.h"
 
 #include "Scroll.h"
