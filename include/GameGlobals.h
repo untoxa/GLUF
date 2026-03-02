@@ -185,4 +185,6 @@ inline bool chance_75_percent(void) {
 
 void load_music(music_e music) BANKED;
 
+#define SECONDS(A) ((A) * 60)
+
 #endif

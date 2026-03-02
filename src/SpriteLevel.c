@@ -5,12 +5,12 @@
 #include "Coroutines.h"
 #include "ZGBMain.h"
 
+#include "GameGlobals.h"
+
 #define ANIMATION_SPEED_ZERO 0
 static const UINT8 anim_level[] = VECTOR(  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 );
 
 extern UINT8 current_level;
-
-#define SECONDS(A) ((A) * 60)
 
 inline void UpdatePosition(void) {
 #ifdef MASTERSYSTEM

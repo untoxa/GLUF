@@ -33,7 +33,8 @@ NORETURN void TitresLogic(void * custom_data) BANKED {
 	YIELD;
 
 	// wait 5 seconds
-	for (UINT16 i = 0; i != (60 * 5); ++i, YIELD);
+	for (UINT16 i = 0; i != SECONDS(5); ++i, YIELD);
+
 	// scroll titres to the end
 	if (map_height > 0) {
 		while (map_height--) {
@@ -49,6 +50,7 @@ NORETURN void TitresLogic(void * custom_data) BANKED {
 #else
 	if (retrosouls) retrosouls->x = 124, retrosouls->y += 96;
 #endif
+
 	// wait forever
 	for (;; YIELD);
 }
