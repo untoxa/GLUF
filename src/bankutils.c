@@ -1,3 +1,5 @@
+// various wrappers for the GBDK-2020 functions for working with banked data
+
 #include <gbdk/platform.h>
 #include <gbdk/zx0decompress.h>
 
