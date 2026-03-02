@@ -15,7 +15,7 @@ N_BANKS = A
 DEFAULT_SPRITES_SIZE = SPRITES_8x8
 
 # Decrease maximum amount of coroutine contexts to 10
-CORO_MAX_CONTEXTS = 10
+CORO_MAX_CONTEXTS = 12
 
 # Increase context stack size
 CORO_STACK_SIZE = 128
