@@ -116,7 +116,6 @@ void spawn_enemies(void);
 void set_metatile_priority(UINT8 id);
 
 void load_music(music_e music) BANKED {
-	sfx_sound_cut();
 	switch (music) {
 		case MUSIC_INGAME1:
 			PlayMusic(music_ingame1, 1);
