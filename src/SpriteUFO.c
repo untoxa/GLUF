@@ -46,7 +46,7 @@ void UFOLogic(void * custom_data) BANKED {
 	UINT8 x = ((UINT8 *)custom_data)[1];
 	UINT8 y = ((UINT8 *)custom_data)[2];
 	SetSpriteAnim(THIS, anim_UFO[direction], ANIMATION_SPEED_MOVE);
-	while (TRUE) {
+	for (;;) {
 		old_direction = direction;
 		switch (level_buffer[y][x]) {
 			case MOVE_LEFT:

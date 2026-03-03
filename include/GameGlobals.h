@@ -6,6 +6,7 @@
 #include <rand.h>
 #include <stdbool.h>
 
+#include "Coroutines.h"
 #include "Sprite.h"
 #include "SpriteManager.h"
 #include "Sound.h"
@@ -194,5 +195,11 @@ void load_music(music_e music) BANKED;
 #endif
 
 #define TILE_SIZE_BYTES (8 << BPP_SHIFT)
+
+#define LOOKAHEAD_DISTANCE_PX 192
+
+inline void DELAY(UINT16 frames) {
+	for (; (frames); --frames) YIELD;
+}
 
 #endif

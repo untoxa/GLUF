@@ -23,7 +23,7 @@ void SlugLogic(void * custom_data) BANKED {
 	UINT8 x = ((UINT8 *)custom_data)[1];
 	UINT8 y = ((UINT8 *)custom_data)[2];
 	SetSpriteAnim(THIS, anim_slug[direction], ANIMATION_SPEED_SLOW);
-	while (TRUE) {
+	for (;;) {
 		old_direction = direction;
 		if (direction) {
 			switch (direction) {

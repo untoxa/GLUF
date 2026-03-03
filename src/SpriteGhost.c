@@ -106,7 +106,7 @@ void GhostLogic(void * custom_data) BANKED {
 					// set teleport animation
 					SetSpriteAnim(THIS, anim_ghost_teleport, ANIMATION_SPEED_TELEPORT);
 					// disappear in the old teleport point
-					for (UINT8 i = 0; i != 64; ++i) {
+					for (UINT8 i = 0; i != SECONDS(1); ++i) {
 						CheckKillGLUF(THIS);
 						YIELD;
 					}
@@ -115,7 +115,7 @@ void GhostLogic(void * custom_data) BANKED {
 					// appear in the new teleport point
 					THIS->x = ((x = teleport_x[idx]) << 4) + (TILE_BUFFER_OFFSET << 3);
 					THIS->y = (y = teleport_y[idx]) << 4;
-					for (UINT8 i = 0; i != 64; ++i) {
+					for (UINT8 i = 0; i != SECONDS(1); ++i) {
 						CheckKillGLUF(THIS);
 						YIELD;
 					}

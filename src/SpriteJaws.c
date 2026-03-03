@@ -34,12 +34,11 @@ void JawsLogic(void * custom_data) BANKED {
 	INT16 y = THIS->y;
 	SetSpriteAnim(THIS, anim_jaws, ANIMATION_SPEED_IDLE);
 	UINT8 counter = 0;
-	while (TRUE) {
+	for (;; YIELD) {
 		THIS->x = x + sine_table_x[counter & 0x7f];
 		THIS->y = y + sine_table_y[counter];
 		++counter;
 		CheckKillGLUF(THIS);
-		YIELD;
 	}
 }
 

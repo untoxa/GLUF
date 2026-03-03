@@ -1,4 +1,4 @@
-// GLUF is the player character, may walk through the levels, use elevators, fall, charge itself by 
+// GLUF is the player character, may walk through the levels, use elevators, fall, charge itself by
 // standing on the charger tile, then charge the floor batteries, if collected enough charge
 
 #include "Banks/SetAutoBank.h"
@@ -45,21 +45,25 @@ static const UINT8 anim_fall[]       = VECTOR(  9, 10 );
 #define ANIMATION_SPEED_LIFT  10
 static const UINT8 anim_lift[]       = VECTOR( 18, 19 );
 
-void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED;
-
-#define LOOKAHEAD_DISTANCE_PX 192
-
+// "wobbling batteries" - we must choose the correct sprite, depending on the current level tileset
 extern tilesets_e current_tileset;
 static const UINT8 battery_sprites[N_TILESETS] = {SpriteBattery1, SpriteBattery2, SpriteBattery3, SpriteBattery4};
 
+void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED;
+
+// lookahead logic function
 void CameraLogic(void) {
-	scroll_target = NULL;
 	UINT8 mask;
 	INT16 point;
+	// reset scroll target, so we can freely move the scroll
+	scroll_target = NULL;
+	// hide charge indicator
 	if (charge_indicator) SetVisible(charge_indicator, FALSE);
-	while (TRUE) {
+	// while A is held
+	for (; (KEY_PRESSED(J_A)); YIELD ) {
 		if (KEY_PRESSED(J_UP | J_DOWN)) {
 			INT16 old_y = scroll_y, dy = 0;
+			// select up or down lookahead
 			if KEY_PRESSED(J_UP) {
 				mask = (J_A | J_UP), dy = -1;
 				point = (THIS->y + 16) - LOOKAHEAD_DISTANCE_PX;
@@ -67,16 +71,19 @@ void CameraLogic(void) {
 				mask = (J_A | J_DOWN ), dy = 1;
 				point = THIS->y + (LOOKAHEAD_DISTANCE_PX - DEVICE_SCREEN_PX_HEIGHT);
 			}
+			// while keys are held, try to move scroll into direction within the limits
 			while (KEY_PRESSED(mask) == mask) {
 				if (scroll_y != point) MoveScroll(scroll_x, scroll_y + dy);
 				if ((UINT8)sys_time & 0x01) YIELD;
 			}
+			// if keys are released, scroll back
 			while (old_y != scroll_y) {
 				MoveScroll(scroll_x, scroll_y - dy);
 				if (((UINT8)sys_time & 0x01) == 0) YIELD;
 			}
 		} else if (KEY_PRESSED(J_LEFT | J_RIGHT)) {
 			INT16 old_x = scroll_x, dx = 0;
+			// select left or right lookahead
 			if (KEY_PRESSED(J_LEFT)) {
 				mask = (J_A | J_LEFT), dx = -1;
 				point = (THIS->x + 16) - LOOKAHEAD_DISTANCE_PX;
@@ -84,18 +91,21 @@ void CameraLogic(void) {
 				mask = (J_A | J_RIGHT), dx = 1;
 				point = THIS->x + (LOOKAHEAD_DISTANCE_PX - DEVICE_SCREEN_PX_WIDTH);
 			}
+			// while keys are held, try to move scroll into direction within the limits
 			while (KEY_PRESSED(mask) == mask) {
 				if (scroll_x != point) MoveScroll(scroll_x + dx, scroll_y);
 				if ((UINT8)sys_time & 0x01) YIELD;
 			}
+			// if keys are released, scroll back
 			while (old_x != scroll_x) {
 				MoveScroll(scroll_x - dx, scroll_y);
 				if (((UINT8)sys_time & 0x01) == 0) YIELD;
 			}
 		}
-		if KEY_PRESSED(J_A) YIELD; else break;
 	}
+	// show charge indicator
 	if (charge_indicator) SetVisible(charge_indicator, TRUE);
+	// set scroll target back to player
 	scroll_target = THIS;
 }
 
@@ -107,17 +117,20 @@ void GLUFLogic(void * custom_data) BANKED {
 	UINT8 charge_cooldown = CHARGE_COOLDOWN;
 	UINT8 player_x = start_x, player_y = start_y;
 	Sprite * sprite_door = NULL, * sprite_temp;
+	// GLUF appears completely discharged
 	GLUF_charge = 0;
+	// set and play "entering level" animation
+	SetAnimationLoop(THIS, FALSE);
 	SetSpriteAnim(THIS, anim_enter, ANIMATION_SPEED_ENTER);
 	ExecuteSFX(BANK(sfx7exit), sfx7exit, SFX_MUTE_MASK(sfx7exit), SFX_PRIORITY_HIGH);
-	for (UINT8 i = 0; i != 42; ++i) {
-		YIELD;
-	}
+	DELAY(42);
+	// set the idle animation
+	SetAnimationLoop(THIS, TRUE);
 	SetSpriteAnim(THIS, anim_idle, ANIMATION_SPEED_IDLE);
-	while (TRUE) {
+	for (;; YIELD) {
 		if ((!falling) && (!lifting)) {
 #ifndef DEBUG_BUILD
-			// "lookahead" camera
+			// run lookahead camera logic
 			if (KEY_PRESSED(J_A)) CameraLogic();
 #endif
 			// GLUF movements with joypad
@@ -272,28 +285,26 @@ void GLUFLogic(void * custom_data) BANKED {
 		} else charge_cooldown = CHARGE_COOLDOWN;
 		// exit
 		if (level_buffer[player_y][player_x] == TILE_DOOR) {
-			// disable collision checking with the enemies
+			// disable collision checking with the enemies while leaving the level
 			GLUF = NULL;
-			// play level exit animation
+			// play "leaving level" animation
 			if (sprite_door) SpriteManagerRemoveSprite(sprite_door);
 			SetAnimationLoop(THIS, FALSE);
 			SetSpriteAnim(THIS, anim_exit, ANIMATION_SPEED_ENTER);
 			ExecuteSFX(BANK(sfx7exit), sfx7exit, SFX_MUTE_MASK(sfx7exit), SFX_PRIORITY_HIGH);
-			for (UINT8 i = 0; i != 42; ++i) {
-				YIELD;
-			}
+			DELAY(42);
 			// increase level number, restart level
 			++current_level;
 			restart = TRUE;
 			// remove ourselves
 			SpriteManagerRemoveSprite(THIS);
 		}
-		YIELD;
 	}
 }
 
 void GLUFLogicFinalizer(void * custom_data) BANKED {
 	(void)custom_data;
+	// reset scroll target and GLUF pointer when killed/removed
 	scroll_target = GLUF = NULL;
 }
 

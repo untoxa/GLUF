@@ -213,6 +213,7 @@ void spawn_enemies(void) {
 	}
 }
 
+// set prioryty of the tiles which are related to the metatile with the specified id
 void set_metatile_priority(UINT8 id) {
 	id = (id << 1) + 1;
 	scroll_tile_info[id] |= S_PRIORITY;
@@ -224,6 +225,7 @@ void set_metatile_priority(UINT8 id) {
 	scroll_tile_info[id] |= S_PRIORITY;
 }
 
+// update metatile in the tilemap buffer
 static void set_metatile(UINT8 * ptr, UINT16 id) {
 	id = (id << 1) + 1;
 	*ptr++ = id++; *ptr = id;
@@ -232,6 +234,7 @@ static void set_metatile(UINT8 * ptr, UINT16 id) {
 	*ptr++ = id++; *ptr = id;
 }
 
+// decode the level data, initialize metatile buffer, tile buffer, etc.
 void intialize_level_data(UINT8 level) {
 	// current level data bank
 	static UINT8 id;
@@ -282,6 +285,7 @@ void intialize_level_data(UINT8 level) {
 	}
 }
 
+// update metatile in the game level buffer, in the level tilemap and on screen
 void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED {
 	level_buffer[y][x] = id;
 	y = (y << 1);
@@ -304,8 +308,8 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 	UINT8 skip_press_fire = FALSE;
 #endif
 	// set up CrossZGB scrolling parameters
-	scroll_top_movement_limit = 48;
-	scroll_bottom_movement_limit = 96;
+	scroll_top_movement_limit = 56;
+	scroll_bottom_movement_limit = 88;
 	clamp_enabled = TRUE;
 
 	// load level
@@ -315,7 +319,7 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 
 	for (;; YIELD) {
 #ifdef ENABLE_CHEATS
-		// if cheating - allow change levels with B + D-PAD
+		// if cheating - allow change levels with B + UP/DOWN, including title and titres (no-return) states
 		if ((is_cheating) && (KEY_PRESSED(J_B))) {
 			if (KEY_TICKED(J_UP)) {
 				if (levels[++current_level].map_bank) skip_press_fire = restart = TRUE; else SetState(StateTitres);
@@ -356,6 +360,7 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 
 void GameLogicFinalizer(void * custom_data) BANKED {
 	(void)custom_data;
+	// disable parallax on state change
 	disable_parallax();
 }
 

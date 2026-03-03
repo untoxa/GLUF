@@ -24,33 +24,31 @@ NORETURN void TitresLogic(void * custom_data) BANKED {
 	load_music(MUSIC_OUTRO);
 	// destroy all sprites
 	SpriteManagerReset();
-	Sprite * retrosouls = SpriteManagerAdd(SpriteRetrosouls, DEVICE_SCREEN_PX_WIDTH + 16, 0);
 	// initialize background
 	InitScroll(BANK(titres), &titres, NULL, NULL);
 	// compensate hidden column on SMS so background is centered
 	CompensateScroll();
-	// calculate the scroll limit for the titres
+	// calculate the scroll length for the titres in pixels
 	GetMapSize(BANK(titres), &titres, NULL, &map_height);
 	map_height -= SCREEN_TILES_H;
+	map_height <<= 3;
+	// process once to exit the state INIT()
 	YIELD;
 
 	// wait 5 seconds
-	for (UINT16 i = 0; i != SECONDS(5); ++i, YIELD);
+	DELAY(SECONDS(5));
 
-	// scroll titres to the end
-	if (map_height > 0) {
-		while (map_height--) {
-			for (UINT8 i = 0; i != 8; ++i) {
-				MoveScroll(scroll_x, scroll_y + 1);
-				for (UINT8 j = 0; j != 8; ++j, YIELD);
-			}
-			if (retrosouls) retrosouls->y = scroll_y;
-		}
+	// scroll titres to the end, one pixel each 8 frames
+	for (; (map_height); --map_height) {
+		MoveScroll(scroll_x, scroll_y + 1);
+		DELAY(8);
 	}
+
+	// show RetroSouls logo
 #ifdef MASTERSYSTEM
-	if (retrosouls) retrosouls->x = 196, retrosouls->y += 128;
+	SpriteManagerAdd(SpriteRetrosouls, 196, scroll_y + 128);
 #else
-	if (retrosouls) retrosouls->x = 124, retrosouls->y += 96;
+	SpriteManagerAdd(SpriteRetrosouls, 124, scroll_y + 96);
 #endif
 
 	// wait forever
@@ -59,6 +57,7 @@ NORETURN void TitresLogic(void * custom_data) BANKED {
 
 void TitresLogicFinalizer(void * custom_data) BANKED {
 	(void)custom_data;
+	// titres state logic finalizer,
 	MAP_OVERLAP_BKG;
 	SPRITES_8x8;
 }
