@@ -1,5 +1,5 @@
-// "fake parallax" is achieved by streaming 4 shifted background tiles each VBlank, 
-// depending on the scroll position; "background" is scrolling twice slower than the 
+// "fake parallax" is achieved by streaming 4 shifted background tiles each VBlank,
+// depending on the scroll position; "background" is scrolling twice slower than the
 // "foreground" and that produces illusion as if it is "farer" from the viewer
 
 #include <gbdk/platform.h>
@@ -58,10 +58,17 @@ void VBL_isr(void) NONBANKED {
 	if (parallax_enabled) process_parallax(scroll_x_vblank >> 1, scroll_y_vblank >> 1);
 }
 #else
-void SyncVBlank(void) NONBANKED {
-	vsync();
+extern UINT8 vbl_count;
+UINT8 SyncVBlank(void) NONBANKED {
+	if (!vbl_count) vsync();   // wait VBlank if not slowdown
+
+	UINT8 delta_time = (vbl_count < 2u) ? 0u : 1u;
+	vbl_count = 0;
+
 	// this happens after main thread returns from the GBDK-2020 vsync() in the main loop
 	if (parallax_enabled) process_parallax(scroll_x_vblank >> 1, scroll_y_vblank >> 1);
+
+	return delta_time;
 }
 #endif
 

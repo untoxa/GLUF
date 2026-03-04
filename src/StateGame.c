@@ -167,48 +167,54 @@ UINT8 load_level(UINT8 level) {
 
 void spawn_enemies(void) {
 	Sprite * enemy;
-	// spawn the title
+	// spawn the title if level 0
 	if (is_title_level = (current_level == 0)) {
 		for (UINT8 i = 0; i != 4; ++i) {
 			if (enemy = SpriteManagerAdd(SpriteSign, ((i + 4) << 4) + (TILE_BUFFER_OFFSET << 3), 13 << 4)) enemy->custom_data[0] = i;
 		}
-	} else {
-		UINT8 * data = (UINT8 *)level_buffer;
-		for (UINT8 y = 0; y != LEVEL_HEIGHT; ++y) {
-			for (UINT8 x = 0; x != LEVEL_WIDTH; ++x) {
-				switch (*data) {
-					case ENEMY_JUMPER:
-						enemy = SpriteManagerAdd(SpriteJumper, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
-						break;
-					case ENEMY_UFO_LEFT:
-					case ENEMY_UFO_RIGHT:
-					case ENEMY_UFO_UP:
-					case ENEMY_UFO_DOWN:
-						enemy = SpriteManagerAdd(SpriteUFO, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
-						break;
-					case ENEMY_JAWS:
-						enemy = SpriteManagerAdd(SpriteJaws, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
-						break;
-					case ENEMY_SLUG:
-						enemy = SpriteManagerAdd(SpriteSlug, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
-						break;
-					case ENEMY_GHOST_LEFT:
-					case ENEMY_GHOST_UP:
-					case ENEMY_GHOST_DOWN:
-					case ENEMY_GHOST_RIGHT:
-						enemy = SpriteManagerAdd(SpriteGhost, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
-						break;
-					default:
-						enemy = NULL;
-						break;
-				}
-				if (enemy) {
-					enemy->custom_data[0] = *data;
-					enemy->custom_data[1] = x;
-					enemy->custom_data[2] = y;
-				}
-				data++;
+	}
+	// spawn other enemies
+	UINT8 * data = (UINT8 *)level_buffer;
+	for (UINT8 y = 0; y != LEVEL_HEIGHT; ++y) {
+		for (UINT8 x = 0; x != LEVEL_WIDTH; ++x) {
+			switch (*data) {
+#ifdef ENABLE_ANIMATED_ARROWS
+				case TILE_ARROW_DOWN:
+				case TILE_ARROW_UP:
+					enemy = SpriteManagerAdd(SpriteArrow, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
+					break;
+#endif
+				case ENEMY_JUMPER:
+					enemy = SpriteManagerAdd(SpriteJumper, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
+					break;
+				case ENEMY_UFO_LEFT:
+				case ENEMY_UFO_RIGHT:
+				case ENEMY_UFO_UP:
+				case ENEMY_UFO_DOWN:
+					enemy = SpriteManagerAdd(SpriteUFO, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
+					break;
+				case ENEMY_JAWS:
+					enemy = SpriteManagerAdd(SpriteJaws, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
+					break;
+				case ENEMY_SLUG:
+					enemy = SpriteManagerAdd(SpriteSlug, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
+					break;
+				case ENEMY_GHOST_LEFT:
+				case ENEMY_GHOST_UP:
+				case ENEMY_GHOST_DOWN:
+				case ENEMY_GHOST_RIGHT:
+					enemy = SpriteManagerAdd(SpriteGhost, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
+					break;
+				default:
+					enemy = NULL;
+					break;
 			}
+			if (enemy) {
+				enemy->custom_data[0] = *data;
+				enemy->custom_data[1] = x;
+				enemy->custom_data[2] = y;
+			}
+			data++;
 		}
 	}
 }
@@ -261,6 +267,12 @@ void intialize_level_data(UINT8 level) {
 					start_x = x, start_y = y;
 					id = TILE_DOOR;
 					break;
+#ifdef ENABLE_ANIMATED_ARROWS
+				case TILE_ARROW_DOWN:
+				case TILE_ARROW_UP:
+					id = TILE_EMPTY;
+					break;
+#endif
 				case TILE_BATT_DISCHARGED:
 					++battery_count;
 					break;

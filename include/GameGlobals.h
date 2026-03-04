@@ -19,6 +19,9 @@
 
 #define ENABLE_CHEATS
 #define ENABLE_PARALLAX
+#if defined(NINTENDO)
+	#define ENABLE_ANIMATED_ARROWS
+#endif
 
 #define INITIAL_LEVEL_NUMBER    0
 
@@ -38,6 +41,9 @@
 #define TILE_EMPTY              0x00
 #define TILE_EMPTY_EXT          0x02
 #define TILE_START_POINT        0x04
+
+#define TILE_ARROW_DOWN		0x07
+#define TILE_ARROW_UP		0x08
 
 #define TILE_DOOR               0x09
 

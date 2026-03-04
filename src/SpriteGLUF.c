@@ -6,6 +6,7 @@
 #include "Coroutines.h"
 #include "Keys.h"
 #include "Sound.h"
+#include "Sprite.h"
 #include "ZGBMain.h"
 
 #include "GameGlobals.h"
