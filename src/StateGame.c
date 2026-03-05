@@ -316,9 +316,7 @@ void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED {
 NORETURN void GameLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	// initialization
-#ifdef ENABLE_CHEATS
 	UINT8 skip_press_fire = FALSE;
-#endif
 	// set up CrossZGB scrolling parameters
 	scroll_top_movement_limit = 56;
 	scroll_bottom_movement_limit = 88;
@@ -345,11 +343,7 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 #endif
 		if (restart) {
 			restart = FALSE;
-#ifdef ENABLE_CHEATS
 			if (!skip_press_fire) {
-#endif
-				// remove "GLUF" sign on the title level
-				if (is_title_level) SpriteManagerReset();
 				// disable sprite flickering, so "press fire" stay on top
 				enable_flickering = FALSE;
 				// add "push fire" sign
@@ -358,10 +352,8 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 				for (; (!KEY_TICKED(START_BUTTONS)); YIELD) VectorRotateFrom(sprite_manager_updatables, 1);
 				// enable sprite flickering
 				enable_flickering = TRUE;
-#ifdef ENABLE_CHEATS
 			}
 			skip_press_fire = FALSE;
-#endif
 			// fade manually
 			FadeIn();
 			// reload the level
