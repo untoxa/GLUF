@@ -316,7 +316,7 @@ void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED {
 NORETURN void GameLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	// initialization
-	UINT8 skip_press_fire = FALSE;
+	volatile UINT8 skip_press_fire = FALSE;
 	// set up CrossZGB scrolling parameters
 	scroll_top_movement_limit = 56;
 	scroll_bottom_movement_limit = 88;
@@ -352,8 +352,7 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 				for (; (!KEY_TICKED(START_BUTTONS)); YIELD) VectorRotateFrom(sprite_manager_updatables, 1);
 				// enable sprite flickering
 				enable_flickering = TRUE;
-			}
-			skip_press_fire = FALSE;
+			} else skip_press_fire = FALSE;
 			// fade manually
 			FadeIn();
 			// reload the level
