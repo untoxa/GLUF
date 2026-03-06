@@ -11,6 +11,7 @@
 static const UINT8 anim_charge[] = VECTOR(  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 );
 
 extern UINT8 GLUF_charge;
+extern Sprite * GLUF;
 
 Sprite * charge_indicator;
 
@@ -30,6 +31,7 @@ void IndicatorLogic(void * custom_data) BANKED {
 	for (;; YIELD) {
 		SetSpriteAnimFrame(THIS, GLUF_charge);
 		UpdatePosition();
+		if (!GLUF) return;
 	}
 }
 
