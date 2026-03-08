@@ -11,6 +11,7 @@
 #include "GameGlobals.h"
 
 #define ANIMATION_SPEED_SLOW 10
+#define ANIMATION_SPEED_FAST 20
 static const UINT8 anim_slug_move_vert[]  = VECTOR( 0, 1 );
 static const UINT8 anim_slug_move_horiz[] = VECTOR( 0, 2, 3, 1 );
 
@@ -18,11 +19,13 @@ static const UINT8 * const anim_slug[N_DIRECTIONS] = { anim_slug_move_vert, anim
 
 static const INT8 x_delta[N_DIRECTIONS] = {  0,  0,  0, -MOVE_SPEED,  MOVE_SPEED };
 
+extern tilesets_e current_tileset;
+
 void SlugLogic(void * custom_data) BANKED {
 	enemy_dir_e old_direction = N_DIRECTIONS, direction = (chance_50_percent()) ? DIR_LEFT : DIR_RIGHT;
 	UINT8 x = ((UINT8 *)custom_data)[1];
 	UINT8 y = ((UINT8 *)custom_data)[2];
-	SetSpriteAnim(THIS, anim_slug[direction], ANIMATION_SPEED_SLOW);
+	SetSpriteAnim(THIS, anim_slug[direction], ((current_tileset == TILESET_4) ? ANIMATION_SPEED_FAST : ANIMATION_SPEED_SLOW));
 	for (;;) {
 		old_direction = direction;
 		if (direction) {
@@ -39,12 +42,13 @@ void SlugLogic(void * custom_data) BANKED {
 
 			}
 			if (direction != old_direction) {
-				SetSpriteAnim(THIS, anim_slug[direction], ANIMATION_SPEED_SLOW);
+				SetSpriteAnim(THIS, anim_slug[direction], ((current_tileset == TILESET_4) ? ANIMATION_SPEED_FAST : ANIMATION_SPEED_SLOW));
 			}
 			for (UINT8 i = 0; i != (16 / MOVE_SPEED); ++i) {
 				THIS->x += x_delta[direction];
 				CheckKillGLUF(THIS);
 				YIELD;
+				if (current_tileset == TILESET_4) continue;
 				CheckKillGLUF(THIS);
 				YIELD;
 			}
