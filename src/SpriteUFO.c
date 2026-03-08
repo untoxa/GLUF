@@ -96,28 +96,24 @@ void UFOLogic(void * custom_data) BANKED {
 				break;
 
 		}
-		if (direction) {
-			// check out of bounds
-			if ((x == 0) && (direction == DIR_LEFT)) direction = DIR_RIGHT;
-			else if ((x == (LEVEL_WIDTH - 1)) && (direction == DIR_RIGHT)) direction = DIR_LEFT;
-			if ((y == 0) && (direction == DIR_UP)) direction = DIR_DOWN;
-			else if ((x == (LEVEL_HEIGHT - 1)) && (direction == DIR_DOWN)) direction = DIR_UP;
-			// move into direction
-			if (direction != old_direction) {
-				SetSpriteAnim(THIS, anim_UFO[direction], ANIMATION_SPEED_MOVE);
-			}
-			for (UINT8 i = 0; i != (16 / MOVE_SPEED); ++i) {
-				THIS->x += x_delta[direction];
-				THIS->y += y_delta[direction];
-				CheckKillGLUF(THIS);
-				YIELD;
-			}
-			x += x_delta[direction];
-			y += y_delta[direction];
-		} else {
+		// check out of bounds
+		if ((x == 0) && (direction == DIR_LEFT)) direction = DIR_RIGHT;
+		else if ((x == (LEVEL_WIDTH - 1)) && (direction == DIR_RIGHT)) direction = DIR_LEFT;
+		if ((y == 0) && (direction == DIR_UP)) direction = DIR_DOWN;
+		else if ((x == (LEVEL_HEIGHT - 1)) && (direction == DIR_DOWN)) direction = DIR_UP;
+		// set the new animation, if needed
+		if (direction != old_direction) {
+			SetSpriteAnim(THIS, anim_UFO[direction], ANIMATION_SPEED_MOVE);
+		}
+		// move into direction and update the coordinates
+		for (UINT8 i = 0; i != (16 / MOVE_SPEED); ++i) {
+			THIS->x += x_delta[direction];
+			THIS->y += y_delta[direction];
 			CheckKillGLUF(THIS);
 			YIELD;
 		}
+		x += x_delta[direction];
+		y += y_delta[direction];
 	}
 }
 
