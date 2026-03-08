@@ -199,8 +199,8 @@ void load_music(music_e music) BANKED;
 #else
 #define BPP_SHIFT 2
 #endif
-
 #define TILE_SIZE_BYTES (8 << BPP_SHIFT)
+#define ID_TO_TILE(id) (((id) << 2) + 1)
 
 #define LOOKAHEAD_DISTANCE_PX 192
 
@@ -208,6 +208,7 @@ inline void DELAY(UINT16 frames) {
 	for (; (frames); --frames) YIELD;
 }
 
-#define ID_TO_TILE(id) (((id) << 2) + 1)
+#define IS_FRAME_ODD ((UINT8)sys_time & 0x01u)
+#define IS_FRAME_EVEN (((UINT8)sys_time & 0x01u) == 0)
 
 #endif

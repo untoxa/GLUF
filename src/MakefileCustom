@@ -2,6 +2,15 @@
 # but not supported by the CrossZGB itself. CrossZGB Makefile system includes this file
 # and everything get built together at once
 
+# there are three sections for the different types of the custom assets:
+# 1. the background tiles - i had to go with the custom tool, because the order of tiles
+#    which are loaded into VRAM is important for the efficient parallax implementation
+# 2. the level data - those levels were taken from the original game assets provided by
+#    Denis Grachev, they are in the binary format
+# 3. the parallax tiles - specific data for the "slower scrolling background" effect,
+#    it is produced from the same graphics assets, which are used in (1)
+
+# ------------------------------
 # rules for the background tiles
 PNG2METATILES = python ../tools/png2metatiles/png2metatiles.py
 
@@ -14,6 +23,7 @@ SEC_TARGETS := $(METATILES:%.png=$(OBJDIR_RES)/%.c) $(SEC_TARGETS)
 $(OBJDIR_RES)/%.c: ../res/metatiles/$(EXT)/%.png $$(wildcard ../res/metatiles/$(EXT)/%.png.meta)
 	@$(PNG2METATILES) -o $@ $(if $(wildcard $<.meta),`cat <$<.meta`) $<
 
+# ------------------------------
 # rules for the binary files with the level data
 BIN2C = python ../tools/bin2c/bin2c.py
 GBCOMPRESS = $(GBDK_HOME_UNIX)/bin/gbcompress
@@ -28,6 +38,7 @@ $(OBJDIR_RES)/%.c: ../res/data/%.bin $$(wildcard ../res/data/%.bin.meta)
 	@$(GBCOMPRESS) --alg=zx0 $< $(basename $@).zx0
 	@$(BIN2C) -i $(basename $(notdir $<)) -o $@ $(if $(wildcard $<.meta),`cat <$<.meta`) $(basename $@).zx0
 
+# ------------------------------
 # rules for the parallax tiles
 PNG2PARALLAX = python ../tools/parallax/parallax.py
 

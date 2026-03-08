@@ -75,12 +75,12 @@ void CameraLogic(void) {
 			// while keys are held, try to move scroll into direction within the limits
 			while (KEY_PRESSED(mask) == mask) {
 				if (scroll_y != point) MoveScroll(scroll_x, scroll_y + dy);
-				if ((UINT8)sys_time & 0x01) YIELD;
+				if (IS_FRAME_EVEN) YIELD;
 			}
 			// if keys are released, scroll back
 			while (old_y != scroll_y) {
 				MoveScroll(scroll_x, scroll_y - dy);
-				if (((UINT8)sys_time & 0x01) == 0) YIELD;
+				if (IS_FRAME_EVEN) YIELD;
 			}
 		} else if (KEY_PRESSED(J_LEFT | J_RIGHT)) {
 			INT16 old_x = scroll_x, dx = 0;
@@ -95,12 +95,12 @@ void CameraLogic(void) {
 			// while keys are held, try to move scroll into direction within the limits
 			while (KEY_PRESSED(mask) == mask) {
 				if (scroll_x != point) MoveScroll(scroll_x + dx, scroll_y);
-				if ((UINT8)sys_time & 0x01) YIELD;
+				if (IS_FRAME_EVEN) YIELD;
 			}
 			// if keys are released, scroll back
 			while (old_x != scroll_x) {
 				MoveScroll(scroll_x - dx, scroll_y);
-				if (((UINT8)sys_time & 0x01) == 0) YIELD;
+				if (IS_FRAME_EVEN) YIELD;
 			}
 		}
 	}
