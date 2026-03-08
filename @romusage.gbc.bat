@@ -1,1 +1,0 @@
-@python ./tools/romusage/romusage.py ./bin/gbc/GLUF_tesla_frog.gbc
