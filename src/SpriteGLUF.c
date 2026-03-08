@@ -130,10 +130,8 @@ void GLUFLogic(void * custom_data) BANKED {
 	SetSpriteAnim(THIS, anim_idle, ANIMATION_SPEED_IDLE);
 	for (;; YIELD) {
 		if ((!falling) && (!lifting)) {
-#ifndef DEBUG_BUILD
-			// run lookahead camera logic
+			// lookahead camera logic
 			if (KEY_PRESSED(J_A)) CameraLogic();
-#endif
 			// GLUF movements with joypad
 			tile_below = level_buffer[player_y + 1][player_x];
 			if (KEY_PRESSED(J_UP)) {

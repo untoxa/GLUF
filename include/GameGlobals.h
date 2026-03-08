@@ -208,4 +208,6 @@ inline void DELAY(UINT16 frames) {
 	for (; (frames); --frames) YIELD;
 }
 
+#define ID_TO_TILE(id) (((id) << 2) + 1)
+
 #endif

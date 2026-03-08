@@ -221,11 +221,11 @@ void spawn_enemies(void) {
 
 // set prioryty of the tiles which are related to the metatile with the specified id
 void set_metatile_priority(UINT8 id) {
-	id = (id << 1) + 1;
+	id = ID_TO_TILE(id);
 	scroll_tile_info[id] |= S_PRIORITY;
 	++id;
 	scroll_tile_info[id] |= S_PRIORITY;
-	id += ((TILE_LAST_VISIBLE << 1) + 1);
+	++id;
 	scroll_tile_info[id] |= S_PRIORITY;
 	++id;
 	scroll_tile_info[id] |= S_PRIORITY;
@@ -233,11 +233,12 @@ void set_metatile_priority(UINT8 id) {
 
 // update metatile in the tilemap buffer
 static void set_metatile(UINT8 * ptr, UINT16 id) {
-	id = (id << 1) + 1;
-	*ptr++ = id++; *ptr = id;
-	id += ((TILE_LAST_VISIBLE << 1) + 1);
+	id = ID_TO_TILE(id);
+	*ptr++ = id;
+	*ptr = id + 2;
 	ptr += TILE_BUFFER_WIDTH - 1;
-	*ptr++ = id++; *ptr = id;
+	*ptr++ = id + 1;
+	*ptr = id + 3;
 }
 
 // decode the level data, initialize metatile buffer, tile buffer, etc.
@@ -305,11 +306,10 @@ void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED {
 	set_metatile(tile_buffer + (y * TILE_BUFFER_WIDTH) + x, id);
 	x += scroll_offset_x + SCREEN_BKG_OFFSET_X;
 	y += scroll_offset_y;
-	id = (id << 1) + 1;
+	id = ID_TO_TILE(id);
 	UpdateMapTile(TARGET_BKG, x,     y,     0, id++, NULL);
-	UpdateMapTile(TARGET_BKG, x + 1, y,     0, id,   NULL);
-	id += ((TILE_LAST_VISIBLE << 1) + 1);
 	UpdateMapTile(TARGET_BKG, x,     y + 1, 0, id++, NULL);
+	UpdateMapTile(TARGET_BKG, x + 1, y,     0, id++, NULL);
 	UpdateMapTile(TARGET_BKG, x + 1, y + 1, 0, id,   NULL);
 }
 

@@ -38,13 +38,9 @@ void process_parallax(INT16 x, INT16 y) {
 	SWITCH_ROM(parallax_banks[current_tileset]);
 
 	ptr = parallax_tiles[current_tileset] + offset;
-	set_bkg_native_data(1, 1, ptr);
-	ptr += TILE_SIZE_BYTES;
-	set_bkg_native_data(((TILE_LAST_VISIBLE + 1) << 1) + 1, 1, ptr);
-	ptr += (TILE_SIZE_BYTES * 3);
-	set_bkg_native_data(2, 1, ptr);
-	ptr += TILE_SIZE_BYTES;
-	set_bkg_native_data(((TILE_LAST_VISIBLE + 1) << 1) + 2, 1, ptr);
+	set_bkg_native_data(ID_TO_TILE(TILE_EMPTY), 2, ptr);
+	ptr += (TILE_SIZE_BYTES * 4);
+	set_bkg_native_data(ID_TO_TILE(TILE_EMPTY) + 2, 2, ptr);
 
 	SWITCH_ROM(__save);
 }
