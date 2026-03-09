@@ -28,6 +28,7 @@ _SPRITE(SpriteBattery2,   battery2,   FLIP_NONE)\
 _SPRITE(SpriteBattery3,   battery3,   FLIP_NONE)\
 _SPRITE(SpriteBattery4,   battery4,   FLIP_NONE)\
 _SPRITE(SpriteArrow,      arrow,      FLIP_NONE)\
+_SPRITE(SpriteSpark,      spark,      FLIP_NONE)\
 SPRITE_DEF_END
 
 #include "ZGBMain_Init.h"

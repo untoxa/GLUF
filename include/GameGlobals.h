@@ -13,8 +13,10 @@
 
 #if defined(MASTERSYSTEM)
 	#define START_BUTTONS (J_A)
+	#define FIRE_BUTTONS (J_A)
 #else
-	#define START_BUTTONS (J_A | J_START)
+	#define START_BUTTONS (J_START)
+	#define FIRE_BUTTONS (J_A | J_START)
 #endif
 
 #define ENABLE_CHEATS

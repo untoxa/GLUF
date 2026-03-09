@@ -24,11 +24,11 @@ typedef struct {
 
 const sprite_coords_t title_sprites[] = {
 #if defined(MASTERSYSTEM)
-	{SpriteTeslafrog, 152, 24}, {SpriteRetrosouls, 183, 102}, {SpriteTonyandco, 175, 70}
+	{SpriteTeslafrog, 152, 24}, {SpriteRetrosouls, 183, 102}, {SpriteTonyandco, 175, 70}, {SpriteSpark, 134, 56}
 #elif defined(GAMEGEAR)
-	{SpriteTeslafrog,  92,  8}, {SpriteRetrosouls, 120,  88}, {SpriteTonyandco, 114, 56}
+	{SpriteTeslafrog,  92,  8}, {SpriteRetrosouls, 120,  88}, {SpriteTonyandco, 114, 56}, {SpriteSpark, 86, 42}
 #else
-	{SpriteTeslafrog,  92,  8}, {SpriteRetrosouls, 121,  89}, {SpriteTonyandco, 123, 54}
+	{SpriteTeslafrog,  92,  8}, {SpriteRetrosouls, 121,  89}, {SpriteTonyandco, 123, 54}, {SpriteSpark, 86, 42}
 #endif
 };
 
@@ -78,6 +78,12 @@ NORETURN void TitleLogic(void * custom_data) BANKED {
 		} else
 #endif
 		if (KEY_TICKED(START_BUTTONS)) {
+			// init RNG
+#if defined(NINTENDO)
+    			initarand(((UINT16)DIV_REG << 8) ^ sys_time);
+#else
+    			initarand(sys_time);
+#endif
 			// start game
 			SetState(StateGame);
 		}

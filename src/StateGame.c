@@ -349,7 +349,7 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 				// add "push fire" sign
 				SpriteManagerBringToFront(SpriteManagerAdd(SpriteFire, 0, 0));
 				// wait for pressing A if GLUF was killed, keep flickering sprites manually
-				for (; (!KEY_TICKED(START_BUTTONS)); YIELD) VectorRotateFrom(sprite_manager_updatables, 1);
+				for (; (!KEY_TICKED(FIRE_BUTTONS)); YIELD) VectorRotateFrom(sprite_manager_updatables, 1);
 				// enable sprite flickering
 				enable_flickering = TRUE;
 			} else skip_press_fire = FALSE;
