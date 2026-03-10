@@ -9,9 +9,12 @@
 #include "Keys.h"
 #include "Music.h"
 #include "Coroutines.h"
+#include "SGB.h"
 #include "ZGBMain.h"
 
 #include "GameGlobals.h"
+
+IMPORT_BORDER(border);
 
 IMPORT_MAP(title);
 
@@ -40,6 +43,8 @@ static const UINT8 * konami_code_ptr = konami_code;
 
 NORETURN void TitleLogic(void * custom_data) BANKED {
 	(void)custom_data;
+	// load SGB border
+	LOAD_SGB_BORDER(border);
 	// set up CrossZGB scrolling parameters
 	SPRITES_8x16;
 	MAP_OVERLAP_SPR;
