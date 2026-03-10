@@ -19,7 +19,7 @@ NORETURN void TitresLogic(void * custom_data) BANKED {
 	// set up CrossZGB scrolling parameters
 	SPRITES_8x16;
 	MAP_OVERLAP_SPR;
-	clamp_enabled = FALSE;
+	DISABLE_SCROLL_CLAMPING;
 	// play outro music
 	load_music(MUSIC_OUTRO);
 	// destroy all sprites

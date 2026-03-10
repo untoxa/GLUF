@@ -320,7 +320,7 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 	// set up CrossZGB scrolling parameters
 	scroll_top_movement_limit = 56;
 	scroll_bottom_movement_limit = 88;
-	clamp_enabled = TRUE;
+	ENABLE_SCROLL_CLAMPING;
 
 	// load level
 	load_level(current_level = INITIAL_LEVEL_NUMBER);
@@ -345,13 +345,13 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 			restart = FALSE;
 			if (!skip_press_fire) {
 				// disable sprite flickering, so "press fire" stay on top
-				enable_flickering = FALSE;
+				DISABLE_SPRITE_FLICKERING;
 				// add "push fire" sign
 				SpriteManagerBringToFront(SpriteManagerAdd(SpriteFire, 0, 0));
 				// wait for pressing A if GLUF was killed, keep flickering sprites manually
 				for (; (!KEY_TICKED(FIRE_BUTTONS)); YIELD) VectorRotateFrom(sprite_manager_updatables, 1);
 				// enable sprite flickering
-				enable_flickering = TRUE;
+				ENABLE_SPRITE_FLICKERING;
 			} else skip_press_fire = FALSE;
 			// fade manually
 			FadeIn();

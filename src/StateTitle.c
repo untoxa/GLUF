@@ -49,7 +49,7 @@ NORETURN void TitleLogic(void * custom_data) BANKED {
 	// set up CrossZGB scrolling parameters
 	SPRITES_8x16;
 	MAP_OVERLAP_SPR;
-	clamp_enabled = FALSE;
+	DISABLE_SCROLL_CLAMPING;
 	// set up and start music
 	stop_music_on_new_state = FALSE;
 	music_enable_NTSC_compensation();
