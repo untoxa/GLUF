@@ -54,17 +54,17 @@ NORETURN void TitleLogic(void * custom_data) BANKED {
 	stop_music_on_new_state = FALSE;
 	music_enable_NTSC_compensation();
 	load_music(MUSIC_INTRO);
-	// lock screen if not support color
+	// destroy all sprites
+	SpriteManagerReset();
 #if defined(NINTENDO)
-	if (_cpu != CGB_TYPE) {
+	// lock screen if not support color
+	if (!DEVICE_SUPPORTS_COLOR) {
 		// init background with the lock screen
 		InitScroll(BANK(lockscreen), &lockscreen, NULL, NULL);
 		// wait forever
 		for(;; YIELD);
 	}
 #endif
-	// destroy all sprites
-	SpriteManagerReset();
 	// some parts of the screen are sprites
 	for (UINT8 i = 0; i != ARRAY_LENGTH(title_sprites); ++i) {
 		SpriteManagerAdd(title_sprites[i].type, title_sprites[i].x, title_sprites[i].y);
