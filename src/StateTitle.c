@@ -17,6 +17,7 @@
 IMPORT_BORDER(border);
 
 IMPORT_MAP(title);
+IMPORT_MAP(lockscreen);
 
 DECLARE_SFX(sfx4lift);
 
@@ -53,6 +54,15 @@ NORETURN void TitleLogic(void * custom_data) BANKED {
 	stop_music_on_new_state = FALSE;
 	music_enable_NTSC_compensation();
 	load_music(MUSIC_INTRO);
+	// lock screen if not support color
+#if defined(NINTENDO)
+	if (_cpu != CGB_TYPE) {
+		// init background with the lock screen
+		InitScroll(BANK(lockscreen), &lockscreen, NULL, NULL);
+		// wait forever
+		for(;; YIELD);
+	}
+#endif
 	// destroy all sprites
 	SpriteManagerReset();
 	// some parts of the screen are sprites
