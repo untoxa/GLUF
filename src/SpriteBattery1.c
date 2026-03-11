@@ -15,6 +15,7 @@ void BatteryLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	SetSpriteAnim(THIS, anim_battery, ANIMATION_SPEED_IDLE);
 	if (THIS->custom_data[0] == TILE_BATT_CHARGED) SetSpriteAnimFrame(THIS, 1);
+	YIELD;
 	THIS->y++;
 	YIELD;
 	THIS->y++;

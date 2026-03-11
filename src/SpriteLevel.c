@@ -47,14 +47,14 @@ void LevelLogic(void * custom_data) BANKED {
 	// set animation which displays the current level
 	SetSpriteAnim(THIS, anim_level, ANIMATION_SPEED_ZERO);
 	SetSpriteAnimFrame(THIS, current_level);
-	// blink for 2 seconds
+	// blink for some time
 	blink(SECONDS(1));
-	// stay on screen for 10 seconds
+	// stay on screen for some time
 	for (UINT16 timer = SECONDS(12); (timer); --timer) {
 		UpdatePosition();
 		YIELD;
 	}
-	// blink for 2 seconds
+	// blink for some time
 	blink(SECONDS(1));
 	// destroy itself
 	return;
