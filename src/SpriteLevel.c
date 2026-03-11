@@ -15,9 +15,12 @@ static const UINT8 anim_level[] = VECTOR(  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 extern UINT8 current_level;
 
 inline void UpdatePosition(void) {
-#ifdef MASTERSYSTEM
+#if defined(MASTERSYSTEM)
 	THIS->y = scroll_y + 8;
-	THIS->x = scroll_x + (DEVICE_SCREEN_PX_WIDTH - 16 - 32 - 16);
+	THIS->x = scroll_x + (DEVICE_SCREEN_PX_WIDTH - 32 - 32 - 16);
+#elif defined(GAMEGEAR)
+	THIS->y = scroll_y + 4;
+	THIS->x = scroll_x + (DEVICE_SCREEN_PX_WIDTH - 32 - 8);
 #else
 	THIS->y = scroll_y + 4;
 	THIS->x = scroll_x + (DEVICE_SCREEN_PX_WIDTH - 16 - 8);
@@ -45,14 +48,14 @@ void LevelLogic(void * custom_data) BANKED {
 	SetSpriteAnim(THIS, anim_level, ANIMATION_SPEED_ZERO);
 	SetSpriteAnimFrame(THIS, current_level);
 	// blink for 2 seconds
-	blink(SECONDS(2));
+	blink(SECONDS(1));
 	// stay on screen for 10 seconds
-	for (UINT16 timer = SECONDS(10); (timer); --timer) {
+	for (UINT16 timer = SECONDS(12); (timer); --timer) {
 		UpdatePosition();
 		YIELD;
 	}
 	// blink for 2 seconds
-	blink(SECONDS(2));
+	blink(SECONDS(1));
 	// destroy itself
 	return;
 }

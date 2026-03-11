@@ -15,7 +15,7 @@ static const UINT8 anim_ghost_move_vert[]  = VECTOR( 0, 1 );
 static const UINT8 anim_ghost_move_horiz[] = VECTOR( 5, 1, 2, 3, 2, 4 );
 
 #define ANIMATION_SPEED_TELEPORT 10
-static const UINT8 anim_ghost_teleport[]   = VECTOR( 0, 6 );
+static const UINT8 anim_ghost_teleport[]   = VECTOR( 0, 6, 1, 6);
 
 static const UINT8 * const anim_ghost[N_DIRECTIONS] = { anim_ghost_move_vert, anim_ghost_move_vert, anim_ghost_move_vert, anim_ghost_move_horiz, anim_ghost_move_horiz };
 

@@ -9,14 +9,15 @@
 
 #include "GameGlobals.h"
 
-#define ANIMATION_SPEED_IDLE 0
-static const UINT8 anim_bolt[] = VECTOR( 0 );
+#define ANIMATION_SPEED_IDLE 25
+static const UINT8 anim_bolt[] = VECTOR( 0, 1, 2 );
 
 void BoltLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	INT16 delta = (chance_50_percent()) ? -1 : -2;
 	THIS->x += (rand() % 12) + 2;
 	SetSpriteAnim(THIS, anim_bolt, ANIMATION_SPEED_IDLE);
+	SetAnimationLoop(THIS, FALSE);
 	for (UINT8 i = (rand() % 16) + 8; i != 0; --i) {
 		THIS->y += delta;
 		YIELD;

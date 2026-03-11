@@ -9,7 +9,7 @@
 #include "GameGlobals.h"
 
 #define ANIMATION_SPEED_IDLE 12
-static const UINT8 anim_jaws[] = VECTOR( 0, 1 );
+static const UINT8 anim_jaws[] = VECTOR( 0, 2, 1, 2 );
 
 static const INT8 sine_table_x[] = {
 	 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
