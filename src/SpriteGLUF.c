@@ -68,9 +68,13 @@ void CameraLogic(void) {
 			if KEY_PRESSED(J_UP) {
 				mask = (J_A | J_UP), dy = -1;
 				point = (THIS->y + 16) - LOOKAHEAD_DISTANCE_PX;
+				// clamp to minimal Y
+				if (point < 0) point = 0;
 			} else {
 				mask = (J_A | J_DOWN ), dy = 1;
 				point = THIS->y + (LOOKAHEAD_DISTANCE_PX - DEVICE_SCREEN_PX_HEIGHT);
+				// clamp to maximum Y
+				if (point > (scroll_h - SCREEN_HEIGHT + scroll_h_border)) point = (scroll_h - SCREEN_HEIGHT + scroll_h_border);
 			}
 			// while keys are held, try to move scroll into direction within the limits
 			while (KEY_PRESSED(mask) == mask) {
@@ -80,6 +84,11 @@ void CameraLogic(void) {
 			// if keys are released, scroll back
 			while (old_y != scroll_y) {
 				MoveScroll(scroll_x, scroll_y - dy);
+				if (dy < 0 ) {
+					if (scroll_y >= (THIS->y - scroll_bottom_movement_limit)) break;
+				} else {
+					if (scroll_y <= (THIS->y - scroll_top_movement_limit)) break;
+				}
 				if (IS_FRAME_EVEN) YIELD;
 			}
 		} else if (KEY_PRESSED(J_LEFT | J_RIGHT)) {
@@ -88,9 +97,13 @@ void CameraLogic(void) {
 			if (KEY_PRESSED(J_LEFT)) {
 				mask = (J_A | J_LEFT), dx = -1;
 				point = (THIS->x + 16) - LOOKAHEAD_DISTANCE_PX;
+				// clamp to minimal X
+				if (point < SCROLL_LEFT_OFFSET) point = SCROLL_LEFT_OFFSET;
 			} else {
 				mask = (J_A | J_RIGHT), dx = 1;
 				point = THIS->x + (LOOKAHEAD_DISTANCE_PX - DEVICE_SCREEN_PX_WIDTH);
+				// clamp to maximum X
+				if (point > (scroll_w - SCREEN_WIDTH - SCROLL_RIGHT_OFFSET)) point = (scroll_w - SCREEN_WIDTH - SCROLL_RIGHT_OFFSET);
 			}
 			// while keys are held, try to move scroll into direction within the limits
 			while (KEY_PRESSED(mask) == mask) {
