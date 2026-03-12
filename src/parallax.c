@@ -62,7 +62,7 @@ UINT8 SyncVBlank(void) NONBANKED {
 	vbl_count = 0;
 
 	// this happens after main thread returns from the GBDK-2020 vsync() in the main loop
-	if ((parallax_enabled) && (!delta_time)) process_parallax(scroll_x_vblank >> 1, scroll_y_vblank >> 1);
+	if (parallax_enabled) process_parallax(scroll_x_vblank >> 1, scroll_y_vblank >> 1);
 
 	return delta_time;
 }
