@@ -100,7 +100,8 @@ void GLUFLogic(void * custom_data) BANKED {
 				else if (check_lift(tile_below) == TILE_LIFT_DOWN) lifting = TILE_LIFT_DOWN;
 			} else if (KEY_PRESSED(J_LEFT)) {
 				if (player_x > 0) {
-					if (check_collision(level_buffer[player_y][player_x - 1]) == 0) {
+					UINT8 coll = check_collision(level_buffer[player_y][player_x - 1]);
+					if ((coll == TILE_EMPTY) || (coll == TILE_LIFT_DOWN)) {
 						switch (tile_below) {
 							case TILE_DISAPPEARING:
 								UpdateMetatile(player_x, player_y + 1, TILE_DISAPPEARED);
@@ -125,7 +126,8 @@ void GLUFLogic(void * custom_data) BANKED {
 				}
 			} else if (KEY_PRESSED(J_RIGHT)) {
 				if (player_x < (LEVEL_WIDTH - 1)) {
-					if (check_collision(level_buffer[player_y][player_x + 1]) == 0) {
+					UINT8 coll = check_collision(level_buffer[player_y][player_x + 1]);
+					if ((coll == TILE_EMPTY) || (coll == TILE_LIFT_DOWN)) {
 						switch (tile_below) {
 							case TILE_DISAPPEARING:
 								UpdateMetatile(player_x, player_y + 1, TILE_DISAPPEARED);

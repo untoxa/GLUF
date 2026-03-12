@@ -58,7 +58,8 @@ void JumperLogic(void * custom_data) BANKED {
 					break;
 				case DIR_LEFT:
 					if (x > 0) {
-						if (check_collision(level_buffer[y][x - 1]) == 0) {
+						UINT8 coll = check_collision(level_buffer[y][x - 1]);
+						if ((coll == TILE_EMPTY) || (coll == TILE_LIFT_DOWN)) {
 							SetSpriteAnim(THIS, anim_jumper_jump_left, ANIMATION_SPEED_JUMP);
 							for (UINT8 i = 0; i != (16 / MOVE_SPEED); ++i) {
 								THIS->x -= MOVE_SPEED;
@@ -73,7 +74,8 @@ void JumperLogic(void * custom_data) BANKED {
 					break;
 				case DIR_RIGHT:
 					if (x < (LEVEL_WIDTH - 1)) {
-						if (check_collision(level_buffer[y][x + 1]) == 0) {
+						UINT8 coll = check_collision(level_buffer[y][x + 1]);
+						if ((coll == TILE_EMPTY) || (coll == TILE_LIFT_DOWN)) {
 							SetSpriteAnim(THIS, anim_jumper_jump_right, ANIMATION_SPEED_JUMP);
 							for (UINT8 i = 0; i != (16 / MOVE_SPEED); ++i) {
 								THIS->x += MOVE_SPEED;
