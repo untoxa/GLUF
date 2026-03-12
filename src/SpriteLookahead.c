@@ -38,12 +38,16 @@ void LookaheadLogic(void * custom_data) BANKED {
 	y = old_y = THIS->y;
 	min_y = old_y - LOOKAHEAD_DISTANCE_PX;
 	if (min_y < 0) min_y = 0;
-	max_y = old_y + (LOOKAHEAD_DISTANCE_PX + 14);
+	max_y = old_y + LOOKAHEAD_DISTANCE_PX;
+	if (max_y > scroll_h) max_y = scroll_h;
 
 	x = old_x = THIS->x;
+#if !defined(MASTERSYSTEM)
 	min_x = old_x - LOOKAHEAD_DISTANCE_PX;
 	if (min_x < 0) min_x = 0;
-	max_x = old_x + (LOOKAHEAD_DISTANCE_PX + 14);
+	max_x = old_x + LOOKAHEAD_DISTANCE_PX;
+	if (max_x > scroll_w) max_x = scroll_w;
+#endif
 
 	for (; (KEY_PRESSED(J_A)); YIELD ) {
 		INT16 dy = 0, dx = 0;
@@ -57,18 +61,23 @@ void LookaheadLogic(void * custom_data) BANKED {
 			} else {
 				mask = (J_A | J_DOWN ), dy = LOOKAHEAD_SPEED;
 			}
-		} else if (KEY_PRESSED(J_LEFT | J_RIGHT)) {
+		}
+#if !defined(MASTERSYSTEM)
+		else if (KEY_PRESSED(J_LEFT | J_RIGHT)) {
 			// select left or right lookahead
 			if (KEY_PRESSED(J_LEFT)) {
 				mask = (J_A | J_LEFT), dx = -LOOKAHEAD_SPEED;
 			} else {
 				mask = (J_A | J_RIGHT), dx = LOOKAHEAD_SPEED;
 			}
-		} else {
+		}
+#endif
+		else {
 			continue;
 		}
 		// while keys are held, try to move camera into direction within the limits
 		for (; (KEY_PRESSED(mask) == mask); YIELD) {
+#if !defined(MASTERSYSTEM)
 			x += dx;
 			if (x < min_x) {
 				x = min_x;
@@ -76,6 +85,7 @@ void LookaheadLogic(void * custom_data) BANKED {
 				x = max_x;
 			}
 			THIS->x = (x < 0) ? 0 : x;
+#endif
 			y += dy;
 			if (y < min_y) {
 				y = min_y;
@@ -88,6 +98,7 @@ void LookaheadLogic(void * custom_data) BANKED {
 		}
 		// if keys are released, move camera back
 		for (; ((x != old_x) || (y != old_y)); YIELD) {
+#if !defined(MASTERSYSTEM)
 			x -= dx;
 			if (dx < 0) {
 				if (x > old_x) x = old_x;
@@ -95,6 +106,7 @@ void LookaheadLogic(void * custom_data) BANKED {
 				if (x < old_x) x = old_x;
 			}
 			THIS->x = (x < 0) ? 0 : x;
+#endif
 			y -= dy;
 			if (dy < 0) {
 				if (y > old_y) y = old_y;
