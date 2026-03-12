@@ -17,7 +17,7 @@ Sprite * charge_indicator;
 
 inline void UpdatePosition(void) {
 #ifdef MASTERSYSTEM
-	THIS->y = scroll_y + (DEVICE_SCREEN_PX_HEIGHT - 12);
+	THIS->y = scroll_y + (DEVICE_SCREEN_PX_HEIGHT - 20);
 	THIS->x = scroll_x + (DEVICE_SCREEN_PX_WIDTH - 40 - 32 - 16);
 #else
 	THIS->y = scroll_y + (DEVICE_SCREEN_PX_HEIGHT - 12);

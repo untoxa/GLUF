@@ -204,7 +204,8 @@ void load_music(music_e music) BANKED;
 #define TILE_SIZE_BYTES (8 << BPP_SHIFT)
 #define ID_TO_TILE(id) (((id) << 2) + 1)
 
-#define LOOKAHEAD_DISTANCE_PX 192
+#define LOOKAHEAD_SPEED 4
+#define LOOKAHEAD_DISTANCE_PX 96
 
 inline void DELAY(UINT16 frames) {
 	for (; (frames); --frames) YIELD;

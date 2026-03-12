@@ -170,7 +170,7 @@ void spawn_enemies(void) {
 	// spawn the title if level 0
 	if (is_title_level = (current_level == 0)) {
 		for (UINT8 i = 0; i != 4; ++i) {
-			if (enemy = SpriteManagerAdd(SpriteSign, ((i + 4) << 4) + (TILE_BUFFER_OFFSET << 3), 13 << 4)) enemy->custom_data[0] = i;
+			if (enemy = SpriteManagerAdd(SpriteSign, ((i + 4) << 4) + (TILE_BUFFER_OFFSET << 3), 11 << 4)) enemy->custom_data[0] = i;
 		}
 	}
 	// spawn other enemies
@@ -318,7 +318,7 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 	// initialization
 	volatile UINT8 skip_press_fire = FALSE;
 	// set up CrossZGB scrolling parameters
-	scroll_top_movement_limit = 56;
+	scroll_top_movement_limit = 40;
 	scroll_bottom_movement_limit = 88;
 	ENABLE_SCROLL_CLAMPING;
 

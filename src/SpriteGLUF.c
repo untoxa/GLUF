@@ -25,6 +25,7 @@ extern UINT8 battery_count;
 extern UINT8 current_level;
 
 extern Sprite * charge_indicator;
+extern Sprite * lookahead_camera;
 
 #define CHARGE_COOLDOWN 10
 #define CHARGE_MAXIMUM  10
@@ -52,77 +53,6 @@ static const UINT8 battery_sprites[N_TILESETS] = {SpriteBattery1, SpriteBattery2
 
 void UpdateMetatile(UINT8 x, UINT8 y, UINT8 id) BANKED;
 
-// lookahead logic function
-void CameraLogic(void) {
-	UINT8 mask;
-	INT16 point;
-	// reset scroll target, so we can freely move the scroll
-	scroll_target = NULL;
-	// hide charge indicator
-	if (charge_indicator) SetVisible(charge_indicator, FALSE);
-	// while A is held
-	for (; (KEY_PRESSED(J_A)); YIELD ) {
-		if (KEY_PRESSED(J_UP | J_DOWN)) {
-			INT16 old_y = scroll_y, dy = 0;
-			// select up or down lookahead
-			if KEY_PRESSED(J_UP) {
-				mask = (J_A | J_UP), dy = -1;
-				point = (THIS->y + 16) - LOOKAHEAD_DISTANCE_PX;
-				// clamp to minimal Y
-				if (point < 0) point = 0;
-			} else {
-				mask = (J_A | J_DOWN ), dy = 1;
-				point = THIS->y + (LOOKAHEAD_DISTANCE_PX - DEVICE_SCREEN_PX_HEIGHT);
-				// clamp to maximum Y
-				if (point > (scroll_h - SCREEN_HEIGHT + scroll_h_border)) point = (scroll_h - SCREEN_HEIGHT + scroll_h_border);
-			}
-			// while keys are held, try to move scroll into direction within the limits
-			while (KEY_PRESSED(mask) == mask) {
-				if (scroll_y != point) MoveScroll(scroll_x, scroll_y + dy);
-				if (IS_FRAME_EVEN) YIELD;
-			}
-			// if keys are released, scroll back
-			while (old_y != scroll_y) {
-				MoveScroll(scroll_x, scroll_y - dy);
-				if (dy < 0 ) {
-					if (scroll_y >= (THIS->y - scroll_bottom_movement_limit)) break;
-				} else {
-					if (scroll_y <= (THIS->y - scroll_top_movement_limit)) break;
-				}
-				if (IS_FRAME_EVEN) YIELD;
-			}
-		} else if (KEY_PRESSED(J_LEFT | J_RIGHT)) {
-			INT16 old_x = scroll_x, dx = 0;
-			// select left or right lookahead
-			if (KEY_PRESSED(J_LEFT)) {
-				mask = (J_A | J_LEFT), dx = -1;
-				point = (THIS->x + 16) - LOOKAHEAD_DISTANCE_PX;
-				// clamp to minimal X
-				if (point < SCROLL_LEFT_OFFSET) point = SCROLL_LEFT_OFFSET;
-			} else {
-				mask = (J_A | J_RIGHT), dx = 1;
-				point = THIS->x + (LOOKAHEAD_DISTANCE_PX - DEVICE_SCREEN_PX_WIDTH);
-				// clamp to maximum X
-				if (point > (scroll_w - SCREEN_WIDTH - SCROLL_RIGHT_OFFSET)) point = (scroll_w - SCREEN_WIDTH - SCROLL_RIGHT_OFFSET);
-			}
-			// while keys are held, try to move scroll into direction within the limits
-			while (KEY_PRESSED(mask) == mask) {
-				if (scroll_x != point) MoveScroll(scroll_x + dx, scroll_y);
-				if (IS_FRAME_EVEN) YIELD;
-			}
-			// if keys are released, scroll back
-			while (old_x != scroll_x) {
-				MoveScroll(scroll_x - dx, scroll_y);
-				if (IS_FRAME_EVEN) YIELD;
-			}
-		}
-	}
-	// show charge indicator
-	if (charge_indicator) SetVisible(charge_indicator, TRUE);
-	// set scroll target back to player
-	scroll_target = THIS;
-}
-
 void GLUFLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	UINT8 tile_below;
@@ -144,7 +74,18 @@ void GLUFLogic(void * custom_data) BANKED {
 	for (;; YIELD) {
 		if ((!falling) && (!lifting)) {
 			// lookahead camera logic
-			if (KEY_PRESSED(J_A)) CameraLogic();
+			if (KEY_PRESSED(J_A)) {
+				// hide charge indicator
+				if (charge_indicator) SetVisible(charge_indicator, FALSE);
+				// spawn lookahead camera
+				scroll_target = lookahead_camera = SpriteManagerAdd(SpriteLookahead, THIS->x, THIS->y);
+				// wait while lookehead kamera is active
+				for (; (lookahead_camera); YIELD);
+				// show charge indicator
+				if (charge_indicator) SetVisible(charge_indicator, TRUE);
+				// set scroll target back to player
+				scroll_target = THIS;
+			}
 			// GLUF movements with joypad
 			tile_below = level_buffer[player_y + 1][player_x];
 			if (KEY_PRESSED(J_UP)) {
