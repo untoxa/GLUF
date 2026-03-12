@@ -1,6 +1,6 @@
 # GLUF
 
-![ZX Spetrum logo](/art/zx/title.png)
+![Title screen SMS version](/art/screenshots/GLUF_tesla_frog_002.png)
 
 Port of the original ZX Spectrum game by RetroSouls for the [Sega Master System](https://en.wikipedia.org/wiki/Master_System), [Sega Game Gear](https://en.wikipedia.org/wiki/Game_Gear) and [Nintendo Game Boy Color](https://en.wikipedia.org/wiki/Game_Boy_Color). Reimplemented for the [SMS Power’s Competition](https://www.smspower.org/Competitions/Index) 2026 from scratch, using the [CrossZGB](https://github.com/gbdk-2020/CrossZGB) engine.
 
@@ -14,7 +14,6 @@ You have unlimited lives to complete all 25 levels of the the game.
 
 ## Screenshots
 
-![Title screen SMS version](/art/screenshots/GLUF_tesla_frog_002.png)
 ![In-Game screen SMS version](/art/screenshots/GLUF_tesla_frog_003.png)
 
 ## Credits
