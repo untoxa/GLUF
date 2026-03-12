@@ -318,8 +318,13 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 	// initialization
 	volatile UINT8 skip_press_fire = FALSE;
 	// set up CrossZGB scrolling parameters
+# if defined(MASTERSYSTEM)
+	scroll_top_movement_limit = 56;
+	scroll_bottom_movement_limit = 120;
+#else
 	scroll_top_movement_limit = 40;
 	scroll_bottom_movement_limit = 88;
+#endif
 	ENABLE_SCROLL_CLAMPING;
 
 	// load level
