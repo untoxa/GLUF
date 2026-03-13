@@ -37,15 +37,15 @@ Sprite * GLUF;
 #define ANIMATION_SPEED_IDLE  12
 static const UINT8 anim_idle[]       = VECTOR(  0,  1 );
 #define ANIMATION_SPEED_ENTER 15
-static const UINT8 anim_enter[]      = VECTOR( 17, 16, 15, 14, 13, 12, 11 );
-static const UINT8 anim_exit[]       = VECTOR( 11, 12, 13, 14, 15, 16, 17 );
-#define ANIMATION_SPEED_JUMP  40
-static const UINT8 anim_jump_right[] = VECTOR(  2,  3,  4,  5,  6,  7,  8,  2 );
-static const UINT8 anim_jump_left[]  = VECTOR(  2,  8,  7,  6,  5,  4,  3,  2 );
+static const UINT8 anim_enter[]      = VECTOR( 16, 15, 14, 13, 12, 1 );
+static const UINT8 anim_exit[]       = VECTOR( 1, 12, 13, 14, 15, 16 );
+#define ANIMATION_SPEED_JUMP  63
+static const UINT8 anim_jump_right[] = VECTOR(  2,  3,  4,  5,  5,  6,  6,  7,  8,  9 );
+static const UINT8 anim_jump_left[]  = VECTOR(  9,  8,  7,  6,  6,  5,  5,  4,  3,  2 );
 #define ANIMATION_SPEED_FALL  10
 static const UINT8 anim_fall[]       = VECTOR(  9, 10 );
 #define ANIMATION_SPEED_LIFT  10
-static const UINT8 anim_lift[]       = VECTOR( 18, 19 );
+static const UINT8 anim_lift[]       = VECTOR(  9, 10 );
 
 // "wobbling batteries" - we must choose the correct sprite, depending on the current level tileset
 extern tilesets_e current_tileset;
@@ -67,7 +67,7 @@ void GLUFLogic(void * custom_data) BANKED {
 	SetAnimationLoop(THIS, FALSE);
 	SetSpriteAnim(THIS, anim_enter, ANIMATION_SPEED_ENTER);
 	ExecuteSFX(BANK(sfx7exit), sfx7exit, SFX_MUTE_MASK(sfx7exit), SFX_PRIORITY_HIGH);
-	DELAY(42);
+	DELAY(36);
 	// set the idle animation
 	SetAnimationLoop(THIS, TRUE);
 	SetSpriteAnim(THIS, anim_idle, ANIMATION_SPEED_IDLE);
@@ -159,6 +159,7 @@ void GLUFLogic(void * custom_data) BANKED {
 			ExecuteSFX(BANK(sfx4lift), sfx4lift, SFX_MUTE_MASK(sfx4lift), SFX_PRIORITY_MINIMAL);
 			for (UINT8 i = 0; i != (16 / LIFT_SPEED); ++i) {
 				THIS->y -= LIFT_SPEED;
+				if (rand() % 7 == 0) SpriteManagerAdd(SpriteLiftSpark, THIS->x, THIS->y + 14);
 				YIELD;
 			}
 			player_y--;
@@ -176,6 +177,7 @@ void GLUFLogic(void * custom_data) BANKED {
 			ExecuteSFX(BANK(sfx4lift), sfx4lift, SFX_MUTE_MASK(sfx4lift), SFX_PRIORITY_MINIMAL);
 			for (UINT8 i = 0; i != (16 / LIFT_SPEED); ++i) {
 				THIS->y += LIFT_SPEED;
+				if (rand() % 7 == 0) SpriteManagerAdd(SpriteLiftSpark, THIS->x, THIS->y);
 				YIELD;
 			}
 			if ((!check_lift(tile_below)) || (check_collision(level_buffer[player_y + 2][player_x]))) {
@@ -252,7 +254,7 @@ void GLUFLogic(void * custom_data) BANKED {
 			SetAnimationLoop(THIS, FALSE);
 			SetSpriteAnim(THIS, anim_exit, ANIMATION_SPEED_ENTER);
 			ExecuteSFX(BANK(sfx7exit), sfx7exit, SFX_MUTE_MASK(sfx7exit), SFX_PRIORITY_HIGH);
-			DELAY(42);
+			DELAY(36);
 			// increase level number, restart level
 			++current_level;
 			restart = TRUE;

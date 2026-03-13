@@ -31,6 +31,7 @@ _SPRITE_EX(SpriteBattery4,    SpriteBattery, battery4,     FLIP_NONE)\
 _SPRITE(SpriteArrow,      arrow,      FLIP_NONE)\
 _SPRITE(SpriteSpark,      spark,      FLIP_NONE)\
 _SPRITE(SpriteLookahead,  lookahead,  FLIP_NONE)\
+_SPRITE(SpriteLiftSpark,  liftspark,  FLIP_NONE)\
 SPRITE_DEF_END
 
 #include "ZGBMain_Init.h"
