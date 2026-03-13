@@ -15,6 +15,7 @@ You have unlimited lives to complete all 25 levels of the the game.
 ## Screenshots
 
 ![In-Game screen SMS version](/art/screenshots/GLUF_tesla_frog_003.png)
+![Real hardware GG](/art/screenshots/GLUF_on_GG.jpg)
 
 ## Interesting facts
 
