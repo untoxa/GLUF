@@ -1,5 +1,6 @@
 // "wobbling battery" sprite is shown when GLUF falls onto the charged or discharged floor element
-// it hides the static element of the background for a few frames; graphics from the tileset 1
+// it hides the static element of the background for a few frames; this logic is shared between
+// sprites SpriteBattery1, SpriteBattery2, SpriteBattery3 and SpriteBattery4
 
 #include "Banks/SetAutoBank.h"
 

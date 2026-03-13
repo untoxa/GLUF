@@ -19,13 +19,12 @@ static const UINT8 * const anim_slug[N_DIRECTIONS] = { anim_slug_move_idle, anim
 
 static const INT8 x_delta[N_DIRECTIONS] = {  0,  0,  0, -MOVE_SPEED,  MOVE_SPEED };
 
-extern tilesets_e current_tileset;
-
 void SlugLogic(void * custom_data) BANKED {
 	enemy_dir_e old_direction = N_DIRECTIONS, direction = (chance_50_percent()) ? DIR_LEFT : DIR_RIGHT;
+	UINT8 berserk = (((UINT8 *)custom_data)[0] == ENEMY_SLUG) ? FALSE : TRUE;
 	UINT8 x = ((UINT8 *)custom_data)[1];
 	UINT8 y = ((UINT8 *)custom_data)[2];
-	SetSpriteAnim(THIS, anim_slug[direction], ((current_tileset == TILESET_4) ? ANIMATION_SPEED_FAST : ANIMATION_SPEED_SLOW));
+	SetSpriteAnim(THIS, anim_slug[direction], ((berserk) ? ANIMATION_SPEED_FAST : ANIMATION_SPEED_SLOW));
 	for (;;) {
 		old_direction = direction;
 		// random change direction
@@ -52,14 +51,14 @@ void SlugLogic(void * custom_data) BANKED {
 		}
 		// if direction changed then set anumation
 		if (direction != old_direction) {
-			SetSpriteAnim(THIS, anim_slug[direction], ((current_tileset == TILESET_4) ? ANIMATION_SPEED_FAST : ANIMATION_SPEED_SLOW));
+			SetSpriteAnim(THIS, anim_slug[direction], ((berserk) ? ANIMATION_SPEED_FAST : ANIMATION_SPEED_SLOW));
 		}
 		// move slug in the direction and modify its coordinates
 		for (UINT8 i = 0; i != (16 / MOVE_SPEED); ++i) {
 			THIS->x += x_delta[direction];
 			CheckKillGLUF(THIS);
 			YIELD;
-			if (current_tileset == TILESET_4) continue;
+			if (berserk) continue;
 			CheckKillGLUF(THIS);
 			YIELD;
 		}

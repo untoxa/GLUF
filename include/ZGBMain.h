@@ -13,7 +13,8 @@ _SPRITE(SpriteGhost,      ghost,      FLIP_NONE)\
 _SPRITE(SpriteSign,       sign,       FLIP_NONE)\
 _SPRITE(SpriteDoor,       door,       FLIP_NONE)\
 _SPRITE(SpriteUFO,        ufo,        FLIP_NONE)\
-_SPRITE(SpriteSlug,       slug,       FLIP_NONE)\
+_SPRITE_EX(SpriteSlug,        SpriteSlug,    slug,         FLIP_NONE)\
+_SPRITE_EX(SpriteSlugBerserk, SpriteSlug,    slug_berserk, FLIP_NONE)\
 _SPRITE(SpriteJumper,     jumper,     FLIP_NONE)\
 _SPRITE(SpriteFire,       fire,       FLIP_NONE)\
 _SPRITE(SpriteRetrosouls, retrosouls, FLIP_NONE)\
@@ -23,10 +24,10 @@ _SPRITE(SpriteIndicator,  indicator,  FLIP_NONE)\
 _SPRITE(SpriteTonyandco,  tonyandco,  FLIP_NONE)\
 _SPRITE(SpriteLevel,      level,      FLIP_NONE)\
 _SPRITE(SpriteBolt,       bolt,       FLIP_NONE)\
-_SPRITE(SpriteBattery1,   battery1,   FLIP_NONE)\
-_SPRITE(SpriteBattery2,   battery2,   FLIP_NONE)\
-_SPRITE(SpriteBattery3,   battery3,   FLIP_NONE)\
-_SPRITE(SpriteBattery4,   battery4,   FLIP_NONE)\
+_SPRITE_EX(SpriteBattery1,    SpriteBattery, battery1,     FLIP_NONE)\
+_SPRITE_EX(SpriteBattery2,    SpriteBattery, battery2,     FLIP_NONE)\
+_SPRITE_EX(SpriteBattery3,    SpriteBattery, battery3,     FLIP_NONE)\
+_SPRITE_EX(SpriteBattery4,    SpriteBattery, battery4,     FLIP_NONE)\
 _SPRITE(SpriteArrow,      arrow,      FLIP_NONE)\
 _SPRITE(SpriteSpark,      spark,      FLIP_NONE)\
 _SPRITE(SpriteLookahead,  lookahead,  FLIP_NONE)\

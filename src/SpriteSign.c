@@ -22,7 +22,7 @@ static const INT8 sine_table[] = {
 
 void SignLogic(void * custom_data) BANKED {
 	INT16 y = THIS->y;
-	UINT8 id = *((UINT8 *)custom_data);
+	UINT8 id = *((UINT8 *)custom_data) - ENEMY_G;
 	SetSpriteAnim(THIS, anim_GLUF[id], ANIMATION_SPEED_NONE);
 	UINT8 counter = id * (ARRAY_LENGTH(sine_table) / 8);
 	for (;; YIELD) {

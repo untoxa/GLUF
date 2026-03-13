@@ -72,6 +72,12 @@
 #define ENEMY_GHOST_UP	        0x29
 #define ENEMY_GHOST_DOWN        0x2a
 #define ENEMY_GHOST_RIGHT       0x2b
+#define ENEMY_SLUG_BERSERK      0x2c
+
+#define ENEMY_G      		0x30
+#define ENEMY_L      		0x31
+#define ENEMY_U      		0x32
+#define ENEMY_F      		0x33
 
 #define MOVE_LEFT               0x10
 #define MOVE_RIGHT              0x11

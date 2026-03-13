@@ -167,13 +167,6 @@ UINT8 load_level(UINT8 level) {
 
 void spawn_enemies(void) {
 	Sprite * enemy;
-	// spawn the title if level 0
-	if (is_title_level = (current_level == 0)) {
-		for (UINT8 i = 0; i != 4; ++i) {
-			if (enemy = SpriteManagerAdd(SpriteSign, ((i + 4) << 4) + (TILE_BUFFER_OFFSET << 3), 11 << 4)) enemy->custom_data[0] = i;
-		}
-	}
-	// spawn other enemies
 	UINT8 * data = (UINT8 *)level_buffer;
 	for (UINT8 y = 0; y != LEVEL_HEIGHT; ++y) {
 		for (UINT8 x = 0; x != LEVEL_WIDTH; ++x) {
@@ -204,6 +197,15 @@ void spawn_enemies(void) {
 				case ENEMY_GHOST_DOWN:
 				case ENEMY_GHOST_RIGHT:
 					enemy = SpriteManagerAdd(SpriteGhost, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
+					break;
+				case ENEMY_SLUG_BERSERK:
+					enemy = SpriteManagerAdd(SpriteSlugBerserk, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
+					break;
+				case ENEMY_G:
+				case ENEMY_L:
+				case ENEMY_U:
+				case ENEMY_F:
+					enemy = SpriteManagerAdd(SpriteSign, (x << 4) + (TILE_BUFFER_OFFSET << 3), y << 4);
 					break;
 				default:
 					enemy = NULL;
