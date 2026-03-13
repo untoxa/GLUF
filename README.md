@@ -4,6 +4,11 @@
 
 Port of the original ZX Spectrum game by RetroSouls for the [Sega Master System](https://en.wikipedia.org/wiki/Master_System), [Sega Game Gear](https://en.wikipedia.org/wiki/Game_Gear) and [Nintendo Game Boy Color](https://en.wikipedia.org/wiki/Game_Boy_Color). Reimplemented for the [SMS Power’s Competition](https://www.smspower.org/Competitions/Index) 2026 from scratch, using the [CrossZGB](https://github.com/gbdk-2020/CrossZGB) engine.
 
+## Links
+
+The ROM files of the most latest release may be found [here](https://github.com/untoxa/GLUF/releases/latest/). The most recent version, including the changes which are not released yet, may be downloaded from the Github [Actions](https://github.com/untoxa/GLUF/actions). The new version is built for the each commit to this repo.
+
+
 ## Plot
 
 In this game you control a frog named Gluf, and just like the electric car, Gluf can charge energy from places marked with battery symbols. You need the power to activate the circuits in the floor, but you can only charge enough power to activate 10 circuits, so if you need to activate more, then you will need to recharge. When all circuits in the floor are activated the exit door will also be activated, and you will be able to access the next level.
