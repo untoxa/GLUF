@@ -12,6 +12,7 @@
 #include "GameGlobals.h"
 
 DECLARE_SFX(sfx1jump);
+DECLARE_SFX(sfx2land);
 DECLARE_SFX(sfx3fall);
 DECLARE_SFX(sfx4lift);
 DECLARE_SFX(sfx5paint);
@@ -207,6 +208,7 @@ void GLUFLogic(void * custom_data) BANKED {
 							default:
 								break;
 						}
+						ExecuteSFX(BANK(sfx2land), sfx2land, SFX_MUTE_MASK(sfx2land), SFX_PRIORITY_MINIMAL);
 					}
 					falling = FALSE;
 					SetSpriteAnim(THIS, anim_idle, ANIMATION_SPEED_IDLE);
