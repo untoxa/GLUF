@@ -10,6 +10,7 @@
 #include "Vector.h"
 #include "Keys.h"
 #include "Music.h"
+#include "Sound.h"
 #include "Coroutines.h"
 #include "ZGBMain.h"
 
@@ -22,6 +23,8 @@ IMPORT_TILES(tiles1);
 IMPORT_TILES(tiles2);
 IMPORT_TILES(tiles3);
 IMPORT_TILES(tiles4);
+
+DECLARE_SFX(sfx9teleporting);
 
 DECLARE_MUSIC(music_ingame1);
 DECLARE_MUSIC(music_ingame2);
@@ -360,6 +363,8 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 				// enable sprite flickering
 				ENABLE_SPRITE_FLICKERING;
 			} else skip_press_fire = FALSE;
+			// play level change SFX
+			ExecuteSFX(BANK(sfx9teleporting), sfx9teleporting, SFX_MUTE_MASK(sfx9teleporting), SFX_PRIORITY_NORMAL);
 			// fade manually
 			FadeIn();
 			// reload the level

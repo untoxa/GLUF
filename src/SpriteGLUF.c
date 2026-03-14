@@ -18,6 +18,7 @@ DECLARE_SFX(sfx4lift);
 DECLARE_SFX(sfx5paint);
 DECLARE_SFX(sfx6noname);
 DECLARE_SFX(sfx7exit);
+DECLARE_SFX(sfx8show);
 DECLARE_SFX(sfx10dead_nonoise);
 DECLARE_SFX(sfx11exitsound);
 
@@ -67,7 +68,7 @@ void GLUFLogic(void * custom_data) BANKED {
 	// set and play "entering level" animation
 	SetAnimationLoop(THIS, FALSE);
 	SetSpriteAnim(THIS, anim_enter, ANIMATION_SPEED_ENTER);
-	ExecuteSFX(BANK(sfx7exit), sfx7exit, SFX_MUTE_MASK(sfx7exit), SFX_PRIORITY_HIGH);
+	ExecuteSFX(BANK(sfx8show), sfx8show, SFX_MUTE_MASK(sfx8show), SFX_PRIORITY_HIGH);
 	DELAY(36);
 	// set the idle animation
 	SetAnimationLoop(THIS, TRUE);
