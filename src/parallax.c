@@ -18,14 +18,14 @@
 
 #ifdef ENABLE_PARALLAX
 
-static const UINT8 parallax_banks[] = { {BANK(parallax_tiles1)}, {BANK(parallax_tiles2)}, {BANK(parallax_tiles3)}, {BANK(parallax_tiles4)} };
-static const UINT8 * const parallax_tiles[] = { parallax_tiles1_0, parallax_tiles2_0, parallax_tiles3_0, parallax_tiles4_0 };
-
 extern tilesets_e current_tileset;
 
 static UINT8 parallax_enabled;
 static INT16 old_x, old_y;
-void process_parallax(INT16 x, INT16 y) {
+void process_parallax(INT16 x, INT16 y) NONBANKED {
+	static const UINT8 parallax_banks[] = { {BANK(parallax_tiles1)}, {BANK(parallax_tiles2)}, {BANK(parallax_tiles3)}, {BANK(parallax_tiles4)} };
+	static const UINT8 * const parallax_tiles[] = { parallax_tiles1_0, parallax_tiles2_0, parallax_tiles3_0, parallax_tiles4_0 };
+
 	static UINT8 __save;
 
 	if ((x == old_x) && (y == old_y)) return;
