@@ -19,7 +19,7 @@ IMPORT_BORDER(border);
 IMPORT_MAP(title);
 IMPORT_MAP(lockscreen);
 
-DECLARE_SFX(sfx4lift);
+DECLARE_SFX(sfx11exitsound);
 
 typedef struct {
 	SPRITE_TYPE type;
@@ -87,7 +87,7 @@ NORETURN void TitleLogic(void * custom_data) BANKED {
 			// toggle the cheat mode on code enter
 			is_cheating = !is_cheating;
 			// play SFX
-			ExecuteSFX(BANK(sfx4lift), sfx4lift, SFX_MUTE_MASK(sfx4lift), SFX_PRIORITY_NORMAL);
+			ExecuteSFX(BANK(sfx11exitsound), sfx11exitsound, SFX_MUTE_MASK(sfx11exitsound), SFX_PRIORITY_NORMAL);
 			// reset code sequence
 			konami_code_ptr = konami_code;
 		} else
