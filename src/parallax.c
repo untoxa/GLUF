@@ -45,28 +45,22 @@ void process_parallax(INT16 x, INT16 y) NONBANKED {
 	SWITCH_ROM(__save);
 }
 
-#if defined(NINTENDO)
+// override the standard CrossZGB VBlank handler
 extern UINT8 vbl_count;
 void VBL_isr(void) NONBANKED {
 	vbl_count ++;
+#if defined(NINTENDO)
 	move_bkg(scroll_x_vblank + TILE_TO_PX(scroll_offset_x), scroll_y_vblank + TILE_TO_PX(scroll_offset_y));
-	// this happens inside the VBlank interrupt
-	if (parallax_enabled) process_parallax(scroll_x_vblank >> 1, scroll_y_vblank >> 1);
-}
-#else
-extern UINT8 vbl_count;
-UINT8 SyncVBlank(void) NONBANKED {
-	if (!vbl_count) vsync();   // wait VBlank if not slowdown
-
-	UINT8 delta_time = (vbl_count < 2u) ? 0u : 1u;
-	vbl_count = 0;
-
-	// this happens after main thread returns from the GBDK-2020 vsync() in the main loop
-	if (parallax_enabled) process_parallax(scroll_x_vblank >> 1, scroll_y_vblank >> 1);
-
-	return delta_time;
-}
+#elif defined(SEGA)
+	// do nothing if data loading to VDP was interrupted
+	if (_shadow_OAM_OFF) return;
+	// update the scroll position
+	__WRITE_VDP_REG_UNSAFE(VDP_RSCX, -(scroll_x_vblank + TILE_TO_PX(scroll_offset_x)));
+	__WRITE_VDP_REG_UNSAFE(VDP_RSCY, (((UINT16)(scroll_y_vblank + TILE_TO_PX(scroll_offset_y))) % TILE_TO_PX(DEVICE_SCREEN_BUFFER_HEIGHT)));
 #endif
+	// load the fake parallax tiles into VRAM
+	if (parallax_enabled) process_parallax(scroll_x_vblank >> 1, scroll_y_vblank >> 1);
+}
 
 void enable_parallax(void) {
 	old_x = old_y = 0x7fff;
