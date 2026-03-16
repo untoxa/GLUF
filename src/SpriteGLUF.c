@@ -39,15 +39,15 @@ Sprite * GLUF;
 #define ANIMATION_SPEED_IDLE  12
 static const UINT8 anim_idle[]       = VECTOR(  0,  1 );
 #define ANIMATION_SPEED_ENTER 15
-static const UINT8 anim_enter[]      = VECTOR( 16, 15, 14, 13, 12, 1 );
-static const UINT8 anim_exit[]       = VECTOR( 1, 12, 13, 14, 15, 16 );
-#define ANIMATION_SPEED_JUMP  63
-static const UINT8 anim_jump_right[] = VECTOR(  2,  3,  4,  5,  5,  6,  6,  7,  8,  9 );
-static const UINT8 anim_jump_left[]  = VECTOR(  9,  8,  7,  6,  6,  5,  5,  4,  3,  2 );
+static const UINT8 anim_enter[]      = VECTOR( 16, 15, 14, 13, 12,  1 );
+static const UINT8 anim_exit[]       = VECTOR(  1, 12, 13, 14, 15, 16 );
+#define ANIMATION_SPEED_JUMP  50
+static const UINT8 anim_jump_right[] = VECTOR(  2,  3,  4,  5,  6,  7,  8,  9 );
+static const UINT8 anim_jump_left[]  = VECTOR(  9,  8,  7,  6,  5,  4,  3,  2 );
 #define ANIMATION_SPEED_FALL  10
-static const UINT8 anim_fall[]       = VECTOR(  9, 10 );
+static const UINT8 anim_fall[]       = VECTOR( 10, 11 );
 #define ANIMATION_SPEED_LIFT  10
-static const UINT8 anim_lift[]       = VECTOR(  9, 10 );
+static const UINT8 anim_lift[]       = VECTOR( 10, 11 );
 
 // "wobbling batteries" - we must choose the correct sprite, depending on the current level tileset
 extern tilesets_e current_tileset;
