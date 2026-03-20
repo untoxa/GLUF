@@ -32,6 +32,7 @@ _SPRITE(SpriteArrow,      arrow,      FLIP_NONE)\
 _SPRITE(SpriteSpark,      spark,      FLIP_NONE)\
 _SPRITE(SpriteLookahead,  lookahead,  FLIP_NONE)\
 _SPRITE(SpriteLiftSpark,  liftspark,  FLIP_NONE)\
+_SPRITE(SpriteCode,       code,       FLIP_NONE)\
 SPRITE_DEF_END
 
 #include "ZGBMain_Init.h"

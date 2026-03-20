@@ -20,6 +20,8 @@
 #endif
 
 #define ENABLE_CHEATS
+#define ENABLE_CODES
+
 #define ENABLE_PARALLAX
 #if defined(NINTENDO)
 	#define ENABLE_ANIMATED_ARROWS

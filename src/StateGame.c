@@ -41,10 +41,11 @@ typedef struct MapInfoBanked_t {
 	const UINT8 * map;
 	music_e music;
 	tilesets_e tileset;
+	UINT16 code;
 } MapInfoBanked_t;
 
-#define BANKED_MAP(MAP, MUSIC, TILESET) {.map_bank = BANK(MAP), .map = (const UINT8 *)&MAP, .music = MUSIC, .tileset = TILESET}
-#define LEVELS_END {.map_bank = 0, .map = NULL, .music = N_MUSICS, .tileset = N_TILESETS}
+#define BANKED_MAP(MAP, MUSIC, TILESET, CODE) {.map_bank = BANK(MAP), .map = (const UINT8 *)&MAP, .music = MUSIC, .tileset = TILESET, .code = CODE}
+#define LEVELS_END {.map_bank = 0, .map = NULL, .music = N_MUSICS, .tileset = N_TILESETS, .code = 0}
 
 // tileset list structure
 typedef struct TilesetBanked_t {
@@ -61,31 +62,31 @@ const TilesetBanked_t tilesets[] = {
 
 // level list
 const MapInfoBanked_t levels[] = {
-	BANKED_MAP(level01, MUSIC_INGAME1, TILESET_1),
-	BANKED_MAP(level02, MUSIC_INGAME1, TILESET_1),
-	BANKED_MAP(level03, MUSIC_INGAME1, TILESET_1),
-	BANKED_MAP(level04, MUSIC_INGAME1, TILESET_1),
-	BANKED_MAP(level05, MUSIC_INGAME1, TILESET_1),
-	BANKED_MAP(level06, MUSIC_INGAME1, TILESET_1),
-	BANKED_MAP(level07, MUSIC_INGAME1, TILESET_1),
-	BANKED_MAP(level08, MUSIC_INGAME1, TILESET_1),
-	BANKED_MAP(level09, MUSIC_INGAME2, TILESET_2),
-	BANKED_MAP(level10, MUSIC_INGAME2, TILESET_2),
-	BANKED_MAP(level11, MUSIC_INGAME2, TILESET_2),
-	BANKED_MAP(level12, MUSIC_INGAME2, TILESET_2),
-	BANKED_MAP(level13, MUSIC_INGAME2, TILESET_2),
-	BANKED_MAP(level14, MUSIC_INGAME2, TILESET_2),
-	BANKED_MAP(level15, MUSIC_INGAME1, TILESET_3),
-	BANKED_MAP(level16, MUSIC_INGAME1, TILESET_3),
-	BANKED_MAP(level17, MUSIC_INGAME1, TILESET_3),
-	BANKED_MAP(level18, MUSIC_INGAME1, TILESET_3),
-	BANKED_MAP(level19, MUSIC_INGAME1, TILESET_3),
-	BANKED_MAP(level20, MUSIC_INGAME1, TILESET_3),
-	BANKED_MAP(level21, MUSIC_INGAME2, TILESET_4),
-	BANKED_MAP(level22, MUSIC_INGAME2, TILESET_4),
-	BANKED_MAP(level23, MUSIC_INGAME2, TILESET_4),
-	BANKED_MAP(level24, MUSIC_INGAME2, TILESET_4),
-	BANKED_MAP(level25, MUSIC_INGAME2, TILESET_4),
+	BANKED_MAP(level01, MUSIC_INGAME1, TILESET_1, 0x0000),
+	BANKED_MAP(level02, MUSIC_INGAME1, TILESET_1, 0x1741),
+	BANKED_MAP(level03, MUSIC_INGAME1, TILESET_1, 0x6803),
+	BANKED_MAP(level04, MUSIC_INGAME1, TILESET_1, 0x4751),
+	BANKED_MAP(level05, MUSIC_INGAME1, TILESET_1, 0x0674),
+	BANKED_MAP(level06, MUSIC_INGAME1, TILESET_1, 0x4361),
+	BANKED_MAP(level07, MUSIC_INGAME1, TILESET_1, 0x9503),
+	BANKED_MAP(level08, MUSIC_INGAME1, TILESET_1, 0x8335),
+	BANKED_MAP(level09, MUSIC_INGAME2, TILESET_2, 0x9004),
+	BANKED_MAP(level10, MUSIC_INGAME2, TILESET_2, 0x3935),
+	BANKED_MAP(level11, MUSIC_INGAME2, TILESET_2, 0x8661),
+	BANKED_MAP(level12, MUSIC_INGAME2, TILESET_2, 0x7312),
+	BANKED_MAP(level13, MUSIC_INGAME2, TILESET_2, 0x5957),
+	BANKED_MAP(level14, MUSIC_INGAME2, TILESET_2, 0x6626),
+	BANKED_MAP(level15, MUSIC_INGAME1, TILESET_3, 0x4902),
+	BANKED_MAP(level16, MUSIC_INGAME1, TILESET_3, 0x7393),
+	BANKED_MAP(level17, MUSIC_INGAME1, TILESET_3, 0x1082),
+	BANKED_MAP(level18, MUSIC_INGAME1, TILESET_3, 0x3430),
+	BANKED_MAP(level19, MUSIC_INGAME1, TILESET_3, 0x4498),
+	BANKED_MAP(level20, MUSIC_INGAME1, TILESET_3, 0x8659),
+	BANKED_MAP(level21, MUSIC_INGAME2, TILESET_4, 0x9741),
+	BANKED_MAP(level22, MUSIC_INGAME2, TILESET_4, 0x3952),
+	BANKED_MAP(level23, MUSIC_INGAME2, TILESET_4, 0x9615),
+	BANKED_MAP(level24, MUSIC_INGAME2, TILESET_4, 0x3744),
+	BANKED_MAP(level25, MUSIC_INGAME2, TILESET_4, 0x6442),
 	LEVELS_END
 };
 
@@ -102,8 +103,9 @@ struct MapInfo current_level_desc = {
 };
 
 // current level
-UINT8 current_level;
+UINT8 old_level, current_level;
 UINT8 restart;
+
 UINT8 is_title_level;
 UINT8 is_cheating;
 tilesets_e current_tileset;
@@ -120,6 +122,14 @@ extern UINT8 start_x, start_y;
 void intialize_level_data(UINT8 level);
 void spawn_enemies(void);
 void set_metatile_priority(UINT8 id);
+
+UINT8 get_level_by_code(UINT16 code) BANKED {
+	const MapInfoBanked_t * ptr = levels;
+	for (UINT8 i = 0; (ptr->map_bank); ++i, ++ptr ) {
+		if (ptr->code == code) return i;
+	}
+	return 0;
+}
 
 void load_music(music_e music) BANKED {
 	switch (music) {
@@ -138,12 +148,52 @@ void load_music(music_e music) BANKED {
 	}
 }
 
-UINT8 load_level(UINT8 level) {
-	// disable parallax
-	disable_parallax();
+#if defined(ENABLE_CODES)
+void show_level_access_code(UINT16 code) {
+	// code sprites are 8x16
+	SPRITES_8x16;
+	// set black background
+	memset(tile_buffer, 0, sizeof(tile_buffer));
 	// destroy all sprites
 	SpriteManagerReset();
+	// spawn code
+	for (UINT8 i = 0; i != 4; ++i, code >>= 4) {
+		UINT8 tx = (((SCREEN_TILES_W - 8) / 2) + 6) - (i << 1);
+		UINT8 ty = ((SCREEN_TILES_H - 2) / 2);
+		Sprite * sprite = SpriteManagerAdd(SpriteCode, tx << 3, ty << 3);
+		sprite->custom_data[0] = SpriteCode;
+		sprite->custom_data[1] = tx;
+		sprite->custom_data[2] = ty;
+		sprite->custom_data[3] = code & 0x0f;
+		sprite->custom_data[4] = TRUE;
+	}
+	// initialize empty background map
+	ScrollInitTilesFromMap(0, BANK(StateGame), &current_level_desc);
+	ScrollSetMap(BANK(StateGame), &current_level_desc);
+	ScrollScreenRedraw();
+	// run one engine iteration so everything gets set up
+	YIELD;
+	// show
+	FadeOut();
+	// wait any user input
+	for (; (!KEY_TICKED(0xff)); YIELD);
+	// hide
+	FadeIn();
+	// set 8x8 sprite mode for the main game
+	SPRITES_8x8;
+}
+#endif
+
+UINT8 load_level(UINT8 level, UINT8 show_code) {
+	// disable parallax
+	disable_parallax();
 	if (!levels[level].map_bank) return FALSE;
+#if defined(ENABLE_CODES)
+	// show level code and wait for keypress
+	if (show_code) show_level_access_code(levels[level].code);
+#endif
+	// destroy all sprites
+	SpriteManagerReset();
 	// initialize current level
 	intialize_level_data(level);
 	// spawn the player sprite
@@ -333,7 +383,8 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 	ENABLE_SCROLL_CLAMPING;
 
 	// load level
-	load_level(current_level = INITIAL_LEVEL_NUMBER);
+	old_level = current_level;
+	load_level(current_level, FALSE);
 	// process once to exit the state INIT()
 	YIELD;
 
@@ -368,7 +419,8 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 			// fade manually
 			FadeIn();
 			// reload the level
-			if (!load_level(current_level)) SetState(StateTitres);
+			if (!load_level(current_level, (old_level != current_level))) SetState(StateTitres);
+			old_level = current_level;
 			// process engine once before unfade
 			YIELD;
 			// unfade manually
