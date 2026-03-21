@@ -393,10 +393,20 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 		// if cheating - allow change levels with B + UP/DOWN, including title and titres (no-return) states
 		if ((is_cheating) && (KEY_PRESSED(J_B))) {
 			if (KEY_TICKED(J_UP)) {
-				if (levels[++current_level].map_bank) skip_press_fire = restart = TRUE; else SetState(StateTitres);
+				// switch to the next level, if no more then run titres state
+				if (levels[++current_level].map_bank) {
+					// prevent showing code
+					old_level = current_level;
+					// signal restart
+					skip_press_fire = restart = TRUE;
+				} else SetState(StateTitres);
 			} else if (KEY_TICKED(J_DOWN)) {
+				// switch to the previous level if not zero, else run title state
 				if (current_level) {
 					--current_level;
+					// prevent showing code
+					old_level = current_level;
+					// signal restart
 					skip_press_fire = restart = TRUE;
 				} else SetState(StateTitle);
 			}
