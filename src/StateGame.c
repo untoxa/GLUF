@@ -439,9 +439,22 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 			// unfade manually
 			FadeOut();
 		}
+#if !defined(MASTERSYSTEM)
+		if (KEY_TICKED(J_START)) pause = TRUE;
+#endif
 		if (pause) {
+			// stop SFX if playing, pause
+			sfx_reset_sample();
+			MuteMusicChannels(MUTE_MASK_NONE);
 			PauseMusic;
+			sfx_sound_cut();
+#if defined(MASTERSYSTEM)
 			while (pause) vsync();
+#else
+			waitpadup();
+			waitpad(J_START);
+			pause = FALSE;
+#endif
 			ResumeMusic;
 		}
 	}
