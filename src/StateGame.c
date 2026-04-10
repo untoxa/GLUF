@@ -104,7 +104,10 @@ struct MapInfo current_level_desc = {
 
 // current level
 UINT8 old_level, current_level;
+
+// game control
 UINT8 restart;
+volatile UINT8 pause;
 
 UINT8 is_title_level;
 UINT8 is_cheating;
@@ -435,6 +438,11 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 			YIELD;
 			// unfade manually
 			FadeOut();
+		}
+		if (pause) {
+			PauseMusic;
+			while (pause) vsync();
+			ResumeMusic;
 		}
 	}
 }
