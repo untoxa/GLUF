@@ -37,11 +37,3 @@ void ClampScrollLimits(void) {
 		if (scroll_y > (scroll_h - SCREEN_HEIGHT + scroll_h_border)) scroll_y = (scroll_h - SCREEN_HEIGHT + scroll_h_border);
 	}
 }
-
-// Master System PAUSE button support
-#if defined(MASTERSYSTEM)
-extern volatile UINT8 pause;
-void NMI_ISR (void) CRITICAL INTERRUPT {   // the function name MUST be "NMI_ISR"
-    pause = (pause) ? FALSE : TRUE;
-}
-#endif

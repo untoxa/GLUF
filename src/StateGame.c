@@ -440,14 +440,15 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 			FadeOut();
 		}
 #if !defined(MASTERSYSTEM)
-		if (KEY_TICKED(J_START)) pause = TRUE;
+		else if (KEY_TICKED(J_START)) pause = TRUE;
 #endif
 		if (pause) {
-			// stop SFX if playing, pause
+			// stop SFX if playing, pause the music
 			sfx_reset_sample();
 			MuteMusicChannels(MUTE_MASK_NONE);
 			PauseMusic;
 			sfx_sound_cut();
+			// wait until unpause (different for the SMS)
 #if defined(MASTERSYSTEM)
 			while (pause) vsync();
 #else
@@ -455,6 +456,7 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 			waitpad(J_START);
 			pause = FALSE;
 #endif
+			// resume the music playback
 			ResumeMusic;
 		}
 	}
