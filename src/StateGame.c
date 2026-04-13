@@ -375,6 +375,8 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 	(void)custom_data;
 	// initialization
 	volatile UINT8 skip_press_fire = FALSE;
+	// reset pause state in case when pause button was pressed on the Master System during the intro
+	pause = FALSE;
 	// set up CrossZGB scrolling parameters
 # if defined(MASTERSYSTEM)
 	scroll_top_movement_limit = 56;
