@@ -378,12 +378,12 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 	// reset pause state in case when pause button was pressed on the Master System during the intro
 	pause = FALSE;
 	// set up CrossZGB scrolling parameters
-# if defined(MASTERSYSTEM)
-	scroll_top_movement_limit = 56;
-	scroll_bottom_movement_limit = 120;
-#else
+#if !defined(MASTERSYSTEM)
 	scroll_top_movement_limit = 40;
 	scroll_bottom_movement_limit = 88;
+#else
+	scroll_top_movement_limit = 56;
+	scroll_bottom_movement_limit = 120;
 #endif
 	ENABLE_SCROLL_CLAMPING;
 
@@ -451,12 +451,12 @@ NORETURN void GameLogic(void * custom_data) BANKED {
 			PauseMusic;
 			sfx_sound_cut();
 			// wait until unpause (different for the SMS)
-#if defined(MASTERSYSTEM)
-			while (pause) vsync();
-#else
+#if !defined(MASTERSYSTEM)
 			waitpadup();
 			waitpad(J_START);
 			pause = FALSE;
+#else
+			while (pause) vsync();
 #endif
 			// resume the music playback
 			ResumeMusic;
