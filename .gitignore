@@ -280,3 +280,4 @@ tools/*/test
 /unused
 /!original
 /*.bat
+.DS_Store
