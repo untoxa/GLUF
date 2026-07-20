@@ -24,7 +24,7 @@
 
 #define ENABLE_PARALLAX
 #if defined(NINTENDO)
-	#define ENABLE_ANIMATED_ARROWS
+//	#define ENABLE_ANIMATED_ARROWS
 #endif
 
 #define INITIAL_LEVEL_NUMBER    0
